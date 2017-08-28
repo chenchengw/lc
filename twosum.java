@@ -1,3 +1,4 @@
+//https://segmentfault.com/a/1190000002986095
 int[] twoSum(int[] nums, int target) {
     int[] result = new int[]{-1, -1};
     Map<Integer, Integer> hm = new HashMap<>();
@@ -11,3 +12,4 @@ int[] twoSum(int[] nums, int target) {
     }
     return result;
 }
+
