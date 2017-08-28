@@ -1,4 +1,4 @@
-//https://segmentfault.com/a/1190000002986095
+//time: O(n), space: O(n)
 int[] twoSum(int[] nums, int target) {
     int[] result = new int[]{-1, -1};
     Map<Integer, Integer> hm = new HashMap<>();
