@@ -1,0 +1,56 @@
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node/description/
+//DFS: time: O(N), space: O(N)
+public void connect(TreeLinkNode root) {
+    if (root == null) return;
+    if (root.left != null) root.left.next = root.right;
+    if (root.right != null) root.right.next = root.next == null? null: root.next.left;
+    connect(root.left);
+    connect(root.right);
+}
+
+//time: O(N), space: O(1)
+public void connect(TreeLinkNode root) {
+    TreeLinkNode head = root;
+    while (head != null) {
+        TreeLinkNode tmpHead = head;
+        while (head != null) {
+            if (head.left != null) head.left.next = head.right;
+            if (head.right != null) head.right.next = head.next == null? null: head.next.left;
+            head = head.next;
+        }
+        head = tmpHead.left;
+    }
+}
+
+https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/description/
+public void connect(TreeLinkNode root) {
+    TreeLinkNode curr = root; //current leve leading node
+    TreeLinkNode node = null; //next level leading node
+    TreeLinkNode nextHead = null; //head of next level
+    while (curr != null) {
+        while (curr != null) {
+            if (curr.left != null) {
+                if (node != null) {
+                    node.next = curr.left;
+                    node = node.next;
+                } else { //initialize nextHead and node
+                    nextHead = curr.left;
+                    node = curr.left;
+                }                   
+            }
+            if (curr.right != null) {
+                if (node != null) {
+                    node.next = curr.right;
+                    node = node.next;
+                } else { //initialize nextHead and node
+                    nextHead = curr.right;
+                    node = curr.right;
+                }
+            }
+            curr = curr.next;
+        }
+        curr = nextHead;
+        nextHead = null;
+        node = null;
+    }
+}
