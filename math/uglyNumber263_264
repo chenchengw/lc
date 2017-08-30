@@ -1,0 +1,30 @@
+https:://leetcode.com/problems/ugly-number/description/
+   //time: O(lgN), space: O(1)
+    public boolean isUgly(int num) {
+        if (num <= 0) return false;
+        while (num%2 == 0) num/=2;
+        while (num%3 == 0) num/=3;
+        while (num%5 == 0) num/=5;
+        return num == 1;
+    }
+    
+    //dynamic programming: time: O(N), space: O(N)
+    public int nthUglyNumber(int n) {
+        List<Integer> res = new ArrayList<Integer>();
+        res.add(1);
+        int m2 = 0, m3 = 0, m5 = 0;
+        int i2 = 0, i3 = 0, i5 = 0;
+        while (res.size() < n) {
+            m2 = res.get(i2)*2;
+            m3 = res.get(i3)*3;
+            m5 = res.get(i5)*5;
+            int min = Math.min(m2, Math.min(m3, m5));
+            res.add(min);
+            if (min == m2) i2++;
+            if (min == m3) i3++;
+            if (min == m5) i5++;
+        }
+        return res.get(res.size()-1);
+    }
+    
+    
