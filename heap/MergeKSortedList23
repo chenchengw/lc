@@ -1,0 +1,27 @@
+    //time: O(NlgK), space: O(K), N is the length of each list
+    public ListNode mergeKLists(ListNode[] lists) {
+       if (lists.length == 0) return null;
+       PriorityQueue<ListNode> pq = new PriorityQueue<ListNode>(new Comparator<ListNode>(){
+           public int compare(ListNode ln1, ListNode ln2) {
+               return ln1.val - ln2.val;
+           }
+       });
+       //initialize the priority queue with size of K
+       for (ListNode ln: lists) {
+           //don't forget this check to avoid NPE
+           if (ln != null) {
+               pq.offer(ln);
+           }
+       }
+       ListNode dummy = new ListNode(0);
+       ListNode curr = dummy;
+       while (!pq.isEmpty()) {
+           ListNode ln = pq.poll();
+           curr.next = ln;
+           if (curr.next.next != null) {
+               pq.offer(curr.next.next);
+           }
+           curr = curr.next;
+       }
+       return dummy.next;
+    }
