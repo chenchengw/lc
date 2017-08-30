@@ -1,0 +1,81 @@
+   //time: O(MN), space: O(MN)
+   public int numIslands(char[][] grid) {
+       int m = grid.length;
+       if (m == 0) return 0;
+       int n = grid[0].length;
+       int result = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                   result++;
+                   dfs(grid, i, j);
+                }
+            }
+        }
+        return result;
+    }
+    
+    private void dfs(char[][] grid, int i, int j) {
+        if (i < 0 || i == grid.length || j < 0 || j == grid[0].length || grid[i][j] != '1') return;
+        grid[i][j] = '0';
+        dfs(grid, i+1, j);
+        dfs(grid, i-1, j);
+        dfs(grid, i, j+1);
+        dfs(grid, i, j-1);
+    }
+
+
+https://leetcode.com/problems/number-of-islands-ii/discuss/
+     //time: O(Klg(MN)), space: (MN), K = positions.length, reference:http://www.cnblogs.com/EdwardLiu/p/5087633.html
+    public List<Integer> numIslands2(int m, int n, int[][] positions) {
+        List<Integer> result = new ArrayList<Integer>();
+        UnionFind uf = new UnionFind(m*n);
+        int[][] dirs = new int[][]{{-1,0},{1,0},{0,1},{0,-1}};
+        
+        for(int[] pos: positions) {
+            int cur = pos[0]*n + pos[1];
+            uf.ids[cur] = cur;
+            uf.count++;
+            for (int[] dir: dirs) {
+                int x = dir[0] + pos[0];
+                int y = dir[1] + pos[1];
+                int nb = x*n + y;
+                if (x < 0 || x == m || y < 0 || y == n || uf.ids[nb] == -1) continue;
+                if (!uf.isConnected(nb,cur)) {
+                    uf.union(nb, cur);
+                    uf.count--;
+                }
+            }
+            result.add(uf.count);
+        }
+        return result;
+    }
+    
+    //quick union: union time: O(1), find time: O(lgMN), space: O(MN)
+     class UnionFind { 
+             int[] ids;
+             int count;
+             public UnionFind(int num) {
+                 this.ids = new int[num];
+                 Arrays.fill(ids, -1);
+                 this.count = 0;
+             }
+           
+             public int find(int i) { 
+                 while (i != ids[i])  {
+                     ids[i] = ids[ids[i]];
+                     i = ids[i];
+                 }
+                 return i;
+             }
+         
+             public boolean isConnected(int i, int j) {
+                 return find(i) == find(j);
+             }
+             
+             public void union(int i, int j) {
+                 int iRoot = find(i);
+                 int jRoot = find(j);
+                 ids[iRoot] = jRoot;
+             }
+         }
