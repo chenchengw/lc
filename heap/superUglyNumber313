@@ -1,3 +1,4 @@
+    //another solution with time O(NK) is under http://www.cnblogs.com/grandyang/p/5144918.html
     //heap, time: O(NlgK)
     public int nthSuperUglyNumber(int n, int[] primes) {
        if (primes.length == 0 || n == 0) return 0;
