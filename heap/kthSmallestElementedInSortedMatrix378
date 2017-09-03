@@ -1,3 +1,4 @@
+//time: O(klgk), space: O(k)
 class Solution {
     public int kthSmallest(int[][] matrix, int k) {
        Queue<Node> pq = new PriorityQueue<Node>();
@@ -25,3 +26,5 @@ class Node implements Comparable<Node> {
         return this.val - that.val;
     }
 }
+
+//similar to https://leetcode.com/problems/find-k-pairs-with-smallest-sums/description/
