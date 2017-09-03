@@ -1,1 +1,10 @@
-Refer to this slides for details on the topological sort algorithm with time complexity: O(|V| + |E|)
+topological sort algorithm using an queue.
+1. Store each vertex’s In-Degree in an array and build the graph if not yet
+2. Initialize a queue with all in-degree zero vertices
+3. While there are vertices remaining in the queue:
+    Dequeue and output a vertex
+    Reduce In-Degree of all vertices adjacent to it by 1
+    Enqueue any of these vertices whose In-Degree became zero
+
+time complexity: O(|V| + |E|)
+This slide has a good demo of each step: https://courses.cs.washington.edu/courses/cse326/03wi/lectures/RaoLect20.pdf
