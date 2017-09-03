@@ -1,0 +1,39 @@
+    //time: O(KlgN), space: O(K)
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums.length == 0) return new int[0];
+        int[] result = new int[nums.length + 1 - k];
+        Queue<Integer> pq = new PriorityQueue<Integer>((a, b) -> (b - a));
+        for (int i = 0; i < nums.length; i++) {
+            if (i >= k) {
+               pq.remove(nums[i-k]); 
+            }
+            pq.offer(nums[i]);
+            if (i + 1 >= k) {
+                result[i + 1 - k] = pq.peek();
+            }
+        }
+        return result;
+    }
+    
+    //time:O(N), space: O(K)
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        if (nums.length == 0) return new int[0];
+        int[] result = new int[nums.length + 1 - k];
+        LinkedList<Integer> deque = new LinkedList<Integer>();
+        for (int i = 0; i < nums.length; i++) {
+            //the first element may have already been removed from last round, so need to check here
+            if (!deque.isEmpty() && deque.peek() == i - k) {
+               deque.poll();
+            }
+            //remove all the elements that is smaller than the current number from the tail to ensure 
+            //the elements in the deque are in decreasing order.
+            while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) deque.removeLast();
+            //append new element's idx to the tail
+            deque.offerLast(i);
+            
+            if (i + 1 >= k) {
+                result[i + 1 - k] = nums[deque.peek()];
+            }
+        }
+        return result;
+    }

@@ -1,3 +1,2 @@
-23.Merge k Sorted Lists 
-215.Kth Largest Element in an Array
-
+This type of problem requires us to allow the max/min element being kept track and easy to retrieve O(1)
+We could use a PriorityQueue data structure to build the minHeap and maxHeap, or sometimes we can use other data structures or a single variable and maintain the sequence manually.

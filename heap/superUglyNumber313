@@ -1,0 +1,40 @@
+    //another solution with time O(NK) is under http://www.cnblogs.com/grandyang/p/5144918.html
+    //heap, time: O(NlgK)
+    public int nthSuperUglyNumber(int n, int[] primes) {
+       if (primes.length == 0 || n == 0) return 0;
+       int[] nums = new int[n];
+        nums[0] = 1;
+        //min heap of size K
+       Queue<Node> pq = new PriorityQueue<Node>();
+       for (int i = 0; i < primes.length; i++) {
+           //both value and prime are the same at the beginning
+           pq.add(new Node(0, primes[i], primes[i]));
+       }
+        for (int i = 1; i < n; i++) {
+            Node node = pq.peek();
+            nums[i] = node.val;
+            //update top element
+            do {
+                node = pq.poll();
+                node.val = nums[++node.index]*node.prime;
+                pq.offer(node);
+                //prevent duplicate with the check
+            } while (!pq.isEmpty() && nums[i] == pq.peek().val);
+        }
+        return nums[n-1];
+    }
+    
+     static class Node implements Comparable<Node> {
+        private int index;
+        private int val;
+        private int prime;
+
+        public Node(int index, int val, int prime) {
+            this.index = index;
+            this.val = val;
+            this.prime = prime;
+        }
+        public int compareTo(Node other) {
+            return this.val - other.val;
+        }
+    }

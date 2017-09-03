@@ -1,0 +1,30 @@
+//time: O(klgk), space: O(k)
+class Solution {
+    public int kthSmallest(int[][] matrix, int k) {
+       Queue<Node> pq = new PriorityQueue<Node>();
+        for (int i = 0; i < matrix.length; i++) pq.offer(new Node(0, i, matrix[0][i]));
+        for (int i = 0; i < k - 1; i++) {
+            //replace the top node with the next node from the same column
+            Node n = pq.poll();
+            if (n.x == matrix.length - 1) continue;
+            pq.offer(new Node(n.x+1, n.y, matrix[n.x+1][n.y]));
+        }
+        return pq.poll().val;
+    }
+}
+
+class Node implements Comparable<Node> {
+    int x, y, val;
+    public Node(int x, int y, int val) {
+        this.x = x;
+        this.y = y;
+        this.val = val;
+    }
+
+    @Override
+    public int compareTo(Node that) {
+        return this.val - that.val;
+    }
+}
+
+//similar to https://leetcode.com/problems/find-k-pairs-with-smallest-sums/description/
