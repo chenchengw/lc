@@ -1,0 +1,56 @@
+   public String alienOrder(String[] words) {
+        Map<Character, Set<Character>> graph = new HashMap<>();
+        Map<Character, Integer> degree = new HashMap<>();
+        
+        if (words.length == 0) return "";
+        //initialize degree
+        for (String s: words) {
+            for (char c: s.toCharArray()) {
+                degree.put(c, 0);
+            }
+        }
+        //construct graph
+        for (int i = 0; i < words.length -1; i++) {
+            String cur = words[i];
+            String next = words[i+1];
+            int len = Math.min(cur.length(), next.length());
+            for (int j = 0; j < len; j++) {
+                char c1 = cur.charAt(j);
+                char c2 = next.charAt(j);
+                if (c1 != c2) {
+                    Set<Character> set = new HashSet<Character>();
+                    if (graph.containsKey(c1)) set = graph.get(c1);
+                    if (!set.contains(c2)) {
+                        set.add(c2);
+                        graph.put(c1, set);
+                        //c1 -> c2, so c2's indegree increases
+                        degree.put(c2, degree.get(c2)+1);
+                    }
+                    //we should skip this pair now
+                    break;
+                }
+            }
+        }
+        
+        //topological sort
+        Queue<Character> q = new LinkedList<Character>();
+        for (char c: degree.keySet()) {
+            if (degree.get(c) == 0) {
+                q.offer(c);
+            }
+        }
+        String result = "";
+        while (!q.isEmpty()) {
+            char c = q.poll();
+            result+=c;
+            if (graph.containsKey(c)) {
+                for (char c2: graph.get(c)) {
+                    degree.put(c2, degree.get(c2)-1);
+                    if (degree.get(c2) == 0) q.offer(c2);
+                }
+            }
+        }
+        
+        return result.length() != degree.size() ? "" : result;
+        
+    }
