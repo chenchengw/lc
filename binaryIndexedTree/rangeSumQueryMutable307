@@ -15,7 +15,7 @@ class NumArray {
     
     //time: O(nlgn)
     public void update(int i, int val) {
-        //add the diff to all the childrens
+        //update bit tree 
         int diff = val - nums[i+1];
         for (int j = i + 1; j < bit.length; j += lowbit(j)) {
             bit[j] += diff;
