@@ -24,7 +24,7 @@
             for (int d: t) {
                 if (--d > 0) pq.offer(d);
             }
-            //if the queue is empty, return the trailing sequences's number cnt
+            //if the queue is empty, the last few elements cannot build a n+1 block
             res += pq.isEmpty() ? cnt : n + 1;
         }
         return res;
