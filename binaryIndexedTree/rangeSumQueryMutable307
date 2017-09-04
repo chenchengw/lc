@@ -1,0 +1,43 @@
+class NumArray {
+
+    int[] bit;
+    int[] nums;
+    
+    public NumArray(int[] nums) {
+        //zero indexes are not used
+        this.nums = new int[nums.length + 1];
+        this.bit = new int[nums.length + 1];
+        
+        for (int i = 0; i < nums.length; i++) {
+            update(i, nums[i]);
+        }     
+    }
+    
+    //time: O(nlgn)
+    public void update(int i, int val) {
+        //add the diff of all the parents in bit
+        int diff = val - nums[i+1];
+        for (int j = i + 1; j < bit.length; j += lowbit(j)) {
+            bit[j] += diff;
+        }
+        //set the elements' value
+        nums[i+1] = val;
+    }
+        
+    //time: O(nlgn)
+    public int sumRange(int i, int j) {
+        return getSum(j+1) - getSum(i);
+    }
+    
+    private int getSum(int i) {
+        int result = 0;
+        for (int j = i; j > 0; j -= lowbit(j)) {
+            result += bit[j];
+        }
+        return result;
+    }
+    
+   private int lowbit(int x) {
+        return x & (-x);  // must use parentheses
+    }
+}
