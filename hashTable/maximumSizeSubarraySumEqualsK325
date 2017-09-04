@@ -1,0 +1,21 @@
+    //time: O(N), space: O(N)
+    public int maxSubArrayLen(int[] nums, int k) {
+        if (nums.length == 0) return 0;
+        int maxLen = Integer.MIN_VALUE;
+        Map<Integer, Integer> hm = new HashMap<Integer, Integer>();
+        hm.put(0, -1);
+        int sum = 0;
+        for(int i = 0; i < nums.length; i++) {
+            //note that sum is the sum of nums[i-1]
+            sum += nums[i];
+            if (hm.containsKey(sum - k)) {
+                maxLen = Math.max(maxLen, i - hm.get(sum-k));
+            }
+            if (!hm.containsKey(sum)) {
+                //keep only 1st duplicate as we want first index as left as possible
+                hm.put(sum, i);
+            }
+        }
+        if (maxLen == Integer.MIN_VALUE) return 0;
+        return maxLen;
+    }
