@@ -1,0 +1,20 @@
+class MovingAverage {
+
+    private double sum = 0.0;
+    private int size;
+    private Queue<Integer> window;
+    /** Initialize your data structure here. */
+    public MovingAverage(int size) {
+        this.size = size;
+        this.window = new LinkedList<Integer>();
+    }
+    
+    public double next(int val) {
+        if (window.size() == size) {
+            sum -= window.remove();
+        }
+        sum += val;
+        window.add(val);
+        return sum/window.size();
+    }
+}
