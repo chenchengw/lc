@@ -1,0 +1,40 @@
+    public int countComponents(int n, int[][] edges) {
+        UnionFind uf = new UnionFind(n);
+        for (int i = 0; i <n; i++) {
+            uf.roots[i] = i;
+            uf.count++;
+        }
+        for (int[] edge: edges) {
+            if (uf.find(edge[0]) != uf.find(edge[1])) {
+                uf.union(edge[0], edge[1]);
+                uf.count--;
+            }
+        }
+        return uf.count;
+    }
+    
+    class UnionFind {
+        int[] roots;
+        int count;
+        
+        public UnionFind(int num) {
+           this.roots = new int[num];
+           this.count = 0;
+        }
+        
+        public int find(int i) {
+            while (i != roots[i]) {
+                roots[i] = roots[roots[i]];
+                i = roots[i];
+            }
+            return i;
+        }
+        
+        public void union(int x, int y) {
+            int rx = find(x);
+            int ry = find(y);
+            if (rx != ry) {
+                roots[rx] = ry;
+            }
+        }
+    }
