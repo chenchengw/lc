@@ -27,12 +27,14 @@
         if (word.length() == k) return root.isLeaf;
         if (word.charAt(k) == '.') {
             for (TrieNode tn: root.children) {
+                //don't forget to check the child node is not null
                 if (tn != null && search(word, tn, k+1) == true){
                     return true;
                 } 
             }
             return false;
         } else {
+            //don't forget to check child node is not null
             return (root.children[word.charAt(k) - 'a'] != null) && search(word, root.children[word.charAt(k) - 'a'], k+1);                                                                           
         }
     }
