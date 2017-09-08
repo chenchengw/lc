@@ -1,0 +1,24 @@
+    public List<String> findItinerary(String[][] tickets) {
+        //result needs to be a LinkedList for us to append to the head
+        LinkedList<String> result = new LinkedList<>();
+        Map<String, PriorityQueue<String>> hm = new HashMap<>();
+        
+        for (String[] ticket: tickets) {
+            if (!hm.containsKey(ticket[0])) {
+                hm.put(ticket[0], new PriorityQueue<String>());
+            }
+            hm.get(ticket[0]).offer(ticket[1]);
+        }
+        
+        dfs("JFK", result, hm);
+        return result;
+    }
+    
+    private void dfs(String s, LinkedList<String> result, Map<String, PriorityQueue<String>> hm) {
+        PriorityQueue<String> pq = hm.get(s);
+        //don't forget to check the pq != null
+        while (pq != null && !pq.isEmpty()) {
+            dfs(pq.poll(), result, hm);
+        }
+        result.addFirst(s);
+    }

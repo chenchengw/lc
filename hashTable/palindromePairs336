@@ -1,0 +1,48 @@
+    public List<List<Integer>> palindromePairs(String[] words) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (words.length < 2) return result;
+        Map<String, Integer> hm = new HashMap<String, Integer>();
+        for (int i = 0; i < words.length; i++) {
+            hm.put(words[i], i);
+        }
+        for (int i = 0; i < words.length; i++) {
+            //note that j <= words[i].length
+            for (int j = 0; j <= words[i].length(); j++) {
+                String str1 = words[i].substring(0, j);
+                String str2 = words[i].substring(j);
+                if (isValid(str1)) {
+                    //eg. aabcd => str1: aa + str2: bcd
+                    // if there is a "dcb", a palindrome pair is found => "dcbaabcd"
+                    String str2rev = new StringBuilder(str2).reverse().toString();
+                    if (hm.containsKey(str2rev) && hm.get(str2rev) != i) {
+                        List<Integer> list = new ArrayList<>();
+                        list.add(hm.get(str2rev));
+                        list.add(i);
+                        result.add(list);
+                    }
+                }
+                if (isValid(str2)) {
+                    //eg. bcdaa => str1:bcd + str2:aa
+                    //if there is a "dcb", a palindrome pair is found => "bcdaadcb"
+                    String str1rev = new StringBuilder(str1).reverse().toString();
+                    //check str2.length() !=0 to avoid duplication
+                    if (hm.containsKey(str1rev) && hm.get(str1rev) != i && str2.length() != 0) {
+                        List<Integer> list = new ArrayList<>();
+                        list.add(i);
+                        list.add(hm.get(str1rev));
+                        result.add(list);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    
+    private boolean isValid(String s) {
+        int left = 0;
+        int right = s.length() - 1;
+        while (left <= right) {
+            if (s.charAt(left++) != s.charAt(right--)) return false;
+        }
+        return true;
+    }

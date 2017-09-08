@@ -1,0 +1,57 @@
+class Trie {
+    
+    TrieNode root;
+    
+    /** Initialize your data structure here. */
+    public Trie() {
+        root = new TrieNode();
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+        TrieNode tn = root;
+        for(char c: word.toCharArray()) {
+            if (tn.children[c - 'a'] == null) {
+                tn.children[c - 'a'] = new TrieNode();
+            } 
+            tn = tn.children[c - 'a'];
+        }
+        tn.isLeaf = true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+        TrieNode tn = searchTrie(word);
+        return (tn != null) && (tn.isLeaf == true);
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        TrieNode tn = searchTrie(prefix);
+        return tn != null;
+    }
+    
+    public TrieNode searchTrie(String s) {
+        TrieNode tn = root;
+        for (char c: s.toCharArray()) {
+            if (tn.children[c - 'a'] != null) {
+                tn = tn.children[c - 'a'];
+            } else {
+                return null;
+            }
+        }
+        if (tn == root) return null;
+        return tn;
+    }
+}
+
+class TrieNode {
+    
+    TrieNode[] children;
+    boolean isLeaf;
+    
+    public TrieNode() {
+        children = new TrieNode[26];
+        isLeaf = false;
+    }
+}
