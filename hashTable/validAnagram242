@@ -1,0 +1,14 @@
+    //time: O(n), space: O(n)
+    public boolean isAnagram(String s, String t) {
+       int[] ocur = new int[26];
+        for (char c: s.toCharArray()) {
+            ocur[c-'a']++;
+        }
+        for (char c: t.toCharArray()) {
+            ocur[c-'a']--;
+        }
+        for (int i: ocur) {
+            if (i != 0) return false;
+        }
+        return true;
+    }
