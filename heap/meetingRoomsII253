@@ -11,6 +11,7 @@
         PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
         pq.offer(intervals[0].end);
         for (int i = 1; i < intervals.length; i++) {
+            //note that the comparison should be ">=" not just ">"
             if (intervals[i].start >= pq.peek()) {
                 pq.poll();
             }
