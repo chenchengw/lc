@@ -1,0 +1,7 @@
+ public boolean isAnagram(String s, String t) {
+        char[] sa = s.toCharArray();
+        char[] st = t.toCharArray();
+        Arrays.sort(sa);
+        Arrays.sort(st);
+        return new String(sa).equals(new String(st));
+  }
