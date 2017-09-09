@@ -1,4 +1,4 @@
-    //time complexity: O(n^2)
+    //time complexity: O(4^n)
     public List<String> addOperators(String num, int target) {
         List<String> res = new ArrayList<>();
         if (num.length() == 0) return res;
