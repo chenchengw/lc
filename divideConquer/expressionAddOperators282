@@ -1,0 +1,29 @@
+    //time complexity: O(n^2)
+    public List<String> addOperators(String num, int target) {
+        List<String> res = new ArrayList<>();
+        if (num.length() == 0) return res;
+        helper(res, target, num, "", 0L, 0L);
+        return res;
+    }
+    
+    private void helper(List<String> res, int target, String num, String tmp, Long curRes, Long prevNum) {
+        if (curRes == target && num.length() == 0) {
+            res.add(new String(tmp));
+            return;
+        }
+        //note i starts with 1 and ends with num.length() due to substring
+        for (int i = 1; i <= num.length(); i++) {
+            String curStr = num.substring(0, i);
+            String next = num.substring(i);
+            if (i > 1 && num.charAt(0) == '0') return;
+            long curNum = Long.parseLong(curStr);
+            if (tmp.length() == 0) {
+                //first number
+                helper(res, target, next, curStr, curNum, curNum);
+            } else {
+                helper(res, target, next, tmp+"*"+curNum, curRes - prevNum + prevNum*curNum, prevNum*curNum);
+                helper(res, target, next, tmp+"+"+curNum, curRes+curNum, curNum);
+                helper(res, target, next, tmp+"-"+curNum, curRes-curNum, -curNum);
+            }
+        }
+    }
