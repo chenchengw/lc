@@ -1,3 +1,4 @@
+    //time: O(N), space: O(N)
     public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
         List<Interval> result = new ArrayList<>();
         int itx = 0;
@@ -7,7 +8,7 @@
                 result.add(intervals.get(itx));
                 itx++;
         }
-            // merge intervals
+        // merge intervals that are overlaped with newInterval
         while (itx < intervals.size() && newInterval.end >= intervals.get(itx).start){           
             newInterval.start = Math.min(newInterval.start, intervals.get(itx).start);
             newInterval.end = Math.max(newInterval.end, intervals.get(itx).end);
@@ -15,7 +16,8 @@
         }
         result.add(newInterval);
         
-        while (itx < intervals.size() && newInterval.end < intervals.get(itx).start){
+        //after the merge
+        while (itx < intervals.size()){
             result.add(intervals.get(itx));
             itx++;
        }
