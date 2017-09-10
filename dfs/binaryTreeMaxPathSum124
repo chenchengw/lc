@@ -1,0 +1,18 @@
+    int maxSum;
+    
+    public int maxPathSum(TreeNode root) {
+        maxSum = Integer.MIN_VALUE;
+        helper(root);
+        return maxSum;
+    }
+    
+    public int helper(TreeNode node) {
+        if (node == null) return 0;
+        //The Math.max is needed as there could be negative value in the tree nodes
+        int left = Math.max(0, helper(node.left));
+        int right = Math.max(0, helper(node.right));
+        //computes the maximum path sum with highest node is the input node, update maximum if necessary
+        maxSum = Math.max(maxSum, left + right + node.val);
+        // returns the maximum sum of the path that can be extended to input node's parent.
+        return Math.max(left, right) + node.val;
+    }
