@@ -7,10 +7,7 @@
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == '1') {
                     count++;
-                    flood(grid, m, n, i-1, j);
-                    flood(grid, m, n, i+1, j);
-                    flood(grid, m, n, i, j-1);
-                    flood(grid, m, n, i, j+1);
+                    flood(grid, m, n, i, j);
                 }
             }
         }
