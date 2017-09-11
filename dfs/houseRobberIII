@@ -1,4 +1,4 @@
-    //slow performance solution, for a better solution, refer to greedy tab
+    //slow performance solution
      public int rob(TreeNode root) {
         if (root == null) return 0;
         //rob root
@@ -12,4 +12,25 @@
         //do not rob root
         int val2 = rob(root.left) + rob(root.right);
         return Math.max(val, val2);
+    }
+    
+    //better performance
+     
+     public int rob(TreeNode root) {
+        int[] res = helper(root);
+        return Math.max(res[0], res[1]);
+    }
+    
+    private int[] helper(TreeNode root) {
+        if (root == null) return new int[2];
+        
+        int[] left = helper(root.left);
+        int[] right = helper(root.right);
+        int[] res = new int[2];
+        
+        //res[0] stores the max value when not robbing the node
+        res[0] = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+        //res[1] stores the max value when robbing the node (and not rob left& right nodes)
+        res[1] = root.val + left[0] + right[0];
+        return res;
     }
