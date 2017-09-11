@@ -1,0 +1,11 @@
+    public boolean isValidBST(TreeNode root) {
+       return helper(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+    
+    //the triky part is to define the helper function in a way 
+    // that can take both minVal and maxVal allowed for a node
+    boolean helper(TreeNode root, long minVal, long maxVal) {
+        if (root == null) return true;
+        if (root.val >= maxVal || root.val <= minVal) return false;
+        return helper(root.left, minVal, root.val) && helper(root.right, root.val, maxVal);
+    }
