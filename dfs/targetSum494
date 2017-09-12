@@ -1,4 +1,4 @@
-//dfs
+//dfs, time: O(2^n)
 class Solution {
     int res;
     
@@ -21,7 +21,7 @@ class Solution {
     }
 }
 
-//dfs with memorization
+//dfs with memorization, time: O(l*n) 
 public int findTargetSumWays(int[] nums, int S) {
     int[][] memo = new int[nums.length][2000]; 
     return dfs(nums, S, 0, 0, memo);
