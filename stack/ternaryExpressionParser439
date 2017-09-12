@@ -1,0 +1,21 @@
+     public String parseTernary(String expression) {
+        if (expression == null || expression.length() == 0) return "";
+        Stack<Character> s = new Stack<>();
+        for (int i = expression.length() - 1; i >=0; i--) {
+            char c = expression.charAt(i);
+            if (!s.empty() && s.peek() == '?') {
+                s.pop(); // ?
+                char first = s.pop();
+                s.pop(); // :
+                char second = s.pop();
+                if (c == 'T') {
+                    s.push(first);
+                } else {
+                    s.push(second);
+                }
+            } else {
+                s.push(c);
+            }
+        }
+        return String.valueOf(s.peek());
+    }
