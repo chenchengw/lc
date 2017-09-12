@@ -1,0 +1,43 @@
+//this problem is very similar to numberOfConnectedComponents263
+class Solution {
+    
+    int[] roots;
+    public int findCircleNum(int[][] M) {
+        int n = M.length;
+        int res = n;
+        //initialize roots
+        roots = new int[n];
+        for(int i = 0; i < n; i++) {
+            roots[i] = i;
+        } 
+        
+        for (int i = 0; i < n; i++) {
+            //note j starts with i since the other half is duplicate
+            for (int j = i+1; j < n; j++) {
+                //don't for get this condition
+                if (M[i][j] != 1) continue;
+                if (find(i) != find(j)) {
+                    union(i, j);
+                    res--;
+                }
+            }
+        }       
+        return res;
+    }
+    
+    int find(int i) {
+        while (i != roots[i]) {
+            roots[i] = roots[roots[i]];
+            i = roots[i];
+        }
+        return i;
+    }
+    
+    void union(int i, int j) {
+        int ri = find(i);
+        int rj = find(j);
+        if (ri != rj) {
+            roots[ri] = rj;
+        }
+    }
+}
