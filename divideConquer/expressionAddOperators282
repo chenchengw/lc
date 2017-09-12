@@ -13,6 +13,7 @@
         }
         //note i starts with 1 and ends with num.length() due to substring
         for (int i = 1; i <= num.length(); i++) {
+           //divde into two parts, and conquer
             String curStr = num.substring(0, i);
             String next = num.substring(i);
             if (i > 1 && num.charAt(0) == '0') return;
