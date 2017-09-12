@@ -1,0 +1,43 @@
+//dfs
+class Solution {
+    int res;
+    
+    public int findTargetSumWays(int[] nums, int S) {
+        res = 0;
+        dfs(nums, S, 0);
+        return res;
+    }
+    
+    void dfs(int[] nums, int S, int i) {
+        if (i == nums.length) {
+            if (S == 0) {
+                res++;
+            }
+            //note the return is needed no matter S ==0 or not
+            return;
+        }
+        dfs(nums, S-nums[i], i+1);
+        dfs(nums, S+nums[i], i+1);
+    }
+}
+
+//dfs with memorization
+public int findTargetSumWays(int[] nums, int S) {
+    int[][] memo = new int[nums.length][2000]; 
+    return dfs(nums, S, 0, 0, memo);
+}
+
+int dfs(int[] nums, int S, int sum, int i, int[][] memo) {
+    if (i == nums.length) {
+        if (sum == S) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+    if (memo[i][sum+1000] != 0) return memo[i][sum+1000];
+    int res = dfs(nums, S, sum-nums[i], i+1, memo);
+    res += dfs(nums, S, sum+nums[i], i+1, memo);
+    memo[i][sum+1000] = res;
+    return res;
+}
