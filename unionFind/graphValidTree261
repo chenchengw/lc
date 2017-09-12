@@ -1,14 +1,13 @@
 https://leetcode.com/problems/graph-valid-tree/description/
 //definition of a tree: no circle and all nodes are connected
-//union find: time: O(NlgN) space: N
+//union find: time: O(NlgN) space: N, N = edges.length + eddges[0].length
 
     int[] roots;
     public boolean validTree(int n, int[][] edges) {
         //not all the nodes are connected
         if (edges.length != n-1) return false;
-        roots = new int[n];
-        Arrays.fill(roots, -1);
         //initialize the roots by setting the value to its own
+        roots = new int[n];
         for (int i = 0; i < n; i++) roots[i] = i;
         for (int i = 0; i < edges.length; i++) {
             if (find(edges[i][0]) == find(edges[i][1])) return false;
