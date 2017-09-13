@@ -1,0 +1,23 @@
+   List<List<Integer>> result; 
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+      result = new ArrayList<List<Integer>>();
+      if (candidates.length == 0) return result;
+      //don't forget to sort candidates!
+      Arrays.sort(candidates);
+      List<Integer> sol = new ArrayList<Integer>();
+      helper(candidates, 0, sol, target);
+      return result;
+    }
+    
+    public void helper(int[] candidates, int start, List<Integer> sol, int target) {
+        if (target < 0) return;
+        if (target == 0) {
+            result.add(new ArrayList<Integer>(sol));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            sol.add(candidates[i]);
+            helper(candidates, i, sol, target - candidates[i]);
+            sol.remove(sol.size()-1);
+        }
+    }
