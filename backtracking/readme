@@ -1,5 +1,8 @@
-Typically backtracking is needed when we are asked to get all the solutions.
+Typically backtracking is needed when we are asked to get all the solutions, or we need to explore all the solutions.
+
 If only one solution is needed, we can go with dfs/bfs/dp.
 
-the pattern of backtracking pattern is very similar, this post has the implementation of a few most basic backtracking issues:
+the pattern of backtracking pattern is very similar, we need to recover the state for create/explore options from prev state.
+
+this post has the implementation of a few most basic backtracking issues:
 https://discuss.leetcode.com/topic/46162/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partioning
