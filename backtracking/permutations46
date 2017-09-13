@@ -1,0 +1,19 @@
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(result, new ArrayList<Integer>(), nums);
+        return result;
+    }
+    
+    void backtrack(List<List<Integer>> result, List<Integer> tmp, int[] nums) {
+        if (tmp.size() == nums.length) {
+            //note that we need to create a new list object when adding
+            result.add(new ArrayList<Integer>(tmp));
+            return;
+        }
+        for(int i = 0; i < nums.length; i++) {
+            if (tmp.contains(nums[i])) continue;
+            tmp.add(nums[i]);
+            backtrack(result, tmp, nums);
+            tmp.remove(tmp.size()-1);
+        }
+    }
