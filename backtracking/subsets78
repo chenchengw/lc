@@ -1,0 +1,29 @@
+Not working yet
+
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        helper(nums, result, new ArrayList<Integer>(), 0);
+        return result;
+    }
+    
+    void helper(int[] nums, List<List<Integer>> result, List<Integer> tmp, int start) {
+        result.add(new ArrayList<Integer>(tmp));
+        for (int i = start; i < nums.length; i++) {            
+            tmp.add(nums[i]);       
+            helper(nums, result, tmp, start+1);
+            tmp.remove(tmp.size()-1);
+        }
+    }
+    
+    Your input
+
+[1,2,3]
+
+Your answer
+
+[[],[1],[1,2],[1,2,3],[1,3],[1,3,3],[2],[2,2],[2,2,3],[2,3],[2,3,3],[3],[3,2],[3,2,3],[3,3],[3,3,3]]
+
+Expected answer
+
+[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
