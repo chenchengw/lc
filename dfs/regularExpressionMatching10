@@ -1,0 +1,9 @@
+    public boolean isMatch(String s, String p) {
+        if (p.length() == 0) return s.length() == 0;
+        if (p.length() > 1 && p.charAt(1) == '*') {
+            return isMatch(s, p.substring(2)) || //* matches zero element
+                (s.length() > 0 && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.') && isMatch(s.substring(1), p)); // * matches one or more elements
+        } else { //normal match recursion
+            return s.length() > 0 && (s.charAt(0) == p.charAt(0) || p.charAt(0) == '.') && isMatch(s.substring(1), p.substring(1)); 
+        }
+    }
