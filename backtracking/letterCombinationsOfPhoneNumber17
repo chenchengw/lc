@@ -1,0 +1,20 @@
+    public List<String> letterCombinations(String digits) {
+        List<String> result = new ArrayList<>();
+        if (digits.length() == 0) return result;
+        //initialize hash map
+        String[] dict = new String[]{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};        
+        helper(result, digits, new StringBuilder(), 0, dict);
+        return result;
+    }
+    
+    void helper(List<String> result, String digits, StringBuilder sb, int i, String[] dict) {
+        if (i == digits.length()) {
+            result.add(sb.toString());
+            return;
+        }
+        for (char c: dict[digits.charAt(i) - '2'].toCharArray()) {
+            sb.append(c);
+            helper(result, digits, sb, i+1, dict);
+            sb.deleteCharAt(sb.length()-1);
+        }
+    }
