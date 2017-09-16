@@ -1,0 +1,15 @@
+    public int findMin(int[] nums) {
+        int lo = 0, hi = nums.length - 1;
+        while (lo < hi) {
+            int mid = lo + (hi - lo)/2;
+            //find the minimum in rotated array
+            if (mid > 0 && nums[mid] < nums[mid-1]) return nums[mid];
+            if (nums[lo] <= nums[mid] && nums[mid] > nums[hi]) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        //if not a rotated array return A[0]
+        return nums[lo];
+    }
