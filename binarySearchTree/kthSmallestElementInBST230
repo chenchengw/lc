@@ -1,0 +1,44 @@
+//iterative way
+   public int kthSmallest(TreeNode root, int k) {
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode tn = root;
+        while (!stack.isEmpty() || tn != null) {
+            while (tn != null) {
+                stack.push(tn);
+                tn = tn.left;
+            }
+            tn = stack.pop();
+            k--;
+            if (k == 0) return tn.val;
+            tn = tn.right;
+        }
+        return -1;
+    }
+    
+    //recursive way
+    
+    class Solution {
+    private int count;
+    private int result;
+    
+    public int kthSmallest(TreeNode root, int k) {
+        this.count = k;
+        this.result = -1;
+        helper(root);
+        return this.result;
+    }
+    
+    void helper(TreeNode n) {
+       if (n.left != null) {
+           helper(n.left);
+       } 
+       this.count--;
+       if (this.count == 0) {
+           result = n.val;
+           return;
+       }
+       if (n.right != null) {
+           helper(n.right);
+       }
+    }
+}
