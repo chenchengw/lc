@@ -1,0 +1,16 @@
+    public int findDuplicate(int[] nums) {
+        int lo = 1, hi = nums.length;
+        while (lo < hi) {
+            int mid = lo + (hi - lo)/2;
+            int cnt = 0;
+            for (int n: nums) {
+                if (n <= mid) cnt++;
+            }
+            if (cnt <= mid) {
+                lo = mid + 1;
+            } else {
+                hi = mid;
+            }
+        }
+        return lo;
+    }
