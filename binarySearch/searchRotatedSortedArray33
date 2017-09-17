@@ -20,5 +20,5 @@
                 }
             } 
         }
-        return nums[lo] == target? nums[lo] : -1;
+        return nums[lo] == target? lo : -1;
     }
