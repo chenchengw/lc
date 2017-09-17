@@ -1,0 +1,24 @@
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        int i1 = 0, i2 = 0;
+        Set<Integer> hs = new HashSet<>();
+        while (i1 < nums1.length && i2 < nums2.length) {
+            if (nums1[i1] < nums2[i2]) {
+                i1++;
+            } else if (nums1[i1] > nums2[i2]) {
+                i2++;
+            } else {
+                //nums1[i1] == nums2[i2], hash set can prevent duplicate
+                hs.add(nums1[i1]);
+                i1++;
+                i2++;
+            }
+        }
+        int[] result = new int[hs.size()];
+        int i = 0;
+        for (int num: hs) {
+            result[i++] = num;
+        }
+        return result;
+    }
