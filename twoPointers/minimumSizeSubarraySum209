@@ -1,3 +1,4 @@
+    //O(N) solution with two pointers, there is another solution using binary search O(NlgN)
     public int minSubArrayLen(int s, int[] nums) {
         int minLen = Integer.MAX_VALUE;
         int sum = 0, j = 0;
@@ -10,3 +11,5 @@
         }
         return minLen == Integer.MAX_VALUE ? 0 : minLen;
     }
+    
+    
