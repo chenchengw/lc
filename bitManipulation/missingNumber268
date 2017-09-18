@@ -1,0 +1,9 @@
+    public int missingNumber(int[] nums) {
+       int res = nums.length;
+        //if nums[i] == i, they will not appear
+       for (int i = 0; i < nums.length; i++) {
+           res ^= i;
+           res ^= nums[i];
+       }
+       return res;
+    }
