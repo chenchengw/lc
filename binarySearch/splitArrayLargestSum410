@@ -1,0 +1,37 @@
+    public int splitArray(int[] nums, int m) {
+        int left = 0, right = 0;
+        for (int i = 0; i < nums.length; i++) {
+            //there are m numbers in the array
+            left = Math.max(nums[i], left);
+            //m = 1
+            right += nums[i];
+        }
+        
+        //binary search to find the sum that can split into m piece but largest
+        while (left <= right) {
+            int mid = left + (right - left)/2;
+            //can split to m pieces, so we need to reduce the sum 
+            if (canSplit(nums, mid, m)) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }      
+        return left;
+    }
+    
+    boolean canSplit(int[] nums, int sum, int m) {
+        int count = 1;
+        int curSum = 0;
+        for (int num: nums) {
+            curSum += num;
+            if (curSum > sum) {
+                curSum = num;
+                count++;
+                //we have already made each part hold the largest number of numbers
+                //but we still have numbers, so we cannot split
+                if (count > m) return false;
+            }
+        }
+        return true;
+    }
