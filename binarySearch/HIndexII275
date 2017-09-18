@@ -1,0 +1,17 @@
+//What if the citation array is already sorted in ascending order? How to improve the performance.
+    public int hIndex(int[] citations) {
+        int lo = 0, hi = citations.length - 1;
+        int len = citations.length;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo)/2;
+            //note we should return len - mid instead of mid
+            if (citations[mid] == len - mid) return len - mid;
+            if (citations[mid] < len - mid) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+         //note we should return len - lo instead of lo
+        return len - lo;
+    }
