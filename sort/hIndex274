@@ -1,3 +1,4 @@
+//if the citations array is sorted, we can solve this problem with O(lgn) complexity, refer to binarySearch folder
 //bucket sort: time: O(n)
  public int hIndex(int[] citations) {
         int[] stats = new int[citations.length + 1];
