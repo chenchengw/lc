@@ -1,0 +1,8 @@
+    public int getSum(int a, int b) {
+       if (b == 0) return a;
+        //do not consider carry
+       int sum = a^b;
+        // consider carry
+       int carry = (a&b) << 1;
+       return getSum(sum, carry);
+    }
