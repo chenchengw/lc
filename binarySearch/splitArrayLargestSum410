@@ -1,3 +1,4 @@
+    //time complexity: O(nlgS), there is another solution using DP, DP can be used if not all the numbers are positive in this problem
     public int splitArray(int[] nums, int m) {
         int left = 0, right = 0;
         for (int i = 0; i < nums.length; i++) {
@@ -10,7 +11,7 @@
         //binary search to find the sum that can split into m piece but largest
         while (left <= right) {
             int mid = left + (right - left)/2;
-            //can split to m pieces, so we need to reduce the sum 
+            //can split to m pieces (as all numbers are positive), so we need to reduce the sum 
             if (canSplit(nums, mid, m)) {
                 right = mid - 1;
             } else {
