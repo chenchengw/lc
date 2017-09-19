@@ -1,0 +1,21 @@
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+       ListNode dummy = new ListNode(0);
+        ListNode ln = dummy;
+        int carry = 0;
+        //note that carry != 0 needs to be checked for corner case like 5 + 5 = 1 -> 0
+        while (l1 != null || l2 != null || carry != 0) {
+            int val1 = l1 != null ? l1.val : 0;
+            int val2 = l2 != null ? l2.val : 0;
+            int val = val1 + val2 + carry;
+            carry = val/10;
+            if (l1 != null) {
+                l1 = l1.next;
+            }
+            if (l2 != null) {
+                l2 = l2.next;
+            }
+            ln.next = new ListNode(val%10);
+            ln = ln.next;
+        }
+        return dummy.next;
+    }
