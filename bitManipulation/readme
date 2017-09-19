@@ -1,3 +1,5 @@
+https://discuss.leetcode.com/topic/50315/a-summary-how-to-use-bit-manipulation-to-solve-problems-easily-and-efficiently
+
 Common bit operations:
 
     Set union A | B
@@ -10,3 +12,27 @@ Common bit operations:
     Extract last bit A&-A or A&~(A-1) or x^(x&(x-1))
     Remove last bit A&(A-1)
     Get all 1-bits ~0
+    
+    
+1. ^ tricks
+
+Use ^ to remove even exactly same numbers and save the odd, or save the distinct bits and remove the same.
+
+2. | tricks
+
+Keep as many 1-bits as possible
+
+3.& tricks
+
+Just selecting certain bits
+
+4. application
+The strings can be encoded to integer value by bits. There are 32 bits but only 26 characters
+
+int encodeString(String str) {
+    int encoded = 0;
+    for (char c: str.toCharArray()) {
+        encoded |= c - 'a';
+    }
+    return encoded;
+}
