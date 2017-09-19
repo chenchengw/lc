@@ -1,24 +1,18 @@
     public int trap(int[] height) {
-       if (height.length < 3) return 0;
-        int l = 0, r = height.length - 1;
-        //find the first left max value
-        while (l < r && height[l] <= height[l+1]) l++;
-        //find the first right max value
-        while (l < r && height[r] <= height[r-1]) r--;
-        int sum = 0;
+       int res = 0, l = 0, r = height.length - 1;
         while (l < r) {
-            int leftMax = height[l];
-            int rightMax = height[r];
-            //if leftMax < rightMax, add left trapping water first
-            if (leftMax < rightMax) {
-                while (l < r && height[++l] < leftMax) {
-                    sum += leftMax - height[l];
+            int mn = Math.min(height[l], height[r]);
+            if (height[l] == mn) {
+                ++l;
+                while (l < r && height[l] < mn) {
+                    res += mn - height[l++];
                 }
             } else {
-                while (l < r && height[--r] < rightMax) {
-                    sum += rightMax - height[r];
+                --r;
+                while (l < r && height[r] < mn) {
+                    res += mn - height[r--];
                 }
             }
         }
-        return sum;
+        return res;
     }
