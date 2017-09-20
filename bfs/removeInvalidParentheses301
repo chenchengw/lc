@@ -1,50 +1,50 @@
     public List<String> removeInvalidParentheses(String s) {
         List<String> res = new ArrayList<>();
-        if (s == null) return res;
         
         Set<String> visited = new HashSet<>();
         Queue<String> q = new LinkedList<>();
         
         //initialize
-        q.offer(s);
         visited.add(s);
+        q.offer(s);
         
-        //this is used to ensure only minimum # of parentheses are removed
         boolean found = false;
-        
         while(!q.isEmpty()) {
             String str = q.poll();
+            
             if (isValid(str)) {
                 res.add(str);
-                found =true;
+                found = true;
             }
-            if (found) continue;
-            //generate all the possible combinations after remove another '(' or ')' from str
+            
+            //no need to generate parentheses at next level and add to the queue
+            if (found == true) continue;
+            
             for (int i = 0; i < str.length(); i++) {
+                //don't forget this check 
                 if (str.charAt(i) != '(' && str.charAt(i) != ')') continue;
-                String t = str.substring(0, i) + str.substring(i+1);
-                if (!visited.contains(t)) {
-                    q.offer(t);
-                    visited.add(t);
+                String newStr = str.substring(0, i) + str.substring(i+1);
+                if (!visited.contains(newStr)) {
+                    q.offer(newStr);
+                    visited.add(newStr);
                 }
-            }              
+            }
         }
         
         return res;
     }
     
-     boolean isValid(String s) {
-      int count = 0;
-    
-      for (int i = 0; i < s.length(); i++) {
-        char c = s.charAt(i);
-        if (c == '(') count++;
-        if (c == ')') {
-            // this check is needed to avoid return true for "()())(" 
-            if (count == 0) return false;
-            count--;
+    boolean isValid(String s) {
+        int count = 0;
+        for (char c: s.toCharArray()) {
+            if (c == '(') {
+                count++;
+            } 
+            if (c == ')') {
+                 if (count == 0) return false;
+                count--;           
+            }
         }
-      }
-    
-      return count == 0;
+        //note we should return count == 0 here
+        return count == 0;
     }
