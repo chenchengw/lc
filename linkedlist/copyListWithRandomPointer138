@@ -1,0 +1,17 @@
+    public RandomListNode copyRandomList(RandomListNode head) {
+       if (head == null) return null;
+        
+       RandomListNode node = head;
+       Map<RandomListNode, RandomListNode> hm = new HashMap<>();
+        while (node != null) {
+            hm.put(node, new RandomListNode(node.label));
+            node = node.next; 
+        }
+        node = head;
+        while (node != null) {
+            hm.get(node).next = hm.get(node.next);
+            hm.get(node).random = hm.get(node.random);
+            node = node.next;
+        }
+        return hm.get(head);
+    }
