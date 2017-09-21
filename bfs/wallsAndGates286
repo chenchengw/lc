@@ -1,0 +1,29 @@
+    //two end bfs
+    public void wallsAndGates(int[][] rooms) {
+        Queue<Integer> q = new LinkedList<>();
+        int m = rooms.length;
+        if (m == 0) return;
+        int n = rooms[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (rooms[i][j] == 0) {
+                    q.offer(i*n + j);
+                }
+            }
+        }
+        
+        int[][] dirs = new int[][]{{-1,0},{1,0},{0, -1},{0, 1}};
+        while (!q.isEmpty()) {
+            Integer val = q.poll();
+            int x = val/n;
+            int y = val%n;
+            for (int[] dir: dirs) {
+                int i = x + dir[0];
+                int j = y + dir[1];
+                if (i >= 0 && i < m && j >=0 && j < n && rooms[i][j] == Integer.MAX_VALUE) {
+                    rooms[i][j] = rooms[x][y] + 1;
+                    q.offer(i*n+j);
+                }
+            }
+        }
+    }
