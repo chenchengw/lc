@@ -1,0 +1,16 @@
+    public int strStr(String haystack, String needle) {
+        if (haystack.equals(needle)) return 0;
+        int i = 0;
+        while (i < haystack.length() - needle.length() + 1) {
+            int j = 0;
+            //note that we don't need to define another idx for haystack,
+            // i+j is the index for haystack.
+            while (j < needle.length()) {
+                if (haystack.charAt(i+j) != needle.charAt(j)) break;
+                j++;
+            }
+            if (j == needle.length()) return i; 
+            i++;
+        }
+        return -1;
+    }
