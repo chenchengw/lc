@@ -14,6 +14,7 @@
         int idx = 0;
         Queue<Integer> q = new LinkedList<Integer>();
         for(int i = 0; i < numCourses; i++) {
+            //note that here we are adding i not the value of indegree
             if (indegree[i] == 0) q.offer(i);
         }
         while(!q.isEmpty()) {
@@ -25,5 +26,6 @@
                 if (indegree[next] == 0) q.offer(next);
             }
         }
+        //note remeber to compare idx with numCourses to check if result is avalid result
         return idx == numCourses ? res : new int[0];
     }
