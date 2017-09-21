@@ -9,7 +9,7 @@
             if (nums[i] == 0) {
                 swap(nums, i, red);
                 red++;
-                //the left part is sorted so we don't need to compare the swaped number from position red ;
+                //the left part is sorted so we don't need to the number that has been swapped to i, we know it is smaller 
                 i++;
             } else if (nums[i] == 2) {
                 swap(nums, i, blue);
