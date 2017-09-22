@@ -1,3 +1,5 @@
+    //the difference between this problem and minimumSizeSubarray is that this problem may contain negative integer and it is
+    //asking for sum of numbers that are equal to K.
     //time: O(N), space: O(N)
     public int maxSubArrayLen(int[] nums, int k) {
         if (nums.length == 0) return 0;
