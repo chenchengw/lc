@@ -1,0 +1,14 @@
+public class Codec {
+    Map<Integer, String> hm = new HashMap<>();
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        hm.put(longUrl.hashCode(), longUrl);
+        return "http://tinyurl.com/" + longUrl.hashCode();
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        //note: use replace function here
+        return hm.get(Integer.parseInt(shortUrl.replace("http://tinyurl.com/", "")));
+    }
+}
