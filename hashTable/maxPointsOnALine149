@@ -1,0 +1,29 @@
+public int maxPoints(Point[] points) {
+        if (points.length <=2 ) return points.length;
+        int result = 0;
+        for (int i = 0; i < points.length; i++) {
+            int numSamex = 1;
+            int numDuplicate = 0;
+            Map<Double, Integer> hm = new HashMap<Double, Integer>();
+            for (int j = 0; j < points.length; j++) {
+                if (i != j) {
+                    if ((points[j].x == points[i].x) && (points[j].y == points[i].y)) {
+                        numDuplicate++;
+                    }
+                    if (points[j].x == points[i].x) {
+                        numSamex++;
+                        continue;
+                    }
+                    double k = (double) (points[j].y - points[i].y)/(points[j].x - points[i].x);
+                    if (hm.containsKey(k)) {
+                        hm.put(k, hm.get(k)+1);
+                    } else {
+                        hm.put(k, 2);
+                    }
+                    result = Math.max(result, hm.get(k) + numDuplicate);
+                }
+            }
+            result = Math.max(result, numSamex);
+        }
+        return result;
+    }
