@@ -1,0 +1,12 @@
+    public List<String> findRepeatedDnaSequences(String s) {
+        Set<String> set = new HashSet<>();
+        Set<String> doubleSet = new HashSet<>();
+        for (int i = 0; i < s.length() - 9; i++) {
+            String str = s.substring(i, i+10);
+            if (!set.add(str)) { 
+                //doubleSet to avoid duplicate result gets added
+                doubleSet.add(str);
+            }
+        }
+        return new ArrayList(doubleSet);
+    }
