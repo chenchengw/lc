@@ -1,0 +1,32 @@
+ public String minWindow(String s, String t) {
+      if (s == null || t == null || s.length() < t.length()) return "";       
+        int[] map = new int[256];
+        char[] ct = t.toCharArray();
+        char[] cs = s.toCharArray();
+        for (int i = 0; i < ct.length; i++) {
+            map[ct[i]]++;
+        }
+        int counter=t.length(), begin=0, end=0, min=Integer.MAX_VALUE, minStart=0;
+        while(end<s.length()){
+            // If char in s exists in t, decrease counter
+            if(map[cs[end]]>0) {
+                counter--; 
+            }
+            //decrease the count of cs[end], if the character does not exist in t, the value if the map will be negative
+            map[cs[end]]--;
+            end++;
+            while(counter==0){ //valid
+                if(end-begin<min)  {
+                    min=end-begin;
+                    minStart = begin;
+                }
+                //increase the count of cs[begin], if it was zero, now it would become positive, otherwise, it would become zero
+                map[cs[begin]]++;
+                if(map[cs[begin]] > 0) {
+                    counter++;  //make it invalid
+                }
+                begin++;
+            }  
+        }
+        return min==Integer.MAX_VALUE? "":s.substring(minStart, minStart+min);
+     }
