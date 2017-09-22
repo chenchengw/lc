@@ -1,0 +1,20 @@
+   public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result = new ArrayList<>();
+        Map<String, List<String>> hm = new HashMap<>();
+        for (String str: strs) {
+            char[] cs = str.toCharArray();
+            Arrays.sort(cs);
+            String tmp = new String(cs);
+            if (hm.containsKey(tmp)) {
+                hm.get(tmp).add(str);
+            } else {
+                List<String> al = new ArrayList<String>();
+                al.add(str);
+                hm.put(tmp, al);
+            }
+        }
+        for (List<String> al: hm.values()) {
+            result.add(al);
+        }
+        return result;
+    }
