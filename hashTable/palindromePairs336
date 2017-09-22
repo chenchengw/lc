@@ -15,7 +15,8 @@
                     // if there is a "dcb", a palindrome pair is found => "dcbaabcd"
                     String str2rev = new StringBuilder(str2).reverse().toString();
                     if (hm.containsKey(str2rev) && hm.get(str2rev) != i) {
-                        List<Integer> list = new ArrayList<>();
+                        List<Integer> list = new ArrayList<>();                        
+                         //note the order of adding the sequence do matter
                         list.add(hm.get(str2rev));
                         list.add(i);
                         result.add(list);
@@ -28,6 +29,7 @@
                     //check str2.length() !=0 to avoid duplication
                     if (hm.containsKey(str1rev) && hm.get(str1rev) != i && str2.length() != 0) {
                         List<Integer> list = new ArrayList<>();
+                         //note the order of adding the sequence do matter
                         list.add(i);
                         list.add(hm.get(str1rev));
                         result.add(list);
