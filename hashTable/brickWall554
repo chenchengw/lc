@@ -1,0 +1,14 @@
+    public int leastBricks(List<List<Integer>> wall) {
+        Map<Integer, Integer> hm = new HashMap<>();
+        int maxCount = 0;
+        for (int i = 0; i < wall.size(); i++) {
+            int sum = 0;
+            //note that the check is wall.get(i).size() - 1, as the last one should not count
+            for (int j = 0; j < wall.get(i).size() - 1; j++) {
+                sum += wall.get(i).get(j);
+                hm.put(sum, hm.getOrDefault(sum, 0) + 1);
+                maxCount = Math.max(maxCount, hm.get(sum)); 
+            }
+        }
+        return wall.size() - maxCount;
+    }
