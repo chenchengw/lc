@@ -1,0 +1,37 @@
+    //using two hash tables
+    public boolean wordPattern(String pattern, String str) {
+        String[] s = str.split(" ");
+        char[] p = pattern.toCharArray();
+        if (s.length != p.length) return false;
+        Map<String, Character> s2p = new HashMap<>();
+        Map<Character, String> p2s = new HashMap<>();
+        for (int i = 0; i < s.length; i++) {
+            if (s2p.containsKey(s[i])) {
+                if (s2p.get(s[i]) != p[i]) return false;
+            } else if (p2s.containsKey(p[i])) {
+                if (!p2s.get(p[i]).equals(s[i])) return false;
+            } else {
+                s2p.put(s[i], p[i]);
+                p2s.put(p[i], s[i]);
+            }
+        }
+        return true;
+    }
+    
+    //using only one hash table
+        public boolean wordPattern(String pattern, String str) {
+        String[] s = str.split(" ");
+        char[] p = pattern.toCharArray();
+        if (s.length != p.length) return false;
+        Map<String, Character> s2p = new HashMap<>();
+        for (int i = 0; i < s.length; i++) {
+            if (s2p.containsKey(s[i])) {
+                if (s2p.get(s[i]) != p[i]) return false;
+            } else {
+                //this pattern has been seen before!
+                if (s2p.containsValue(p[i])) return false;
+                s2p.put(s[i], p[i]);
+            }
+        }
+        return true;
+    }
