@@ -1,0 +1,42 @@
+class RandomizedSet {
+
+    //value to index to help with identifying the idx of element to delete
+    private Map<Integer, Integer> hm;
+    private List<Integer> vals;
+    private Random r;
+    /** Initialize your data structure here. */
+    public RandomizedSet() {
+        hm = new HashMap<Integer, Integer>();
+        vals = new ArrayList<Integer>();
+        r = new Random();
+    }
+    
+    /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */
+    public boolean insert(int val) {
+        if (vals.contains(val)) return false;
+        vals.add(val);
+        hm.put(val, vals.size()-1);
+        return true;
+    }
+    
+    /** Removes a value from the set. Returns true if the set contained the specified element. */
+    public boolean remove(int val) {
+        if (!vals.contains(val)) {
+            return false;
+        }
+        int idx = hm.get(val);
+        if (idx != vals.size() -1) {
+            int lastVal = vals.get(vals.size()-1);
+            vals.set(idx, lastVal);
+            hm.put(lastVal, idx);
+        }
+        hm.remove(val);
+        vals.remove(vals.size() - 1);
+        return true;
+    }
+    
+    /** Get a random element from the set. */
+    public int getRandom() {
+         return vals.get(r.nextInt(vals.size()));
+    }
+}
