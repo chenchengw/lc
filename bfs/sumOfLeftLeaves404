@@ -1,0 +1,16 @@
+   //bfs solution, also available in dfs solution
+   public int sumOfLeftLeaves(TreeNode root) {
+       if (root == null) return 0;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        int res = 0;
+        while (!q.isEmpty()) {
+            TreeNode tn = q.poll();
+            //a left leaf is found
+            if (tn.left != null && tn.left.left == null && tn.left.right == null) res += tn.left.val;
+            //not a leaf
+            if (tn.left != null) q.offer(tn.left);
+            if (tn.right != null) q.offer(tn.right);
+        }
+        return res;
+    }
