@@ -1,3 +1,5 @@
+    //a problem very similar to this one is contiguous array 525 https://leetcode.com/problems/contiguous-array/description/
+    
     //the difference between this problem and minimumSizeSubarray is that this problem may contain negative integer and it is
     //asking for sum of numbers that are equal to K.
     //time: O(N), space: O(N)
