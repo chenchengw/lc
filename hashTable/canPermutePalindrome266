@@ -1,0 +1,15 @@
+    public boolean canPermutePalindrome(String s) {
+        //aab -> aba is a palindrome
+        //abab -> abba is a palindrom 
+        //two scenario: 1. only 1 character that is single, 2. all characters are dual
+        Set<Character> hs = new HashSet<>();
+        for (char c: s.toCharArray()) {
+            if (!hs.contains(c)) {
+                hs.add(c);
+            } else {
+                hs.remove(c);
+            }            
+        }
+        
+        return hs.size() == 0 || hs.size() == 1;
+    }
