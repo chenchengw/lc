@@ -1,11 +1,13 @@
    //time: O(n^2), space: O(n)
-   public boolean wordBreak(String s, List<String> wordDict) {
+  //dp[i] = dp[j] && s.substring(j, i) in wordDict
+    public boolean wordBreak(String s, List<String> wordDict) {
+        if (s.length() == 0 || wordDict.size() == 0) return false;
         boolean[] dp = new boolean[s.length() + 1];
-        //initialize the first 
+        //initialize
         dp[0] = true;
         for (int i = 1; i <= s.length(); i++) {
             for (int j = 0; j < i; j++) {
-                if (wordDict.contains(s.substring(j, i)) && dp[j] == true) {
+                if (wordDict.contains(s.substring(j,i)) && dp[j] == true) {
                     dp[i] = true;
                     break;
                 }
