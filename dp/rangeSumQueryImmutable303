@@ -10,6 +10,7 @@ class NumArray {
     }
     
     public int sumRange(int i, int j) {
+        //note it is dp[j+1] - dp[i]
         return dp[j+1] - dp[i];
     }
 }
