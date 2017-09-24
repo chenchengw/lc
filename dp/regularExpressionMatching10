@@ -10,7 +10,7 @@
                 } else { //p.charAt(j-1) == '*'
                     if (dp[i][j-2] || dp[i][j-1]) { //match one or zero element
                         dp[i][j] = true;
-                    } else { //matche multiple elements
+                    } else { //matche multiple elements, s = "ab" p = "a*b" 
                         dp[i][j] = (i > 0) && (p.charAt(j-2) == '.' || s.charAt(i-1) == p.charAt(j-2)) && dp[i-1][j];
                     }
                 }
