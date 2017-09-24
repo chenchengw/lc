@@ -1,0 +1,19 @@
+       // buy[i]: maxProfit when buy is the last operation before day i
+    //sell[i]: maxProfit when sell is the last operation before day i
+    //buy[i]  = max(sell[i-2] - price[i], buy[i-1]) => Max(sell on i-2th day+cooldown 1 day+buy on ith day, buy on i-1th day+do nothing on ith day)
+    //sell[i] = max(buy[i-1] + price[i], sell[i-1]) => Max(buy on i-1th day+sell on ith day, do nothing on ith day)
+    public int maxProfit(int[] prices) {
+        if (prices.length == 0) return 0;
+        int prevSell = 0; // sell[i-1]
+        int sell = 0; //sell[i-2]
+        int buy = -prices[0]; //buy[i-1]
+        for (int i = 1; i < prices.length; i++) {
+           int tmp = sell;
+            //sell operation + prices[i]
+           sell = Math.max(sell, buy+prices[i]);
+            //buy operation + (-prices[i])
+           buy = Math.max(buy, (i > 1 ? prevSell:0) -prices[i]);
+           prevSell = tmp;
+        }
+        return sell;
+    }
