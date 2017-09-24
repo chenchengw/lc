@@ -1,3 +1,4 @@
+  //house robber is very similar to this problem, this is fibinacci
   //space: O(n)
   public int climbStairs(int n) {
        if (n == 0) return 0;
