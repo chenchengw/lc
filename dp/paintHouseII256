@@ -1,0 +1,22 @@
+ public int minCostII(int[][] costs) {
+        //reference: https://segmentfault.com/a/1190000003903965
+        if (costs.length == 0) return 0;
+        int min = 0, sec = 0, minIdx = -1;
+        for (int i = 0; i < costs.length; i++) {
+            int currMin = Integer.MAX_VALUE, currSec = Integer.MAX_VALUE, curMinIdx = -1;
+            for (int j = 0; j < costs[0].length; j++) {
+                costs[i][j] += (minIdx == j) ? sec: min;
+                if (costs[i][j] < currMin) {
+                    currSec = currMin;
+                    currMin = costs[i][j];
+                    curMinIdx = j;
+                } else if (costs[i][j] < currSec) {
+                    currSec = costs[i][j];
+                }
+            }
+            min = currMin;
+            sec = currSec;
+            minIdx = curMinIdx;
+        }
+        return min;
+    }
