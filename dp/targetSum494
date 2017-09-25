@@ -1,3 +1,5 @@
+ //reference:http://www.cnblogs.com/grandyang/p/6395843.html
+ 
  public int findTargetSumWays(int[] nums, int S) {
         if (nums.length == 0) return 0;
         int[][] dp = new int[nums.length][2001]; 
