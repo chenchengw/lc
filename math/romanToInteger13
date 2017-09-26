@@ -13,6 +13,7 @@
         
         for (int i = 0; i < s.length(); i++) {
             result += hm.get(s.charAt(i));
+            //note that we are comparing hm.get(s.charAt(i)) with its previous value
             if (i > 0 && hm.get(s.charAt(i)) > hm.get(s.charAt(i-1))) {
                 result -= 2*hm.get(s.charAt(i-1));
             }
