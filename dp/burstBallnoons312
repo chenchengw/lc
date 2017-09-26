@@ -11,7 +11,7 @@
             for (int start = 1; start<= n - len + 1; start++) {
                 int end = start+len-1;
                 for (int i = start; i <= end; i++) {
-                    //i is the last ballnoon to burst
+                    //i is the last ballnoon to burst, so its left ballnoon would be arr[start-1] and its right ballnoon would be arr[end+1]
                     dp[start][end] = Math.max(dp[start][end], dp[start][i-1] + arr[start-1]*arr[i]*arr[end+1] + dp[i+1][end]);
                 }
             }
