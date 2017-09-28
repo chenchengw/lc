@@ -1,0 +1,13 @@
+    public int findCelebrity(int n) {
+        //note we need to define j here in order to check length of j;
+        for (int i = 0; i < n; i++) {
+            int j = 0; 
+            while(j < n) {
+                //if knows(i, j) or !knows(j, i), proves i is not celebrity so break
+                if ( i!= j && (knows(i, j) || !knows(j, i))) break;
+                j++;
+            }
+            if (j == n) return i;
+        }
+        return -1;
+    }
