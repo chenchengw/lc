@@ -2,6 +2,7 @@
         if (heights == null || heights.length ==0) return 0;
          Stack<Integer> stack = new Stack<>();
          int max = 0;
+         //note that i <=heights.length
          for (int i = 0; i <= heights.length; i++) {
              //set cur to  -1, so that all the items are popped at last
              int cur = (i == heights.length) ? -1: heights[i];
