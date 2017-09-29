@@ -1,0 +1,28 @@
+    //there is another solution using DP
+    public boolean isMatch(String s, String p) {
+       int i = 0, j = 0, pStar = -1, sMatch = 0;
+        while (i < s.length()) {
+            if (j < p.length() && (s.charAt(i) == p.charAt(j) || p.charAt(j) == '?')) {
+                i++;
+                j++;
+            } else if (j < p.length() && p.charAt(j) == '*') {
+                pStar = j;
+                sMatch = i;
+                j++;
+            } else if (pStar != -1){
+                //aab <--> a*b
+                j = pStar+1;
+                sMatch++;
+                i = sMatch;
+            } else {
+                return false;
+            }
+        }
+        
+        //last condition was about i, so j could still be less than p.length
+        while (j < p.length() && p.charAt(j) == '*') {
+            j++;
+        }
+        
+        return j == p.length();
+    }
