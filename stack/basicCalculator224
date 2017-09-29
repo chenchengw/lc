@@ -1,0 +1,35 @@
+    public int calculate(String s) {
+        Stack<Integer> stack = new Stack<>();
+        int result = 0;
+        int number = 0;
+        int sign = 1;
+        for(char c: s.toCharArray()) {
+            if (Character.isDigit(c)) {
+                //the number could be double digit or more
+                number = 10*number + (int)(c - '0');
+            } else if (c == '+') {
+                result += sign*number;
+                sign = 1;
+                number = 0;
+            } else if (c == '-') {
+                result += sign*number;
+                sign = -1;
+                number = 0;
+            } else if (c == '(') {
+                stack.push(result);
+                stack.push(sign);
+                //reset sign and result
+                sign = 1;
+                result = 0; 
+            } else if (c == ')') {
+                result += sign*number;
+                //don't forget to reset number
+                number = 0;
+                result *= stack.pop(); //sign
+                result += stack.pop(); //result
+            }
+        }
+        //don't forget this corner case
+        if (number != 0) result += sign*number;
+        return result;
+     }
