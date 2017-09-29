@@ -1,0 +1,32 @@
+    public int calculate(String s) {
+        Stack<Integer> stack = new Stack<>();
+        int result = 0;
+        int sign = '+';
+        int number = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                number = number * 10 + (int) (c - '0');
+            } 
+            //i == s.length()-1 is to ensure the last number is pushed to stack, when we reach the last number
+            if ((!Character.isDigit(c) && c != ' ' ) || i == s.length()-1) {
+                if (sign == '+') {
+                    stack.push(number);
+                } else if (sign == '-') {
+                    stack.push(-number);
+                } else if (sign == '*') {
+                    stack.push(stack.pop()*number);
+                } else if (sign == '/') {
+                    stack.push(stack.pop()/number);
+                }
+                sign = s.charAt(i);
+                number = 0;
+            }
+        }
+        
+        for (int val: stack) {
+            result += val;
+        }
+        
+        return result;
+    }
