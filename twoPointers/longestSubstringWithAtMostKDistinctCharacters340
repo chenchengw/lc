@@ -1,25 +1,36 @@
-    public int lengthOfLongestSubstringKDistinct(String s, int k) {
-        int max = 0;
-        int i = 0, j = 0;
-        Map<Character, Integer> hm = new HashMap<>();
-        while (i < s.length()) {
-            if (hm.size() <= k) {
-                hm.put(s.charAt(i), i);
-                i++;       
-            } 
-            //note that it is not else, the condition hm.size() < k is changed after the 
-            //lines executed above
-            if (hm.size() > k) {
-                //note this is the key to solve this problem, need to remove the leftmost character
-                int leftMost = Integer.MAX_VALUE;
-                for(int idx: hm.values()) {
-                    leftMost = Math.min(leftMost, idx);
-                }
-                hm.remove(s.charAt(leftMost));
-                j = leftMost + 1;
-            }
-            //note the length is computed with i - j not i - j+1 due to the i++ in the beginning
-            max = Math.max(max, i - j);
+    public String minWindow(String s, String t) {
+        int minLen = Integer.MAX_VALUE;
+        String minStr = "";
+        
+        int[] hash = new int[256];
+        
+        //initialize
+        int targetCnt = 0;
+        for (char c: t.toCharArray()) {
+            hash[c]++;
+            targetCnt++;
         }
-        return max;
+        
+        int j = 0;
+        int sourceCnt = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (hash[s.charAt(i)] > 0) {
+                sourceCnt++;
+            }
+            //if s.charAt(i) is not a character in string t, this value is negative
+            hash[s.charAt(i)]--;
+            while (sourceCnt >= targetCnt) {
+                if (minLen > i - j + 1) {
+                    minLen = i - j + 1;
+                    minStr = s.substring(j, i+1);
+                }
+                hash[s.charAt(j)]++;
+                //both s and t contains s.charAt(j), removing it means reduce sourceCnt's value
+                if (hash[s.charAt(j)] > 0) {
+                    sourceCnt--;
+                }
+                j++;
+            }
+        }
+        return minStr;
     }
