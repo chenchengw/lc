@@ -18,6 +18,7 @@
                 hm.remove(s.charAt(leftMost));
                 j = leftMost + 1;
             }
+            //note the length is computed with i - j not i - j+1 due to the i++ in the beginning
             max = Math.max(max, i - j);
         }
         return max;
