@@ -1,43 +1,27 @@
-//dfs, time: O(2^n)
-class Solution {
-    int res;
-    
+//time complexity: 3^1 + 3^2 + ... + 3^(n-1). bounded by O(3^n)
+//branching factor 3, plus, minus, neither
     public int findTargetSumWays(int[] nums, int S) {
-        res = 0;
-        dfs(nums, S, 0);
-        return res;
+        if (nums == null || nums.length == 0) return 0;
+        int n = nums.length;
+        int[] memo = new int[n];
+        memo[n-1] = nums[n-1];
+        for (int i = n-2; i>=0; i--) {
+            memo[i] = nums[i] + memo[i+1];
+        }
+        return helper(nums, S, 0, 0, memo);
     }
     
-    void dfs(int[] nums, int S, int i) {
-        if (i == nums.length) {
-            if (S == 0) {
+    int helper(int[] nums, int S, int start, int sum, int[] memo) {
+        int res = 0;
+        if (start == nums.length) {
+            if (sum == S) {
                 res++;
             }
-            //note the return is needed no matter S ==0 or not
-            return;
+            return res;
         }
-        dfs(nums, S-nums[i], i+1);
-        dfs(nums, S+nums[i], i+1);
-    }
-}
-
-//dfs with memorization, time: O(l*n) 
-public int findTargetSumWays(int[] nums, int S) {
-    int[][] memo = new int[nums.length][2000]; 
-    return dfs(nums, S, 0, 0, memo);
-}
-
-int dfs(int[] nums, int S, int sum, int i, int[][] memo) {
-    if (i == nums.length) {
-        if (sum == S) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-    if (memo[i][sum+1000] != 0) return memo[i][sum+1000];
-    int res = dfs(nums, S, sum-nums[i], i+1, memo);
-    res += dfs(nums, S, sum+nums[i], i+1, memo);
-    memo[i][sum+1000] = res;
-    return res;
-}
+        //prunning
+        if (memo[start] < S - sum) return 0;
+        res += helper(nums, S, start+1, sum+nums[start], memo);
+        res += helper(nums, S, start-1, sum-nums[start], memo);
+        return res;
+    }  
