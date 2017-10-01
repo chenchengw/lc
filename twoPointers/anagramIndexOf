@@ -1,0 +1,42 @@
+"actor".anagrammedIndexOf("cat") = 0 // 'act' is an anagram of 'cat'
+"actor".anagrammedIndexOf("rot") = 2 // 'tor' is an anagram of 'rot'
+
+//Solution 1 (psedo code)
+for i in p
+  j = s.indexOf(i);
+  if isAnagram(s.substring(j, j+3), p) return i
+return -1
+
+
+//Solution 2: two pointers with hash table
+int anagrammedIndexOf(String s, String p) {
+    int[] pc = new int[256];
+    int[] sc = new int[256];
+    for(char c: p.toCharArray()) {
+        pc[c]++; 
+    }
+    int i = 0;
+    int j = 0;
+    while (i < s.length() - 2) {
+      while (j < p.length() && j < s.length()) {
+        sc[s.charAt(j)]++;
+        j++;
+      }
+      if (same(pc, sc)) return i;
+      sc[s.charAt(i)]--;
+      i++;
+      if (j < s.length()) {
+        sc[s.charAt(j)]++;
+        j++;
+      }
+    }
+    return -1;
+}
+
+boolean equals(int[] sc, int[] pc) {
+  for(int i = 0; i < 256; i++) {
+     if (sc[i] != pc[i]) return false;
+   }
+  return true;
+}
+  
