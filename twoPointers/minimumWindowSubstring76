@@ -1,4 +1,41 @@
-    public String minWindow(String s, String t) {
+   //use two hashtables
+       public String minWindow(String s, String t) {
+        int ans = Integer.MAX_VALUE;
+        String minStr = "";
+        int[] sc = new int[256];
+        int[] tc = new int[256];
+        for(char c: t.toCharArray()) {
+            tc[c]++;
+        }
+        
+        int j = 0;
+        for (int i = 0; i < s.length(); i++) {
+            while (!valid(sc, tc) && j < s.length()) {
+                sc[s.charAt(j)]++;
+                j++;
+            }
+            if (valid(sc, tc)) {
+                //no need to write j -i + 1 as j increased in the while loop
+                if (ans > j - i) {
+                    ans = Math.min(ans, j - i);
+                    minStr = s.substring(i, j);
+                }
+            }
+            sc[s.charAt(i)]--;
+        }
+        return minStr;
+    }
+    
+    boolean valid(int[] sc, int[] tc) {
+        for (int i = 0; i < 256; i++) {
+            //note that we use sc[i] < tc[i] as condition 
+            if (sc[i] < tc[i]) return false;
+        }
+        return true;
+    }
+    
+   //Use one hash table
+   public String minWindow(String s, String t) {
         int minLen = Integer.MAX_VALUE;
         String minStr = "";
         
