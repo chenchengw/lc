@@ -1,5 +1,5 @@
-//time complexity: 3^1 + 3^2 + ... + 3^(n-1). bounded by O(3^n)
-//branching factor 3, plus, minus, neither
+//time complexity: 2^1 + 2^2 + ... + 2^(n-1). bounded by O(2^n)
+//branching factor 2, plus, minus, neither
     public int findTargetSumWays(int[] nums, int S) {
         if (nums == null || nums.length == 0) return 0;
         int n = nums.length;
