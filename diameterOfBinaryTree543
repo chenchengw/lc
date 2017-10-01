@@ -1,0 +1,14 @@
+    int max = 0;
+    public int diameterOfBinaryTree(TreeNode root) {
+       helper(root);
+        return max;
+    }
+    
+    int helper(TreeNode root) {
+        if (root == null) return 0;
+        int left = helper(root.left);
+        int right = helper(root.right);
+        //the longest path passing the node is the left dept + right depth
+        max = Math.max(max, left +right);
+        return Math.max(left, right) + 1;
+    }
