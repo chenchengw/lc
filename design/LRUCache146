@@ -1,0 +1,81 @@
+class LRUCache {
+
+    private int capacity;
+    private Node head = null;
+    private Node tail = null;
+    private Map<Integer, Node> hm;
+    
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.hm = new HashMap<Integer, Node>();
+    }
+    
+    public int get(int key) {
+        if (hm.containsKey(key)) {
+            Node cur = hm.get(key);
+            //note that remove and setHead are both needed when accessing a key
+            remove(cur);
+            setHead(cur);
+            return cur.value;
+        } 
+        return -1;
+    }
+    
+    public void put(int key, int value) {
+        if (hm.containsKey(key)) {
+            Node cur = hm.get(key);
+            cur.value = value;
+            //note that remove and setHead are both needed when accessing a key
+            remove(cur);
+            setHead(cur);
+        } else {
+            if (hm.size() >= capacity) {
+                hm.remove(tail.key);
+                remove(tail);
+            }
+            Node newNode = new Node(key, value);
+            hm.put(key, newNode);
+            setHead(newNode);
+        }
+    }
+    
+    void remove(Node node) {
+        Node prev = node.prev;
+        Node next = node.next;
+        if (node == head) {
+            head = next;
+        }
+        if (node == tail) {
+            tail = prev;
+        }
+        if (prev != null) prev.next = next;
+        if (next != null) next.prev = prev;
+    }
+    
+    void setHead(Node node) {
+        node.next = head;
+        node.prev = null;
+        if (head != null) {
+            head.prev = node;
+        }
+        head = node;
+        //only one element in the list
+        if (tail == null) {
+            tail = head;
+        }
+    }
+    
+    class Node {
+        int key;
+        int value;
+        Node prev;
+        Node next;
+        
+        public Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+            this.prev = null;
+            this.next = null;
+        }
+    }
+}
