@@ -1,0 +1,82 @@
+class PreOrderIterator() {
+    private Node root;
+    private Node prev;
+    private List<Node> next;
+
+    void PreOrderIterator(Node root) {
+        this.root = root;
+        this.next = new List<Node>();
+        if (root != null) {
+          next.push(root);
+        }
+        this.prev = NULL;
+    }
+    
+    boolean hasNext() {
+        return !next.empty();
+    }
+    
+    Value next() {
+        if (next.empty()) {
+            throws Exception("no next");
+        }
+        
+        prev = next.pop();
+        if (prev.right) {
+            next.push(current.right);
+        }
+        if (prev.left) {
+            next.push(current.left);
+        }
+        return prev.value;
+    }
+    
+    // remove the node previously return
+    void remove() {
+        if (prev == null) {
+            return;
+        }
+        
+        // if prev has children in next stack, remove them as well.
+        if (prev.left != null) {
+          next.pop();
+        }
+        if (prev.right != null) {
+          next.pop();
+        }
+
+        // remove the prev safely from tree & iterator
+        if (prev == root) {
+            root = null;
+            prev = null;
+            return;
+        }
+        Node parent = findParent(root, prev);
+        if (parent != null) {
+          if (parent.left == prev) {
+              parent.left = null;
+          } else {
+              parent.right = null;
+          }
+        }
+        prev = null;
+    }
+    
+    // optional, simple helper function to find parent
+    Node findParent(Node source, Node target) {
+        if (source == null || target == null) {
+            return null;
+        }
+        
+        if (source.left == target || source.right == target) {
+            return source;
+        }
+        
+        Node parent = findParent(source.left, target);
+        if (parent != null) {
+            return parent;
+        }
+        
+        return findParent(source.right, target);
+    }
+}
