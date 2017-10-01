@@ -1,32 +1,36 @@
- public String minWindow(String s, String t) {
-      if (s == null || t == null || s.length() < t.length()) return "";       
-        int[] map = new int[256];
-        char[] ct = t.toCharArray();
-        char[] cs = s.toCharArray();
-        for (int i = 0; i < ct.length; i++) {
-            map[ct[i]]++;
+    public String minWindow(String s, String t) {
+        int minLen = Integer.MAX_VALUE;
+        String minStr = "";
+        
+        int[] hash = new int[256];
+        
+        //initialize
+        int targetCnt = 0;
+        for (char c: t.toCharArray()) {
+            hash[c]++;
+            targetCnt++;
         }
-        int counter=t.length(), begin=0, end=0, min=Integer.MAX_VALUE, minStart=0;
-        while(end<s.length()){
-            // If char in s exists in t, decrease counter
-            if(map[cs[end]]>0) {
-                counter--; 
+        
+        int j = 0;
+        int sourceCnt = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (hash[s.charAt(i)] > 0) {
+                sourceCnt++;
             }
-            //decrease the count of cs[end], if the character does not exist in t, the value if the map will be negative
-            map[cs[end]]--;
-            end++;
-            while(counter==0){ //valid
-                if(end-begin<min)  {
-                    min=end-begin;
-                    minStart = begin;
+            //if s.charAt(i) is not a character in string t, this value is negative
+            hash[s.charAt(i)]--;
+            while (sourceCnt >= targetCnt) {
+                if (minLen > i - j + 1) {
+                    minLen = i - j + 1;
+                    minStr = s.substring(j, i+1);
                 }
-                //increase the count of cs[begin], if it was zero, now it would become positive, otherwise, it would become zero
-                map[cs[begin]]++;
-                if(map[cs[begin]] > 0) {
-                    counter++;  //make it invalid
+                hash[s.charAt(j)]++;
+                //both s and t contains s.charAt(j), removing it means reduce sourceCnt's value
+                if (hash[s.charAt(j)] > 0) {
+                    sourceCnt--;
                 }
-                begin++;
-            }  
+                j++;
+            }
         }
-        return min==Integer.MAX_VALUE? "":s.substring(minStart, minStart+min);
-     }
+        return minStr;
+    }
