@@ -1,5 +1,5 @@
 "actor".anagrammedIndexOf("cat") = 0 // 'act' is an anagram of 'cat'
-"actor".anagrammedIndexOf("rot") = 2 // 'tor' is an anagram of 'rot'
+"attor".anagrammedIndexOf("rot") = 2 // 'tor' is an anagram of 'rot'
 
 //Solution 1 (psedo code)
 for i in p
@@ -15,28 +15,23 @@ int anagrammedIndexOf(String s, String p) {
     for(char c: p.toCharArray()) {
         pc[c]++; 
     }
-    int i = 0;
+    int numsFound = 0;
     int j = 0;
-    while (i < s.length() - 2) {
-      while (j < p.length() && j < s.length()) {
-        sc[s.charAt(j)]++;
-        j++;
+    for(int i = 0; i < s.length(); i++) {
+      j = i - p.length();
+      if (j >= 0) {
+        sc[s.charAt(j)]--;
+        if (sc[s.charAt(j)] < pc[s.charAt(j)]) {
+          numsFound--;
+        }
       }
-      if (same(pc, sc)) return i;
-      sc[s.charAt(i)]--;
-      i++;
-      if (j < s.length()) {
-        sc[s.charAt(j)]++;
-        j++;
+      sc[s.charAt(i)]++;
+      if (sc[s.charAt(i)] <= pc[s.charAt(i)]) {
+        numsFound++;
       }
+      if (numsFound == p.length()) return j+1;
     }
     return -1;
 }
 
-boolean equals(int[] sc, int[] pc) {
-  for(int i = 0; i < 256; i++) {
-     if (sc[i] != pc[i]) return false;
-   }
-  return true;
-}
   
