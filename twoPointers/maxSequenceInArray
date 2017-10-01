@@ -1,0 +1,38 @@
+//Given an array of integers, find the length of the longest arithmetic sequence in the array. As a reminder, an arithmetic sequence is a sequence where the diff between two consecutive elements is constant. 
+//For example:
+
+//[1,3,-20,9,5,7] -> 4
+//As the longest arithmetic sequence here is 1,3,5,7. Notice that 9 is not part of the sequence, because of its placement in the array.
+
+public static int maxSeq(int[] ints) {
+        if (ints.length <= 2) {
+            return ints.length;
+        }
+
+        List<Map<Integer, Integer>> maps = new ArrayList<Map<Integer, Integer>>(ints.length);
+
+        int maxLength = 2;
+        for (int i = 0; i < ints.length; i++) {
+            Map<Integer, Integer> iMap = new HashMap<Integer, Integer>();
+            maps.add(iMap);
+            for (int j = 0; j < i; j++) {
+                int diff = ints[i] - ints[j];
+                Map<Integer, Integer> jMap = maps.get(j);
+
+                int lengthOfDiff;
+                if (jMap.containsKey(diff)) {
+                    lengthOfDiff = jMap.get(diff) + 1;
+                } else {
+                    lengthOfDiff = 2;
+                }
+
+                iMap.put(diff, lengthOfDiff);
+
+                if (lengthOfDiff > maxLength) {
+                    maxLength = lengthOfDiff;
+                }
+            }
+        }
+
+        return maxLength;
+    }
