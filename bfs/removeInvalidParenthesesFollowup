@@ -1,0 +1,34 @@
+   //this is the basic version of the remove invalid parentheses, unlik 301 it only asks for one pair of results
+   public String removeInvalidParentheses(String s) {
+        int count = 0;
+        char[] cs = s.toCharArray();
+        for (int i = 0; i < cs.length; i++) {
+            if (cs[i] == '(') {
+                count++;
+            } else if (cs[i] == ')') {
+                 if (count == 0) {
+                    cs[i] = '*';
+                 } else {
+                    count--;
+                 }      
+            }
+        }
+        
+        for (int i = cs.length-1; i>=0; i--) {
+            if (count == 0) {
+                break;
+            }
+            if (cs[i] == '(') {
+                cs[i] = '*';
+                count--;
+            }
+        }
+        
+        String str = new String(cs);
+        for (int i = 0; i < str.length(); i++) {
+            if ( str.charAt(i) == '*') {
+                str = str.substring(0, i) + str.substring(i+1);
+            }
+        }
+        return str;
+    }
