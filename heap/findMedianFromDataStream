@@ -5,6 +5,7 @@ class MedianFinder {
     /** initialize your data structure here. */
     public MedianFinder() {
         small = new PriorityQueue();
+        //this can be maxHeap if we are not putting negative value in it
         large = new PriorityQueue();
     }
     
