@@ -1,0 +1,20 @@
+1. Live Commenting System
+https://www.facebook.com/notes/facebook-engineering/live-commenting-behind-the-scenes/496077348919/
+TODO: 
+Understand more about push/pull model.
+How to push information to browsers? take a look at our PNS systems.
+
+2. Memcached
+Strategy:
+8 minutes intro
+2 minutes: requirements
+5 minutes: hash table
+10 minutes: memory allocation
+5 minutes: eviction
+10 minutes: concurrency
+
+https://www.interviewbit.com/problems/design-cache/
+
+3. Instagram
+
+
