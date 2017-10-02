@@ -1,0 +1,37 @@
+    public NestedInteger deserialize(String s) {
+        Stack<NestedInteger> stack = new Stack<>();
+        int i = 0;
+        int num = 0;
+        while (i < s.length()) {
+            if (Character.isDigit(s.charAt(i))) {
+                num = num*10 + (int)(s.charAt(i) - '0');
+            } else if (s.charAt(i) == ',') {
+                if (num != 0) {
+                    stack.peek().add(new NestedInteger(num));
+                    num = 0;
+                }
+            } else if (s.charAt(i) == '[') {
+                stack.push(new NestedInteger());
+            } else if (s.charAt(i) == ']') {
+                if (num != 0) {
+                    stack.peek().add(new NestedInteger(num));
+                    num = 0;
+                }
+                
+                NestedInteger top = stack.pop();
+                if (!stack.empty()) {
+                    stack.peek().add(top);
+                } else {
+                    return top;
+                }
+                
+            }
+            i++;
+        }
+        
+        if (num != 0) {
+            return new NestedInteger(num);
+        }
+        
+        return null;
+    }
