@@ -1,0 +1,33 @@
+//similar to next permutation
+
+    public int maximumSwap(int num) {
+        char[] digits = Integer.toString(num).toCharArray();
+        //find the first digit greater than previous
+        int firstGreater = 0;
+        while (++firstGreater < digits.length) {
+            if (digits[firstGreater-1] < digits[firstGreater]) break;
+        } 
+        if (firstGreater == digits.length) return num;
+        
+        //find max digit in remaining parts
+        char max = '0';
+        int maxIdx = firstGreater;
+        for (int i = firstGreater; i < digits.length; i++) {
+            if (max <= digits[i]) {
+                maxIdx = i;
+                max = digits[i];
+            }
+        }
+        
+        //find first digits smaller than max digit before firstGreater
+        for (int i = 0; i < firstGreater; i++) {
+            if (max > digits[i]) {
+                 StringBuilder s = new StringBuilder(String.valueOf(digits));
+                 s.setCharAt(maxIdx,digits[i]);
+                 s.setCharAt(i,max);
+                 return Integer.parseInt(s.toString());  //no need to check overflow since max value is 10^8
+            }
+        }
+        
+        return num;
+    }
