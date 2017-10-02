@@ -1,0 +1,72 @@
+Most Common Version 
+
+Given K sorted lists of up to N elements in each list, return a sorted iterator over all the items.
+
+Important notes:
+
+K denotes the number of lists.
+N denotes the length of the longest list.
+You may assume K << N
+There aren't necessarily N items in each list, but there could be.
+Items are not unique, if an item appears X times (in a single list or in several lists), we would expect the iterator to return the item X consecutive times.
+
+class SortedIterator implements Iterator<Integer> {
+  public SortedIterator(List<List<Integer>> lists) {
+    List<QueueItem> queueBase = new LinkedList<QueueItem>();
+    for (int i = 0; i < lists.size(); ++i) {
+      Iterator<Integer> iterator = lists.get(i).iterator();
+      if (iterator.hasNext()) {
+        queueBase.add(new QueueItem(iterator));
+      }
+    }
+    queue = new PriorityQueue<QueueItem>(queueBase);
+  }
+
+  public boolean hasNext() {
+    return queue.size() > 0;
+  }
+
+  public Integer next() {
+    if (!hasNext()) {
+      throw new NoSuchElementException("No more elements...");
+    }
+    QueueItem item = queue.poll();
+    int result = item.next();
+    if (item.hasNext()) {
+      queue.add(item);
+    }
+    return result;
+  }
+
+  private class QueueItem implements Comparable<QueueItem> {
+    public QueueItem(Iterator<Integer> iterator) {
+      this.iterator = iterator;
+      this.current = iterator.next().intValue();
+      finished = false;
+    }
+
+    public int compareTo(QueueItem other) {
+      return this.current - other.current;
+    }
+
+    public boolean hasNext() {
+      return !finished;
+    }
+
+    public Integer next() {
+      int return_value = current;
+      if (iterator.hasNext()) {
+        current = iterator.next().intValue();
+      } else {
+        finished = true;
+      }
+      return return_value;
+    }
+
+    private boolean finished;
+    private int current;
+    private Iterator<Integer> iterator;
+  }
+
+  private PriorityQueue<QueueItem> queue;
+}
