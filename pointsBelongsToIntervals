@@ -1,0 +1,35 @@
+You are given n integer intervals [a_i, b_i] on the real axes, and the absolute value of the coordinates is bounded by M. Determine a point that belongs to the maximum number of intervals. Point x belongs to the interval [a, b] if a <= x <= b.
+
+compare to MinimumNumberOfMeetingRooms
+
+//basic
+
+intervals = []
+    for i in range(1, n):
+        a, b = raw_input().split(' ')
+        intervals.append((int(a), 1))
+        intervals.append((int(b), -1))
+
+    intervals.sort(key=lambda i: (i [0], -i [1]))
+    max_s = -1
+    max_p = None
+    s = 0
+    for pair in intervals:
+        s = s + pair[1]
+        if s > max_s:
+            max_s = s
+            max_p = pair[0]
+    print max_p
+    
+    
+    // find the range
+    s = 0
+start = None
+max_ranges = []
+for pair in intervals:
+  s = s + pair[1]
+  if s == max_s:
+    start = pair[0]
+  else if start is not None:
+    max_ranges.append(start, pair[0])
+    start = None
