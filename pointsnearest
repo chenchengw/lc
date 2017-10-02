@@ -1,0 +1,41 @@
+Description
+Given a collection of two dimensional points and a number k, return the k closest points to (0,0) by Euclidean distance.
+Question Statement
+Alternative delivery of the question #
+
+Find K closest planets to a star knowing the location of the star and all the planets in the system.
+Given locations of shops and facebook user, return the k closest to the user
+
+
+//max heap
+vector<Point> find_closest(const vector<Point>& v, int k) {
+  if (k <= 0) {
+    return vector<Point>();
+  }
+  vector<Point> closest;
+  Heap<Point> heap(closest, Point::closer); // max heap
+  for (const auto& pt : v) {
+    if (heap.size() < k) {
+      heap.push(pt);
+    } else if (pt.dist() < heap.top().dist()) {
+      heap.pop();
+      heap.push(pt);
+    }
+  }
+  return closest;
+}
+
+
+// Build a min-heap out of the whole set, then pop off the first K 
+vector<Point> find_closest(const vector<Point>& v, int k) {
+  vector<Point> pts = v;
+  Heap<Point> heap(pts, Point::further); // min heap, constructed in linear time. See http://stackoverflow.com/questions/9755721/how-can-building-a-heap-be-on-time-complexity to understand why it's linear
+  vector<Point> closest;
+  for (int i = 0; i < k && !heap.empty(); ++i) {
+    closest.push_back(heap.top());
+    heap.pop();
+  }
+  return closest;
+}
+
+//quick select
