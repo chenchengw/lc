@@ -1,0 +1,15 @@
+    public int findLengthOfLCIS(int[] nums) {
+        int longest = 0;
+        for(int i = 0; i < nums.length; i++) {
+            int curLen = 0;
+            for (int j = i - 1; j >= 0; j--) {
+                if (nums[j] < nums[j+1]) {
+                    curLen++;
+                } else {
+                    break;
+                }
+            }
+            longest = Math.max(longest, curLen + 1);
+        }
+        return longest;
+    }
