@@ -1,0 +1,17 @@
+    public boolean findTarget(TreeNode root, int k) {
+        List<Integer> lists = new ArrayList<>();
+        inorder(root, lists);
+        //list is in sorted order
+        int i = 0, j = lists.size() - 1;
+        while (i < j) {
+            if (lists.get(i++) + lists.get(j--) == k) return true;
+        }
+        return false;
+    }
+    
+    void inorder(TreeNode root, List<Integer> lists) {
+        if (root == null) return;
+        inorder(root.left, lists);
+        lists.add(root.val);
+        inorder(root.right, lists);
+    }
