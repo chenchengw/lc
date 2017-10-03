@@ -1,14 +1,14 @@
     //time: O(nlgn), space: O(1)
     public int leastInterval(char[] tasks, int n) {
-       int[] cnt = new int[26];
-       for(char c: tasks) {
-           cnt[c - 'A']++;
-       }
-       Arrays.sort(cnt);
-       int i = 25, mx = cnt[25];
-       while (i >= 0 && cnt[i] == cnt[25]) i--;
-       //mx - 1 is the count of char with highest frequency
-       //n+1 is the character with highest frequency itself plus the gap
-       //25 - i is the length of last few characters with frequency == highest frequency, aka, trailing characters
-       return Math.max(tasks.length, (mx - 1)*(n+1) + 25 - i);
+        int[] counts = new int[26];
+        for (char c: tasks) {
+            counts[c - 'A']++;
+        }
+        Arrays.sort(counts);
+        
+        int i = 0;
+        for (int count: counts) {
+            if (count == counts[25]) i++;
+        }
+        return Math.max(tasks.length, (counts[25] - 1)*(n + 1) + i);
     }
