@@ -15,3 +15,24 @@
        //only possiblility is to delete the last character 
         return Math.abs(s.length() - t.length()) == 1;
     }
+
+
+//Another way to implement
+    public boolean isOneEditDistance(String s, String t) {
+        if (s == null || t== null) return false;
+        if (s.length() > t.length()) {
+            String tmp = s;
+            s = t;
+            t = tmp;
+        }
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != t.charAt(i)) {
+                if (s.length() == t.length()) {
+                    return s.substring(i+1).equals(t.substring(i+1));
+                } else { //s.length() < t.length()
+                    return s.substring(i).equals(t.substring(i+1));
+                }
+            }
+        }
+        return Math.abs(s.length() - t.length()) == 1;
+    }
