@@ -1,21 +1,22 @@
   //time: O(N)
-  public List<Interval> merge(List<Interval> intervals) {
+    public List<Interval> merge(List<Interval> intervals) {
         List<Interval> result = new ArrayList<>();
-        if (intervals.size() == 0) return result;
-        // Sort by ascending starting point using an anonymous Comparator
-        intervals.sort((i1, i2) -> Integer.compare(i1.start, i2.start));
-        
-        Interval lastInt = intervals.get(0);
-        for (Interval interval: intervals) {
-            if (interval.start > lastInt.end) {
-                result.add(lastInt);
-                lastInt = interval;
-            } else {
-                //since the intervals are sorted by start, so lastInt.start <= interval.start, there is no need to adjust the start value
-                lastInt.end = Math.max(lastInt.end, interval.end);
+        if (intervals == null || intervals.size() == 0) return result;
+        Collections.sort(intervals, new Comparator<Interval>(){
+            public int compare(Interval i1, Interval i2) {
+                return i1.start - i2.start;
             } 
+        });
+        Interval prev = intervals.get(0);
+        for (int i = 1; i < intervals.size(); i++) {
+            if (intervals.get(i).start > prev.end) {
+                result.add(prev);
+                prev = intervals.get(i);
+            } else {
+                Interval newInterval = new Interval(prev.start, Math.max(prev.end, intervals.get(i).end));
+                prev = newInterval;
+            }
         }
-        //don't forget to add the last element
-        result.add(lastInt);
-        return result;                                       
+        result.add(prev);
+        return result;
     }
