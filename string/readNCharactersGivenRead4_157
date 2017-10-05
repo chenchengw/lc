@@ -1,14 +1,20 @@
+    char[] buf4 = new char[4];
+    int bufIdx = 0;
+    int bufRemain = 0;
     public int read(char[] buf, int n) {
-        char[] buf4 = new char[4];
         int i = 0;
-        while (true) {
-            int inSize = read4(buf4);
-            for (int j = 0; j < inSize && i < n; j++) {
-                buf[i++] = buf4[j];
-            }
-            if (inSize == 0 || i == n) {
-                break;
-            }
-        }
+        while(i < n && hasNext(buf, i)) {
+            i++;
+        } 
         return i;
+    }
+    
+    boolean hasNext(char[] buf, int i) {
+        if (bufIdx >= bufRemain) {
+            bufIdx = 0;
+            bufRemain = read4(buf4);
+            if (bufRemain == 0) return false;
+        }
+        buf[i] = buf4[bufIdx++];
+        return true;
     }
