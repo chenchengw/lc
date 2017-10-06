@@ -1,0 +1,22 @@
+    public int maximumSwap(int num) {
+        char[] digits = Integer.toString(num).toCharArray();
+        
+        int[] buckets = new int[10];
+        for (int i = 0; i < digits.length; i++) {
+            buckets[digits[i] - '0'] = i;
+        }
+        
+        for (int i = 0; i < digits.length; i++) {
+            //find the largest number that is larger than digits[i] and swap with it
+            for (int k = 9; k > digits[i] - '0'; k--) {
+                if (buckets[k] > i) {
+                    char tmp = digits[buckets[k]];
+                    digits[buckets[k]] = digits[i];
+                    digits[i] = tmp;
+                    return Integer.valueOf(new String(digits));
+                }
+            }
+        }
+        
+        return num;
+    }
