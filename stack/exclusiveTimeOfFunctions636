@@ -1,22 +1,21 @@
+
     public int[] exclusiveTime(int n, List<String> logs) {
-        if (logs.size() == 0) return new int[0];
-        int[] res = new int[n];
-        //store the thread id
-        Stack<Integer> st = new Stack<>();
-        int prevTime = 0;
-        for (String log: logs) {
+        Stack<Integer> stack = new Stack<>();
+        int[] result = new int[n];
+        int prev = 0;
+        for (String log : logs) {
             String[] strs = log.split(":");
-            if (!st.isEmpty()) {
-                res[st.peek()] += Integer.parseInt(strs[2]) - prevTime;
-            } 
-            prevTime = Integer.parseInt(strs[2]);
-            if(strs[1].equals("start"))  {
-                st.push(Integer.parseInt(strs[0]));
-            } else {
-                //this part is tricky as this is how the end time gets calculated
-                res[st.pop()]++;
-                prevTime++;
+            if (strs[1].equals("start")) {
+                //the value needs to be added to result for both start and end
+                if (!stack.isEmpty()) {
+                    result[stack.peek()] += Integer.parseInt(strs[2]) - prev;
+                }
+                stack.push(Integer.parseInt(strs[0]));
+                prev = Integer.parseInt(strs[2]);
+            } else { //end
+                result[stack.pop()] += Integer.parseInt(strs[2]) - prev + 1;
+                prev = Integer.parseInt(strs[2]) + 1;
             }
         }
-        return res;
+        return result;
     }
