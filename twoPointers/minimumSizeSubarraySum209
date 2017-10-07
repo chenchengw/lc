@@ -1,16 +1,18 @@
     //O(N) solution with two pointers, 
     //this problem is similar to https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/description/
   //but the solutions are totally different, there could be negative value in the array in that problem and that problem is asking for sum that equals to K, hence using hash tables.
-  public int minSubArrayLen(int s, int[] nums) {
-        int sum = 0, minLen = Integer.MAX_VALUE;
-        int i = 0, j = 0;
-        while (j < nums.length) {
-            while (sum < s && j < nums.length) sum += nums[j++];
-            if (sum >= s) {
-                while (sum >=s) sum -=nums[i++];
-                minLen = Math.min(minLen, j - i + 1);
+    public int minSubArrayLen(int s, int[] nums) {
+        int minLen = Integer.MAX_VALUE;
+        int i = 0, j = 0, sum = 0;
+        while (i < nums.length) {
+            while (i < nums.length && sum < s) {
+                sum += nums[i++];
+            }
+            while (sum >= s) {
+                minLen = Math.min(minLen, i - j); 
+                sum -= nums[j++];
             }
         }
-        return minLen == Integer.MAX_VALUE ? 0 : minLen;
+        return minLen == Integer.MAX_VALUE ? 0: minLen;
     }
     
