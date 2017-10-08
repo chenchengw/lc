@@ -1,0 +1,34 @@
+    public boolean increasingTriplet(int[] nums) {
+        if (nums.length < 3) return false;
+        int smallest = Integer.MAX_VALUE;
+        int secondSmall = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] <= smallest) {
+                smallest = nums[i];
+            } else if (nums[i] <= secondSmall) {
+                secondSmall = nums[i];
+            } else {
+                //found third smallest
+                return true;
+            }
+        }
+        return false;
+    }
+
+//Another solution is to keep track of the minimum element (0 ,i) and maximum element (j, n),
+// if we can find left[i] < nums[i] < right[i] return true
+bool increasingTriplet(vector<int>& nums) {
+        if (nums.size() < 3) return false;
+        int n = nums.size();
+        vector<int> f(n, nums[0]), b(n, nums.back());
+        for (int i = 1; i < n; ++i) {
+            f[i] = min(f[i - 1], nums[i]);
+        }
+        for (int i = n - 2; i >= 0; --i) {
+            b[i] = max(b[i + 1], nums[i]);
+        }
+        for (int i = 0; i < n; ++i) {
+            if (nums[i] > f[i] && nums[i] < b[i]) return true;
+        }
+        return false;
+    }
