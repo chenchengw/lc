@@ -1,0 +1,22 @@
+    public int minCostII(int[][] costs) {
+        int prevMin = 0;
+        int prevSecond = 0;
+        int prevMinIdx = -1;
+        for (int i = 0; i < costs.length; i++) {
+            int curMin = Integer.MAX_VALUE, curSecond = Integer.MAX_VALUE, curMinIdx = -1;
+            for (int j = 0; j < costs[0].length; j++) {
+                int val =  costs[i][j] + (j == prevMinIdx ? prevSecond : prevMin);
+                 if (val < curMin) {
+                    curMinIdx = j;
+                    curSecond = curMin;
+                    curMin = val;
+                } else if (val < curSecond) {
+                    curSecond = val;
+                }
+            }
+            prevMin = curMin;
+            prevMinIdx = curMinIdx;
+            prevSecond = curSecond;
+        }
+        return prevMin;
+    }
