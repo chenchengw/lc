@@ -1,0 +1,32 @@
+http://www.geeksforgeeks.org/producer-consumer-solution-using-threads-java/
+
+public static class producerConsumer {
+    Queue<Integer> q = new LinkedList<>();
+    int capacity = 2;
+    
+    public void produce() throws InterruptedException {
+       int value = 0;
+       while (true) {
+        synchronized(this) {
+            while (q.size() == capacity) {
+                wait();
+            }
+            q.offer(value++);
+            notify();
+            
+       }
+    }
+    
+     public void consume() throws InterruptedException {
+       int value = 0;
+       while (true) {
+        synchronized(this) {
+            while (q.size() == 0) {
+                wait();
+            }
+            int val = q.poll();
+            System.out.println("consumed" + val);
+            notify();       
+       }
+    }   
+    
