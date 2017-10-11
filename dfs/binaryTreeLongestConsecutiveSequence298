@@ -1,0 +1,19 @@
+   int maxLen = 0;
+    
+    public int longestConsecutive(TreeNode root) {
+        if (root == null) return maxLen;
+        helper(root, root.val, 0);
+        return maxLen;
+    }
+    
+    void helper(TreeNode root, int last, int len) {
+        if (root == null) return;
+        if (root.val == last + 1) {
+            len++;
+        } else {
+            len = 1;
+        }
+        maxLen = Math.max(maxLen, len);
+        helper(root.left, root.val, len);
+        helper(root.right, root.val, len);
+    }
