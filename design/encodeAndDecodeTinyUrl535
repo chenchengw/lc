@@ -1,14 +1,42 @@
 public class Codec {
-    Map<Integer, String> hm = new HashMap<>();
+    //reference https://www.bittiger.io/blog/post/JJcLtcFc8MWzSmbdW
+    final static String dict = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    Map<String, Integer> long2idx = new HashMap<>();
+    Map<Integer, String> idx2long = new HashMap<>();   
+    
     // Encodes a URL to a shortened URL.
     public String encode(String longUrl) {
-        hm.put(longUrl.hashCode(), longUrl);
-        return "http://tinyurl.com/" + longUrl.hashCode();
+        if (!long2idx.containsKey(longUrl)) {
+            long2idx.put(longUrl, long2idx.size()+1);
+            idx2long.put(long2idx.size(), longUrl);
+        }
+        String shortUrl = encode62(long2idx.get(longUrl));
+        return "http://tinyurl.com/" + shortUrl;
     }
 
     // Decodes a shortened URL to its original URL.
     public String decode(String shortUrl) {
-        //note: use replace function here
-        return hm.get(Integer.parseInt(shortUrl.replace("http://tinyurl.com/", "")));
+        int idx = decode62(shortUrl);
+        if (idx2long.containsKey(idx)) return idx2long.get(idx);
+        else return null;
+    }
+    
+    String encode62(int number) {
+        StringBuilder sb = new StringBuilder();
+        while (number > 0) {
+            char c = dict.charAt(number%62);
+            sb.insert(0, c);
+            number /= 62;
+        }
+        return sb.toString();
+    }
+
+    int decode62(String s) {
+        int val = 0;
+        for (int i = 0; i < s.length(); i++) {
+            val *= 62;
+            val += dict.indexOf(s.charAt(i));
+        }
+        return val;
     }
 }
