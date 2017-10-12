@@ -1,20 +1,23 @@
-1. Live Commenting System
-https://www.facebook.com/notes/facebook-engineering/live-commenting-behind-the-scenes/496077348919/
-TODO: 
-Understand more about push/pull model.
-How to push information to browsers? take a look at our PNS systems.
+1. TinyUrl
 
-2. Memcached
-Strategy:
-8 minutes intro
-2 minutes: requirements
-5 minutes: hash table
-10 minutes: memory allocation
-5 minutes: eviction
-10 minutes: concurrency
+One machine: 
+POST 
+store longUrl -> id -> (62encode) 3b7eZ 
 
-https://www.interviewbit.com/problems/design-cache/
 
-3. Instagram
+GET 3b7eZ  (decode62) -> id -> longUrl
+
+multiple machine:
+POST 
+longUrl.hashCode%62 (or consistent hashing) -> machine B -> store longUrl -> id convert to 3b7eZ 
+
+return B3b7eZ
+
+GET
+B3b7eZ -> machine B -> 3b7eZ convert to id -> longUrl 
+
+
+
+
 
 
