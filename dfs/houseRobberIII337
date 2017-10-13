@@ -1,18 +1,3 @@
-    //slow performance solution
-     public int rob(TreeNode root) {
-        if (root == null) return 0;
-        //rob root
-        int val = root.val;
-        if (root.left!= null) {
-            val += rob(root.left.left) + rob(root.left.right);
-        }
-        if (root.right != null) {
-            val += rob(root.right.left) + rob(root.right.right);
-        }
-        //do not rob root
-        int val2 = rob(root.left) + rob(root.right);
-        return Math.max(val, val2);
-    }
     
     //better performance
      
@@ -33,4 +18,21 @@
         //res[1] stores the max value when robbing the node (and not rob left& right nodes)
         res[1] = root.val + left[0] + right[0];
         return res;
+    }
+
+
+    //slow performance solution
+     public int rob(TreeNode root) {
+        if (root == null) return 0;
+        //rob root
+        int val = root.val;
+        if (root.left!= null) {
+            val += rob(root.left.left) + rob(root.left.right);
+        }
+        if (root.right != null) {
+            val += rob(root.right.left) + rob(root.right.right);
+        }
+        //do not rob root
+        int val2 = rob(root.left) + rob(root.right);
+        return Math.max(val, val2);
     }
