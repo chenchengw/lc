@@ -1,31 +1,20 @@
-    Map<Character, char[]> hm;
-    
+
+    String[] dicts = new String[]{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
     public List<String> letterCombinations(String digits) {
         List<String> result = new ArrayList<>();
         if (digits.length() == 0) return result;
-        //initialize hash map
-        hm = new HashMap<>();
-        hm.put('2', new char[]{'a', 'b', 'c'});
-        hm.put('3', new char[]{'d', 'e', 'f'});
-        hm.put('4', new char[]{'g', 'h', 'i'});
-        hm.put('5', new char[]{'j', 'k', 'l'});
-        hm.put('6', new char[]{'m', 'n', 'o'});
-        hm.put('7', new char[]{'p', 'q', 'r', 's'});
-        hm.put('8', new char[]{'t', 'u', 'v'});
-        hm.put('9', new char[]{'w', 'x', 'y', 'z'});
-        
-        helper(result, digits, new StringBuilder(), 0);
+        helper(digits, 0, new StringBuilder(), result);
         return result;
     }
     
-    void helper(List<String> result, String digits, StringBuilder sb, int i) {
-        if (i == digits.length()) {
+    void helper(String digits, int start, StringBuilder sb, List<String> result) {
+        if (start == digits.length()) {
             result.add(sb.toString());
             return;
         }
-        for (char c: hm.get(digits.charAt(i))) {
+        for (char c: dicts[digits.charAt(start)-'2'].toCharArray()) {
             sb.append(c);
-            helper(result, digits, sb, i+1);
+            helper(digits, start+1, sb, result);
             sb.deleteCharAt(sb.length()-1);
         }
     }
