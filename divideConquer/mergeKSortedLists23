@@ -1,0 +1,35 @@
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        return mergeList(lists, 0, lists.length-1);
+    }
+    
+    ListNode mergeList(ListNode[] lists, int left, int right) {
+        if (left < right) {
+            int mid = left + (right - left)/2;
+            ListNode leftHead = mergeList(lists, left, mid);
+            ListNode rightHead = mergeList(lists, mid+1, right);
+            return merge(leftHead, rightHead);
+        } else {
+            return lists[left];
+        }
+    }
+
+     ListNode merge(ListNode first, ListNode second) {
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+        while (first != null || second != null) {
+            int fv = first != null ? first.val:Integer.MAX_VALUE;
+            int sv = second != null ? second.val:Integer.MAX_VALUE;
+            if (fv <= sv) {
+                cur.next = first;
+                first = first.next;
+            } else {
+                cur.next = second;
+                second = second.next;
+            }
+            cur = cur.next;
+        }
+        return dummy.next;
+    }
