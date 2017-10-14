@@ -1,4 +1,4 @@
-    //O(nlgn)
+    //time complexity: O(nlgn) https://softwareengineering.stackexchange.com/questions/297160/why-is-mergesort-olog-n
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) {
             return null;
