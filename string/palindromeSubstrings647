@@ -17,3 +17,24 @@
             j++;
         }
     }
+    
+    //another solution
+       public int countSubstrings(String s) {
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = 0; j <= i; j++) {
+               if (isValid(s, j, i)) {
+                   count++;
+               }
+            }
+        }
+        return count;
+    }
+    
+    boolean isValid(String s, int lo, int hi) {
+        if (lo == hi) return true;
+        while (lo < hi) {
+            if (s.charAt(lo++) != s.charAt(hi--)) return false;
+        }
+        return true;
+    }
