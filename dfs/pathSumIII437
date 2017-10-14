@@ -1,0 +1,15 @@
+    public int pathSum(TreeNode root, int sum) {
+        if (root == null) return 0;
+        return pathSumRootToLeaf(root, sum) + pathSum(root.left, sum) + pathSum(root.right, sum);
+    }
+    
+    int pathSumRootToLeaf(TreeNode root, int sum) {
+        if (root == null) return 0;
+        int res = 0;
+        if (sum == root.val) {
+            res++;
+        }
+        res += pathSumRootToLeaf(root.left, sum - root.val);
+        res += pathSumRootToLeaf(root.right, sum - root.val);
+        return res;
+    }
