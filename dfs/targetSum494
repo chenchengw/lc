@@ -25,28 +25,3 @@
         res += helper(nums, S, start+1, sum-nums[start], memo);
         return res;
     }  
-    
-    
-    //what if the input is a string
-    
-    public int findTargetSumWays(String nums, int S) {
-        if (nums == null || nums.length() == 0) return 0;
-        int n = nums.length();
-        return helper(nums, S, 0, 0);
-    }
-    
-    int helper(String nums, int S, int start, int sum, String carry) {
-        int res = 0;
-        if (start == nums.length && carry.length() == 0) {
-            if (sum == S) {
-                res++;
-            }
-            return res;
-        }
-        carry += nums.charAt(start);
-        curVal =Integer.parseInt(carry);
-        res += helper(nums.substring(start), S, start+1, sum+curVal, "");
-        res += helper(nums.substring(start), S, start+1, sum-curVal, "");
-        res += helper(nums.substring(start), S, start+1, sum, carry+nums.charAt(start));
-        return res;
-    }
