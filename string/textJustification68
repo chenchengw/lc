@@ -41,3 +41,45 @@
             sb.append(' ');
         }
     }
+
+
+
+//if we only consider left justification when there is one word, the implementation is as follows:
+
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> result = new ArrayList<>();
+        int left = 0, right = 0, len = 0;
+        while (right <= words.length) {
+            if (right == words.length || words[right].length() + len + right - left > maxWidth) {
+                //new line
+                int spaceSlot = right - left - 1;
+                int spaceCount = maxWidth - len;
+                StringBuilder sb = new StringBuilder();
+                if (spaceSlot == 0) { //right - left = 1
+                    sb.append(words[left]);
+                    appendSpace(sb, maxWidth - sb.length());
+                } else {
+                    int space = spaceCount/spaceSlot;
+                    int extra = spaceCount%spaceSlot;
+                    for (int i = left; i < right; i++) {
+                        sb.append(words[i]);
+                        if (i != right - 1) appendSpace(sb, space + (i - left < extra ? 1 : 0));
+                    }
+                }
+                result.add(sb.toString());
+                left = right;
+                len = 0;
+            }          
+            if (right < words.length) {
+                len += words[right].length();
+            }          
+            right++;
+        }
+        return result;
+    }
+    
+    void appendSpace(StringBuilder sb, int spaceCount) {
+        for (int i = 0; i < spaceCount; i++) {
+            sb.append(' ');
+        }
+    }
