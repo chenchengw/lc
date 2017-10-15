@@ -1,8 +1,9 @@
     public boolean canJump(int[] nums) {
-        int max = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (i > max) return true;
+        int i = 0, max = 0;
+        for(i = 0; i < nums.length; i++) {
+            //when i > max, we cannot jump to the end
+            if (i > max) return false;
             max = Math.max(max, i + nums[i]);
-        }
-        return false;
+        }       
+        return i == nums.length;
     }
