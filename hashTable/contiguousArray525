@@ -1,52 +1,16 @@
 https://leetcode.com/problems/contiguous-array/description/
  
- //modifying the array
- public int findMaxLength(int[] nums) {
-      //first set the 0 value to -1 
-      for (int i = 0; i < nums.length; i++) {
-          if (nums[i] == 0) {
-              nums[i] = -1;
-          }
-      }
-        //sum to index
-      Map<Integer, Integer> hm = new HashMap<>();
-      int sum = 0;
-      int maxLen = 0;
-      //don't forget this case
-      hm.put(0, -1);
-      for (int i = 0; i < nums.length; i++) {
-          sum += nums[i];
-          if (hm.containsKey(sum)) { // between hm.get(i) and i, sum must be zero
-             maxLen = Math.max(maxLen, i - hm.get(sum));
-          } else {
-              hm.put(sum, i);
-          }
-      }
-      return maxLen;
-    }
-    
-    //without modifying the array
-       //zero > 0 means we have more zeros than ones
-    //zero < 0 means we have more ones than zeros
-    //zero == 0 means we have equal number of ones and zeros
     public int findMaxLength(int[] nums) {
-      //sum to zero and ones difference
-      Map<Integer, Integer> hm = new HashMap<>();
-      int zeros = 0;
-      int maxLen = 0;
-      //don't forget this case
-      hm.put(0, -1);
-      for (int i = 0; i < nums.length; i++) {
-          if (nums[i] == 0) {
-              zeros++;
-          } else {
-              zeros--;
-          }
-          if (hm.containsKey(zeros)) { 
-             maxLen = Math.max(maxLen, i - hm.get(zeros));
-          } else {
-              hm.put(zeros, i);
-          }
-      }
-      return maxLen;
+        Map<Integer, Integer> hm = new HashMap<>();
+        hm.put(0, -1);
+        int zeros = 0, res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            zeros = nums[i] == 0 ? zeros + 1: zeros - 1;
+            if (hm.containsKey(zeros)) {
+                res = Math.max(res, i - hm.get(zeros));
+            } else {
+                hm.put(zeros, i);
+            }
+        }
+        return res;
     }
