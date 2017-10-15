@@ -52,3 +52,59 @@
         
         return sb.length() != indegree.size() ? "" : sb.toString();
     }
+    
+    
+    //DFS
+        public String alienOrder(String[] words) {
+        if (words.length == 0) return "";
+        //build graph
+        Map<Character, Set<Character>> graph = new HashMap<>();
+        for (String word: words) {
+            for (char c: word.toCharArray()) {
+                graph.put(c, new HashSet<Character>());
+            }
+        }
+        
+        for(int i = 0; i < words.length - 1; i++) {
+            for (int j = 0; j < Math.min(words[i].length(), words[i+1].length()); j++) {
+                char c1 = words[i].charAt(j);
+                char c2 = words[i+1].charAt(j);
+                if (c1 != c2) {
+                    Set<Character> set = graph.get(c1);
+                    if (!set.contains(c2)) {
+                        set.add(c2);
+                        graph.put(c1, set);
+                    }
+                    break;
+                }
+            }
+        }
+        
+        //topological sort
+        Stack<Character> stack = new Stack<>();
+        boolean[] visited = new boolean[26];
+        boolean[] isLoop = new boolean[26];
+        for (char c: graph.keySet()) {
+            if(!topologicalSortUtil(graph, c, visited, isLoop, stack)) return "";
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop());
+        }
+        
+        return sb.toString();
+    }
+    
+    boolean topologicalSortUtil(Map<Character, Set<Character>> graph, char c, boolean[] visited, boolean[] isLoop, Stack<Character> stack) {
+        if (isLoop[c-'a']) return false;
+        if (visited[c-'a']) return true;
+        isLoop[c-'a'] = true;
+        for (char c2: graph.get(c)) {
+            if (!topologicalSortUtil(graph, c2, visited, isLoop, stack)) return false;
+        }
+        isLoop[c-'a'] = false;
+        visited[c-'a'] = true;
+        stack.push(c);
+        return true;
+    }
