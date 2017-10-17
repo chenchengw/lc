@@ -1,0 +1,21 @@
+    Map<Character, String> hm = new HashMap<>();
+    Set<String> set = new HashSet<>();
+    
+    public boolean wordPatternMatch(String pattern, String str) {
+        if (pattern.length() == 0) return str.length() == 0;
+       if(hm.containsKey(pattern.charAt(0))) {
+           String prev = hm.get(pattern.charAt(0));
+           if (prev.length() > str.length() || !str.substring(0, prev.length()).equals(prev)) return false;
+           if (wordPatternMatch(pattern.substring(1), str.substring(prev.length()))) return true;
+       } else {
+           for (int i = 1; i <= str.length(); i++) {
+               if (set.contains(str.substring(0,i))) continue;
+               set.add(str.substring(0,i));
+               hm.put(pattern.charAt(0), str.substring(0, i));
+               if (wordPatternMatch(pattern.substring(1), str.substring(i))) return true;
+               hm.remove(pattern.charAt(0));
+               set.remove(str.substring(0, i));
+           }
+       }
+       return false;
+    }
