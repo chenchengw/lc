@@ -1,0 +1,54 @@
+地里找人内推的，data infrastructure组，内推后2周HR联系电面：类似于missing range的简化版，并不难
+Onsite 没有一轮问我做的project的，都是题目 
+Three 哥，Design TinyURL，问了很多边边角角的东西，我觉得他全程好像都听不懂我说什么，我说一句他问一句，莫非是起床气太重了 
+Lunch，也是和Three 哥一起吃，基本就是随便聊聊 貌似是黑人小哥，
+1个半小时的Programming Test，题目Autocomplete，但并没有LC的那么难，不要求sentence，只是单纯的word，用Trie解决，也不难，但要保证最后可以运行出来（读文件 parse 打印），有需要的可以管我要原题，我留底了（攒人品LOL） 
+Three哥面试官，大概就是设计一个能够监控lyft rider driver的dashboard，比如有多少个driver在线，available还是已经接了订单在路上，有多少rider在等车。
+我先是把用户打车的流程化出来，然后再说每个流程中的component需要什么服务（payment，pricing，matching，rider，driver，route，transaction，navigation等等），然后再回答需要从哪几个service里面要数据，怎么用message queue等 
+Data组的头头，白人，长得好艺术家（很胖，头发和胡子很长的那种），在他们公司外一边散步一边聊天，基本都是behavior，或者一些他们内部的情况，这个人是FB以前的data lead，还是spark项目的创建者之一，感觉很牛 整体感觉不算难，
+除了第一轮其他都还好，programming test肯定过了，但design题目和behavior题目只能看命了。去之前听说他家office很漂亮，然而并没有感觉出来，他家的食堂也很迷你（可能是我去的那个楼是人比较少的楼所以就没那么高大上）。看缘分吧，move on了
+
+链接: https://instant.1point3acres.com/thread/283643
+
+
+输入是两个文件，第一个文件 每一行代表 word rank 比如 hello 6 world 10 wide 3 hell 4 worldwide 7 lyft 20 
+第二个文件 代表要搜索的prefix 比如 hell world 输出是，根据第二个文件的每一个prefix，打印出来word rank，按照rank排序。
+比如根据上边两个例子： hell: hell 4 hello 6 world: worldwide 7 world 10 
+其实就是trie，外加需要记录rank信息，以及在打印的时候，需要把prefix打印出来。 根本不到LC那道题目的难度，也就是implement trie的扩展而已。
+
+链接: https://instant.1point3acres.com/thread/283643
+来源: 一亩三分地
+
+给两个sorted list, 实现interator 返回 intersect
+
+链接: https://instant.1point3acres.com/thread/271434
+来源: 一亩三分地
+
+
+第一轮：白板+上机：在一个迷宫里面找到出口，followup是一些对解法的improvement
+
+链接: https://instant.1point3acres.com/thread/283659
+来源: 一亩三分地
+
+LC238
+
+smallest range
+
+https://leetcode.com/problems/alien-dictionary/description/
+
+
+LRU cache
+
+
+店面 Ceasar Cipher 简单说就是 abc + 2 –> cde, xyz + 2 –> zab 不是字母不变 区分大小写 要求编译通过运行。
+
+链接: https://instant.1point3acres.com/tag/lyft
+来源: 一亩三分地
+
+https://instant.1point3acres.com/thread/186453
+
+https://instant.1point3acres.com/thread/205225
+
+https://instant.1point3acres.com/thread/167253
+
+https://instant.1point3acres.com/thread/202961
