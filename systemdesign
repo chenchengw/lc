@@ -1,3 +1,45 @@
+
+1. TinyUrl https://segmentfault.com/a/1190000006140476
+
+Requirements:
+
+DAU: 
+Read: 100M
+Write: 10M
+
+QPS:
+Read: 1K
+
+10M*100Bytes = 1GB /day => 1TB/ 3 years
+
+Service:
+GET:/shortUrl
+  response: 301 (longUrl)
+
+POST:
+  request body: longUrl
+  response: 200 (shortUrl)
+ 
+void redirect(String shortUrl);
+
+Option 1:
+把long_url用md5/sha1哈希
+md5把一个string转化成128位二进制数，一般用32位十六进制数(16byte)表示：
+http://site.douban.com/chuan -> c93a360dc7f3eb093ab6e304db516653
+sha1把一个string转化成160位二进制数，一般用40位十六进制数(20byte)表示：
+http://site.douban.com/chuan -> dff85871a72c73c3eae09e39ffe97aea63047094
+这两个算法可以保证哈希值分布很随机，但是冲突是不可避免的，任何一个哈希算法都不可避免有冲突。
+优点：简单，可以根据long_url直接生成；假设一个url中一个char占两个字节，平均长度为30的话，原url占大小60byte,hash之后要16byte。我们可以取md5的前6位,这样就更节省。
+缺点：难以保证哈希算法没有冲突
+解决冲突方案：1.拿(long_url + timestamp)来哈希；2.冲突的话，重试(timestamp会变，会生成新的hash)
+综上，流量不多时，可行；但是，当url超过了假设1 billion的时候，冲突会非常多，效率非常低。
+
+Option 2:
+将六位的short_url看做是一个62进制数(0-9,a-z,A-Z)，可以表示62^6=570亿个数。整个互联网的网页数在trillion级别，即一万亿这个级别。6位足够。
+每个short_url对应一个十进制整数，这个整数就可以是sql数据库中的自增id，即auto_increment_id。
+
+
+
 1. TinyUrl
 
 One machine: 
@@ -15,6 +57,7 @@ return B3b7eZ
 
 GET
 B3b7eZ -> machine B -> 3b7eZ convert to id -> longUrl 
+
 
 
 
