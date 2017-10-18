@@ -1,0 +1,57 @@
+    public String replaceWords(List<String> dict, String sentence) {
+        if (sentence.length() == 0) return "";
+        if (dict.size() == 0) return sentence;
+    
+        TrieNode root = new TrieNode();
+        String[] words = sentence.split(" ");
+        for(String str: dict) {
+            add(root, str);    
+        }
+       
+        StringBuilder sb = new StringBuilder();
+        for (String word: words) {
+            String pat = getShortestPrefix(root, word);
+            if (pat == null) {
+                sb.append(word);
+            } else {
+                sb.append(pat);
+            }
+            sb.append(" ");
+        }
+        
+        sb.deleteCharAt(sb.length()-1);
+        
+        return sb.toString();
+    }
+    
+    void add(TrieNode root, String word) {
+        TrieNode tn = root;
+        for (char c: word.toCharArray()) {
+            if (tn.children[c -'a'] == null) {
+                tn.children[c-'a'] = new TrieNode();
+            } 
+            tn = tn.children[c - 'a'];   
+        }
+        tn.prefix = word;
+    }
+    
+    String getShortestPrefix(TrieNode root, String word) {
+        TrieNode tn = root;
+        for (char c: word.toCharArray()) {
+            if (tn.children[c-'a'] == null) return null;
+            tn = tn.children[c-'a'];
+            if (tn.prefix != null) return tn.prefix;
+        }
+        return tn.prefix;
+    }
+    
+    
+    class TrieNode {
+        TrieNode[] children;
+        String prefix;
+        
+        public TrieNode() {
+            children = new TrieNode[26];
+            prefix = null;
+        }
+    }
