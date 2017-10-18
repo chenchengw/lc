@@ -38,18 +38,61 @@ Option 2:
 将六位的short_url看做是一个62进制数(0-9,a-z,A-Z)，可以表示62^6=570亿个数。整个互联网的网页数在trillion级别，即一万亿这个级别。6位足够。
 每个short_url对应一个十进制整数，这个整数就可以是sql数据库中的自增id，即auto_increment_id。
 
+public class Codec {
+    //reference https://www.bittiger.io/blog/post/JJcLtcFc8MWzSmbdW
+    final static String dict = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    Map<String, Integer> long2idx = new HashMap<>();
+    Map<Integer, String> idx2long = new HashMap<>();   
+    
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        if (!long2idx.containsKey(longUrl)) {
+            long2idx.put(longUrl, long2idx.size()+1);
+            idx2long.put(long2idx.size(), longUrl);
+        }
+        String shortUrl = encode62(long2idx.get(longUrl));
+        return "http://tinyurl.com/" + shortUrl;
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        int idx = decode62(shortUrl);
+        if (idx2long.containsKey(idx)) return idx2long.get(idx);
+        else return null;
+    }
+    
+    String encode62(int number) {
+        StringBuilder sb = new StringBuilder();
+        while (number > 0) {
+            char c = dict.charAt(number%62);
+            sb.insert(0, c);
+            number /= 62;
+        }
+        return sb.toString();
+    }
+
+    int decode62(String s) {
+        int val = 0;
+        for (int i = 0; i < s.length(); i++) {
+            val *= 62;
+            val += dict.indexOf(s.charAt(i));
+        }
+        return val;
+    }
+}
 
 
-1. TinyUrl
+Storage:
 
-One machine: 
-POST 
-store longUrl -> id -> (62encode) 3b7eZ 
+MySQL: schema 
+long | String
+id   | longUrl
 
+index longUrl so that it can be looked up easily
 
-GET 3b7eZ  (decode62) -> id -> longUrl
+Scale:
+1. Build cache and redirect the read traffic to cache
 
-multiple machine:
 POST 
 longUrl.hashCode%62 (or consistent hashing) -> machine B -> store longUrl -> id convert to 3b7eZ 
 
@@ -58,7 +101,87 @@ return B3b7eZ
 GET
 B3b7eZ -> machine B -> 3b7eZ convert to id -> longUrl 
 
+新增一台机器 -> 找原来机器里负责range(0-61)最大的机器 -> 将其range减半 -> 把一半放到新增机器上
 
+继续优化？
+
+中国的db放到中国，美国的db放到美国。
+用地域信息作为sharding key，比如中国网站都放到0开头的，美国网站都放在1开头的。
+加一个新功能custom url怎么做？
+
+单独建一张表，存custom_url <--> long_url
+当查询时，先从custom表里查，再从url表里查。
+注意，千万不要在url表里插一列custom，这样这列大部分的值为空。
+
+
+2. Typeahead search/autocomplete
+
+Requirements: 
+1. how many suggestions we should provide? 5
+2. do we need to account for spelling mistakes? yes -> edit distance
+3. personalization needed or just globally?
+
+QPS: 2-4 billion like Google 
+5 words each query, each word 5 characters -> 25*4 = 200 billion words upper bound perday
+storage needs: 500m(new searches)*25bytes = 12.5GB per day -> 12TB in 3 years
+
+latency and availability are very important to us
+
+Service:
+GET:/words
+request body {words}
+return: 200K with 5 suggestions
+
+Within the service
+getTopSuggestion(word)
+
+data structure: trie
+A bruteforce way is to scan all the nodes in the subtree and find the 5 most frequent. 
+Improvement is to store 5 most frequent words in every node of the trie
+
+How would a typical write work in this trie?
+A: So, now whenever we get an actual search term, we will traverse down to the node corresponding to it and 
+increase its frequency. But wait, we are not done yet. We store the top 5 queries in each node. Its possible 
+that this particular search query jumped into the top 5 queries of a few other nodes. 
+We need to update the top 5 queries of those nodes then. How do we do it then?
+Truthfully, we need to know the frequencies of the top 5 queries ( of every node in the path from root to the node ) 
+to decide if this query becomes a part of the top 5.
+There are 2 ways we could achieve this.
+
+    Along with the top 5 on every node, we also store their frequency. Anytime, a node’s frequency gets updated, 
+    we traverse back from the node to its parent till we reach the root. For every parent, we check if the current query
+    is part of the top 5. If so, we replace the corresponding frequency with the updated frequency. If not, we check 
+    if the current query’s frequency is high enough to be a part of the top 5. If so, we update the top 5 with frequency.
+    On every node, we store the top pointer to the end node of the 5 most frequent queries ( pointers instead of the text ). 
+    The update process would involve comparing the current query’s frequency with the 5th lowest node’s frequency and update 
+    the node pointer with the current query pointer if the new frequency is greater.
+    
+  One optimization we can do is: Sample the writes to update the frequency of the words
+
+Another approach we can take is to update the frequency offline:
+ we can have an offline hashmap which keeps maintaining a map from query to frequency. Its only when the frequency becomes a 
+ multiple of a threshold that we go and update the query in the trie with the new frequency. The hashmap being a separate 
+ datastore would not collide with the actual trie for reads.
+ 
+ Storage:
+ 
+ Single Machine? 50TB, No!
+ The number of shards could very well be more than the number of branches on first level(26). 
+ We will need to be more intelligent than just sharding on first level. Imbalance, two levels, 
+ but we need zookeeper to keep track of the mapping of branch to servers.
+ 
+ Availability is very important, we can maintain multiple replica of each shard and an update goes to all replicas. 
+ The read can go to multiple replicas (not necessarily all) and uses the first response it gets. 
+ If a replica goes down, reads and writes continue to work fine as there are other replicas to serve the queries. 
+ 
+ trie can be design as multi level hashtable. thus, the key value data store is the choice. 
+ 
+ 
+3. Design a messaging system
+
+ 
+ 
+ 
 
 
 
