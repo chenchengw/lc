@@ -1,0 +1,24 @@
+    public void reverseWords(char[] str) {
+        if (str.length == 0) return;
+        reverse(str, 0, str.length - 1);
+        int i = 0, j = 0;
+        while (j < str.length) {
+            if (str[j] == ' ') {
+                reverse(str, i, j-1);
+                i = j + 1;
+            } 
+            j++;
+        }
+        //don't forget to reverse the last word
+        reverse(str, i, str.length - 1);
+    }
+    
+    void reverse(char[] str, int start, int end) {
+        while (start < end) {
+            char tmp = str[start];
+            str[start] = str[end];
+            str[end] = tmp;
+            start++;
+            end--;
+        }
+    }
