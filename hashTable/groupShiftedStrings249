@@ -1,0 +1,25 @@
+    public List<List<String>> groupStrings(String[] strings) {
+        Map<String, List<String>> hm = new HashMap<>();
+        for (String word: strings) {
+            int offset = word.charAt(0) - 'a';
+            StringBuilder sb = new StringBuilder();
+            for (char c: word.toCharArray()) {
+                char c1 = (char) (c - offset);
+                if (c1 < 'a') {
+                    c1 += 26;
+                }
+                sb.append(c1);
+            }
+            if (!hm.containsKey(sb.toString())) {
+                hm.put(sb.toString(), new ArrayList<String>());
+            }
+            hm.get(sb.toString()).add(word);
+        }
+        
+        List<List<String>> result= new ArrayList<>();
+        for (List<String> words: hm.values()) {
+            result.add(words);
+        }
+        
+        return result;
+    }
