@@ -1,3 +1,5 @@
+http://www.1point3acres.com/bbs/thread-210083-1-1.html
+
 
 1. TinyUrl https://segmentfault.com/a/1190000006140476
 
@@ -94,7 +96,7 @@ Scale:
 1. Build cache and redirect the read traffic to cache
 
 POST 
-longUrl.hashCode%62 (or consistent hashing) -> machine B -> store longUrl -> id convert to 3b7eZ 
+longUrl.hashCode%62 (consistent hashing) -> machine B -> store longUrl -> id convert to 3b7eZ 
 
 return B3b7eZ
 
@@ -179,8 +181,78 @@ Another approach we can take is to update the frequency offline:
  
 3. Design a messaging system
 
- 
- 
+Requirement (daily)
+DAU: 100M, 20 message per user => 20*100M/86400 ~= 20K => peak QPS 100K
+messages sent: 100M*20 = 2B, each message 100 bytes, 200GB
+
+
+CAP Theory:
+latency is important
+consistency is important
+availablity is okay
+
+Service:
+
+Message service:
+1. send a message to another user 
+2. fetch most recent converstaions
+
+Real-time service:
+push message to receiver
+
+Storage: 
+
+    Message Table:
+    messageId, content, date_created, last_updated
+    
+    Messages Table:
+    from_user, to_user, messageId
+
+    Thread Table:
+    user_id (primary key), thread_id (created_user_id + timestamp) + last_updated(secondary idx), participant_ids, date_created, last_updated 
+
+    POST
+    createGroup get thread_id
+     request body {
+         creatorUserId
+         repientUserIds
+     }
+
+     POST
+     send message
+     request body {
+         senderUserId,
+         receiverUserId,
+         messageContent
+     } 
+
+    return 200K
+
+    1. store the message to message table.
+        If the message is sent to an existing thread, the thread id is fetched and store to message table.
+        Otherwise, create a new thread with all participants recorded and store the message under the thread_id created.
+
+    2. send the message to all participants except sender in the corresponding thread. 
+    
+
+Scale:
+Group chat? Push 500 messages even if only 1 or two are online?
+add a channel service
+When user is logged in, message service identify the of the user channel, and subscribe to the channel
+when user is dropped, push service unsubscribe the user from the channel
+
+message service got message, find the channel users belongs to.
+channel service identify online users and push the message through push service
+
+
+Q: How to check status? online or offline?
+heartbeat every 3-5 seconds , if we haven't received the heartbeat from a user, we think it is offline.
+
+
+
+
+
+
  
 
 
