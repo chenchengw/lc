@@ -40,16 +40,7 @@ class Solution {
     }
  }
   
-  public static void main(String[] args) {
-//     ArrayList<String> strings = new ArrayList<String>();
-//     strings.add("Hello, World!");
-//     strings.add("Welcome to CoderPad.");
-//     strings.add("This pad is running Java 8.");
-
-//     for (String string : strings) {
-//       System.out.println(string);
-//     }
-    
+  public static void main(String[] args) {    
       ListNode dummy1 = new ListNode(0);
       ListNode ln1 = dummy1;
       for (int i = 1; i <= 4; i++) {
