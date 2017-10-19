@@ -1,0 +1,22 @@
+  
+  public static void main(String[] args) {
+    String ret = encode("abc", 2);
+    System.out.println(ret);
+ 
+    String ret2 = encode("xyz", 2);
+    System.out.println(ret2);
+    
+  }
+ 
+  public static String encode(String s, int shift) {
+      StringBuilder sb = new StringBuilder(); 
+      for (char c: s.toCharArray()) {
+        char nc = (char)(c + shift);
+        if (nc > 'z') {
+          sb.append((char)(c - (26-shift)));
+        } else {
+          sb.append(nc);
+        }
+      }
+      return sb.toString();
+  }
