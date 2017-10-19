@@ -1,0 +1,83 @@
+class Solution {
+    
+  static class SortedIterator implements Iterator<Integer> {
+    
+    PriorityQueue<ListNode> pq = new PriorityQueue<>(new Comparator<ListNode>(){
+           public int compare(ListNode ln1, ListNode ln2) {
+               return ln1.val - ln2.val;
+           }
+});
+    
+    public SortedIterator(ListNode list1, ListNode list2, ListNode list3) {
+      if (list1 != null) pq.offer(list1); 
+      if (list2 != null) pq.offer(list2);
+      if (list3 != null) pq.offer(list3);
+    }
+    
+    public boolean hasNext() {
+      return pq.size() > 0;
+    }
+    
+    public Integer next() {
+      if (!hasNext()) {
+        throw new NoSuchElementException("No Element any more!");
+      }
+      ListNode ln = pq.poll();
+      int ret = ln.val;
+      if (ln.next != null) {
+        ln = ln.next;
+        pq.offer(ln);
+      }
+      return ret;
+    }
+}
+                                                    
+ static class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) {
+      this.val = val;
+    }
+ }
+  
+  public static void main(String[] args) {
+//     ArrayList<String> strings = new ArrayList<String>();
+//     strings.add("Hello, World!");
+//     strings.add("Welcome to CoderPad.");
+//     strings.add("This pad is running Java 8.");
+
+//     for (String string : strings) {
+//       System.out.println(string);
+//     }
+    
+      ListNode dummy1 = new ListNode(0);
+      ListNode ln1 = dummy1;
+      for (int i = 1; i <= 4; i++) {
+        ln1.next = new ListNode(i);
+        ln1 = ln1.next;
+      }
+ 
+      ListNode dummy2 = new ListNode(0);
+      ListNode ln2 = dummy2;
+      for (int i = 1; i <= 4; i++) {
+        ln2.next = new ListNode(i*5);
+        ln2 = ln2.next;
+      }
+ 
+      ListNode dummy3 = new ListNode(0);
+      ListNode ln3 = dummy3;
+      for (int i = 1; i <= 4; i++) {
+        ln3.next = new ListNode(i*10);
+        ln3 = ln3.next;
+      }
+    
+      SortedIterator it = new SortedIterator(dummy1.next, dummy2.next, dummy3.next);
+      while (it.hasNext()) {
+        int val = it.next();
+        System.out.println(val);
+      }
+    
+  }
+
+  
+}
