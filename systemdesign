@@ -253,7 +253,15 @@ channel service identify online users and push the message through push service
 Q: How to check status? online or offline?
 heartbeat every 3-5 seconds , if we haven't received the heartbeat from a user, we think it is offline.
 
+4. Design Netflix
 
+让我设计一个 Netflix/Spotify，follow up 很多 比如如何限制同一个用户多处登录不能同时看一个资源，如何实现根据用户的网速调整清晰度，怎么热门推荐等等。
+对于设计登录系统，首先我们先要设计基本的login系统，首先支持Register/login，就需要一个基本的用户表，如果要支持更复杂一点的登录系统，包括verification，ban，inactive，removed，就需要一个status来记录每个user的状态。
+如果还要支持用户可以从多个设备登录，不同的设备会有不同的sessionid，但是却有相同的user——id，如果不想要同一个用户可以在多个设备上播放同样的资源，我们就要记录每个用户每个session正在play的资源，然后保证每个session不能play相同的song_ID或者video_id。如果要根据网络速度调整清晰度，我们就需要先测量网络的情况，让client端ping一下服务器，根据收到的ping再向服务器请求不同清晰度的资源。资源本身不应该存在服务器上，可以存在离客户端很近的CDN上。
+然后要看播放器的类型，如果是app的话，这个app会需要向DNSserver请求我们服务器的地址，然后我们服务器向clientload网页（如果是从浏览器的话，如果是app的话，就不需要load网页，直接去请求源地址就可以了）。然后网页再加载播放器（flash或者HTML5的），最后再请求源地址，源地址应该是放在附近的CDN上面的，所以很快。
+接下来是推荐系统，假设问怎么样设计一个推荐系统，推荐给用户Top10most frequentplayed。最简单的用MinHeap，把所有的play过的video或者audio都记录一个frequency，这个记录可以放在内存里（可以是cluster的这种比如redis）这样便于快速的更新和存取。我们希望这个工作放在worker里做，这样可以不影响整个系统的throughput。当worker完成了工作以后，就可以Update所有的client，这个工作也可以由一个worker来做，这里我们可以用push也可以用pull，也可以两者相结合，push的话只需要push给在线用户，pull的话对于刚上线的用户来更新最新结果。
+外排序就是假设内存不够用，那么我们就将所有的数据分成小块，然后每个小块都可以放进内存里排序，排好了序的这些小块再进行mergesort。就得到了所有数据的排序结果。
+还有一个followup就是因为有很多用户在同时播放视频文件，有可能同时有很多人在看同一个视频，那么这个视频的freq就会有很多+1，怎么样保证所有的+1都记录下来呢？我们可以用一个aggregator，专门记录这种update，等update到了一定的数量或者一定时间做一次batch的update。
 
 
 
