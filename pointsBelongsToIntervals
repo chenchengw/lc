@@ -1,35 +1,59 @@
 You are given n integer intervals [a_i, b_i] on the real axes, and the absolute value of the coordinates is bounded by M. Determine a point that belongs to the maximum number of intervals. Point x belongs to the interval [a, b] if a <= x <= b.
 
-compare to MinimumNumberOfMeetingRooms
-
-//basic
-
-intervals = []
-    for i in range(1, n):
-        a, b = raw_input().split(' ')
-        intervals.append((int(a), 1))
-        intervals.append((int(b), -1))
-
-    intervals.sort(key=lambda i: (i [0], -i [1]))
-    max_s = -1
-    max_p = None
-    s = 0
-    for pair in intervals:
-        s = s + pair[1]
-        if s > max_s:
-            max_s = s
-            max_p = pair[0]
-    print max_p
+class Solution {
+  public static void main(String[] args) {
+    List<int[]> intervals = new ArrayList<>();
+    intervals.add(new int[]{1, 7});
+    intervals.add(new int[]{2, 8});
+    intervals.add(new int[]{4, 9});
+    intervals.add(new int[]{10, 12});
+    maxPointIntervals(intervals);
+  }
+  
+  static void maxPointIntervals(List<int[]> intervals) {
+      List<Element> list = new ArrayList<>();
+      
+      for (int[] interval: intervals) {
+        list.add(new Element(interval[0], 1));
+        list.add(new Element(interval[1], -1));
+      }
+      Collections.sort(list, new Comparator<Element>(){
+        public int compare(Element e1, Element e2) {
+          return e1.point - e2.point;
+        }
+      });
+      int maxCount = 0, count = 0, maxPoint = 0;
+      for (Element elem: list) {
+        count += elem.count;
+        if (count > maxCount) {
+          maxCount = count;
+          maxPoint = elem.point;
+        }
+      }
+      
+      System.out.println("max count is " + maxCount);
+      int start = -1;
+      count = 0;
+      for (Element elem: list) {
+        count += elem.count;
+         if (count == maxCount) {
+            start = elem.point;
+            System.out.print("max range is [" + start + ","); 
+         } else if (start != -1) {
+            System.out.println(elem.point + "]");
+            start = -1;
+         }
+      }
+  }
+  
+  static class Element {
+    int point;
+    int count;
     
-    
-    // find the range
-    s = 0
-start = None
-max_ranges = []
-for pair in intervals:
-  s = s + pair[1]
-  if s == max_s:
-    start = pair[0]
-  else if start is not None:
-    max_ranges.append(start, pair[0])
-    start = None
+    Element(int point, int count) {
+      this.point = point;
+      this.count = count;
+    }
+  }
+  
+}
