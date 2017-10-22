@@ -8,34 +8,48 @@ Given locations of shops and facebook user, return the k closest to the user
 
 
 //max heap
-vector<Point> find_closest(const vector<Point>& v, int k) {
-  if (k <= 0) {
-    return vector<Point>();
+class Solution {
+  public static void main(String[] args) {
+    List<Point> points = new ArrayList<>();
+    points.add(new Point(1.0, 4.0));
+    points.add(new Point(2.0, 3.0));
+    points.add(new Point(1.0, 5.0));
+    points.add(new Point(3.0, 2.0));
+    
+     findClosest(points, 2);
   }
-  vector<Point> closest;
-  Heap<Point> heap(closest, Point::closer); // max heap
-  for (const auto& pt : v) {
-    if (heap.size() < k) {
-      heap.push(pt);
-    } else if (pt.dist() < heap.top().dist()) {
-      heap.pop();
-      heap.push(pt);
+  
+  static void findClosest(List<Point> points, int k) {
+    PriorityQueue<Point> pq = new PriorityQueue<Point>((a, b) -> ((int)b.getDist() - (int)a.getDist()));
+    for (Point p: points) {
+       if (pq.size() < k) {
+         pq.offer(p);
+       } else {
+         Point q = pq.peek();
+         if (p.getDist() < q.getDist()) {
+           pq.poll();
+           pq.offer(p);
+         }
+       }
+    }
+    
+    while (!pq.isEmpty()) {
+      Point p = pq.poll();
+      System.out.println("x:" + p.x + " y:" + p.y);
+    }
+    
+  }
+  
+  static class Point {
+    double x;
+    double y;
+    public Point(double x, double y) {
+      this.x = x;
+      this.y = y;
+    }
+    
+    public double getDist() {
+      return x*x + y*y; 
     }
   }
-  return closest;
 }
-
-
-// Build a min-heap out of the whole set, then pop off the first K 
-vector<Point> find_closest(const vector<Point>& v, int k) {
-  vector<Point> pts = v;
-  Heap<Point> heap(pts, Point::further); // min heap, constructed in linear time. See http://stackoverflow.com/questions/9755721/how-can-building-a-heap-be-on-time-complexity to understand why it's linear
-  vector<Point> closest;
-  for (int i = 0; i < k && !heap.empty(); ++i) {
-    closest.push_back(heap.top());
-    heap.pop();
-  }
-  return closest;
-}
-
-//quick select
