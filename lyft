@@ -50,27 +50,22 @@ signal()就是让所有注册在这个signal之下的callable全部去执行call
 他说对，但是我当时没想出别的问题，我以为他要问我hashmap里面会不会有问题囧。。
 https://www.techyourchance.com/thread-safe-observer-design-pattern-in-java/
 
-
-链接: https://instant.1point3acres.com/thread/186453
-来源: 一亩三分地
-
-链接: https://instant.1point3acres.com/thread/186453
-来源: 一亩三分地
-
-链接: https://instant.1point3acres.com/thread/186453
-来源: 一亩三分地
+1. 系统设计：设计一个可以预约车的系统。感觉答的不是很好，很多细节没有考虑到。会问到如何预约，如何发送提醒，data pipeline如何设计等等。
+感觉有点像notification system. 
+2. coding leetcode medium程度的，忘记什么了 
+3. coding 在电脑上实现typeahead suggestion. 给出题以后，面试官就消失了，一个小时过后回来check。会给test cases。 
+4. 和一个manager聊天 
 
 
-链接: https://instant.1point3acres.com/thread/283659
-来源: 一亩三分地
+上来大家自我介绍了15分钟，然后开始做题，就一道题，和下面贴子里面的一模一样。http://www.1point3ac... 
+当时看了上面的贴子我还不是完全明白题目什么意思，和面试官交流后明白了要求什么。稍微解释下 
+boolean allowDriverMode(shifts, current): shifts 就是一个的interval，按照顺时间顺序排好的，
+比如[, , ] current就是当前时间。 时间不是24小时制的,可以是任意大于0的数字，比如 40或100. 给一个shifts，
+给一个当前时间，求司机是否能进入驾驶模式。 在最近一次至少8小时休息后(必须是连续的休息时间)。 
+如果司机已经驾驶过12个小时，则不能进入驾驶模式。 否则返回可以。
 
-链接: https://instant.1point3acres.com/thread/283643
-来源: 一亩三分地
 
-给两个sorted list, 实现interator 返回 intersect
-
-链接: https://instant.1point3acres.com/thread/271434
-来源: 一亩三分地
+/* You are analyzing Lyft driver patterns over one day. You are given a list of active Lyft driver sessions in the format , write a function to find the hour when the most drivers were active. example = [ {driver_id: 1, start: , end: }, …, ] */
 
 
 第一轮：白板+上机：在一个迷宫里面找到出口，followup是一些对解法的improvement
