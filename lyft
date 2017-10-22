@@ -64,14 +64,20 @@ boolean allowDriverMode(shifts, current): shifts 就是一个的interval，按�
 给一个当前时间，求司机是否能进入驾驶模式。 在最近一次至少8小时休息后(必须是连续的休息时间)。 
 如果司机已经驾驶过12个小时，则不能进入驾驶模式。 否则返回可以。
 
+function to determine whether the driver is allowed to enter driver mode * 
+drivers are not allowed to drive a total of 12 hours without an 8 hour break * 
+the function inputs are: - a list of driver shifts as start/end integers, 
+the integer is relative to lyft launch - the current time since lyft launch as
+integer def can_drive(history, current_time): “”"
+Returns true if the driver has driven less than 12 hours since their last 8 hour break history|array - 
+Shifts, e.g. current_time|int - Current timestamp as hour since Lyft launch, e.g. 50 
+can_drive = True example # 9 hour break, 1 hour shift, 2 hour break, 10 hour shift history = current_time = 24 
+can_drive = False example: history = current_time = 24
 
-/* You are analyzing Lyft driver patterns over one day. You are given a list of active Lyft driver sessions in the format , write a function to find the hour when the most drivers were active. example = [ {driver_id: 1, start: , end: }, …, ] */
-
+/* You are analyzing Lyft driver patterns over one day. You are given a list of active Lyft driver sessions in the format , 
+write a function to find the hour when the most drivers were active. example = [ {driver_id: 1, start: , end: }, …, ] */
 
 第一轮：白板+上机：在一个迷宫里面找到出口，followup是一些对解法的improvement
-
-链接: https://instant.1point3acres.com/thread/283659
-来源: 一亩三分地
 
 LC238
 
@@ -80,17 +86,8 @@ smallest range
 https://leetcode.com/problems/alien-dictionary/description/
 
 
-LRU cache
-
-
 店面 Ceasar Cipher 简单说就是 abc + 2 –> cde, xyz + 2 –> zab 不是字母不变 区分大小写 要求编译通过运行。
 
-链接: https://instant.1point3acres.com/tag/lyft
-来源: 一亩三分地
-
-https://instant.1point3acres.com/thread/186453
-
-https://instant.1point3acres.com/thread/205225
 
 https://instant.1point3acres.com/thread/167253
 
@@ -104,4 +101,53 @@ https://eng.uber.com/soa/
 
 number of islands connected
 
+  
+class Solution {
+  
+  public static void main(String[] args) {
+    Shift shift1 = new Shift(1, 2);
+    Shift shift2 = new Shift(10, 20);
+    Shift shift3 = new Shift(22, 25);
+    List<Shift> shifts = Arrays.asList(shift1, shift2, shift3);
+    boolean result = canDrive(shifts, 24);  
+    System.out.println("Can shift: " + result);
+  }
+  
+  static boolean canDrive(List<Shift> shifts, int curTime) {
+    int driveHours = 0;
+    Shift prev = null;
+    boolean enoughBreak = false;
+    for (Shift shift: shifts) {
+        if (!enoughBreak) {
+          if (prev == null) {
+            if (shift.start >= 8) {
+              enoughBreak = true;
+            }
+          } else if (shift.start - prev.end >= 8) {
+            enoughBreak = true;
+            driveHours = 0;
+          } 
+        } 
+         
+        if (curTime > shift.start && curTime < shift.end) {
+          driveHours += curTime - shift.start;
+        } else {
+          driveHours += shift.end - shift.start;
+        }
+        prev = shift;
+    }
 
+    return enoughBreak && (driveHours <= 12);
+  }
+  
+  static class Shift {
+    int start;
+    int end;
+    public Shift(int start, int end) {
+      this.start = start;
+      this.end = end;
+    }
+  }
+  
+
+}
