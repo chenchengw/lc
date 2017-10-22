@@ -1,0 +1,120 @@
+  public static void main(String[] args) {
+     LRUCache cache = new LRUCache(2);
+     cache.put(1, "https://media-exp2.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAKTAAAAJGMwMDQwMTRkLTZkNWYtNDY0MC05OTUwLTRjMTUwODBkMGJhYg.jpg");
+    cache.printCache();
+    cache.put(2, "https://media-exp2.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAKTAAAAJGMwMDQwMTRkLTZkNWYtNDY0MC05OTUwLTRjMTUwODBkMGJhYg.jpg");
+    cache.printCache();
+    cache.put(3, "https://media-exp2.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAKTAAAAJGMwMDQwMTRkLTZkNWYtNDY0MC05OTUwLTRjMTUwODBkMGJhYg.jpg");
+    cache.printCache();
+    
+    cache.get(2);
+    cache.printCache();
+    cache.get(3);
+    cache.printCache();
+    
+    cache.get(2);
+    cache.printCache();
+  }
+  
+  static class LRUCache {
+    private Map<Integer, Node> hm = new HashMap<>();
+    private Node head;
+    private Node tail;
+    private int capacity;
+    
+    public LRUCache(int capacity) {
+      this.capacity = capacity;
+    }
+    
+    public void get(int key) {
+      if (hm.containsKey(key)) {
+        System.out.println("IN CACHE");
+        Node node = hm.get(key);
+        remove(node);
+        setHead(node);
+      }
+    }
+    
+    public void put(int key, String url) {
+      synchronized(this) {
+        if(hm.containsKey(key)) {
+          Node node = hm.get(key);
+          remove(node);
+          setHead(node);
+          System.out.println("IN CACHE");
+        } else {
+          if (hm.size() >= capacity) {
+            hm.remove(tail.key);
+            remove(tail);
+          }
+          try {
+            URL jUrl = new URL(url);
+            BufferedImage image = ImageIO.read(jUrl);
+            int size = image.getHeight()*image.getWidth();
+            System.out.println("DOWNLOADED " + size);
+            Node newNode = new Node(key, image);
+            hm.put(key, newNode);
+            setHead(newNode);
+          } catch (Exception e) {
+            System.out.println("Exception thrown while downloading image" + e); 
+          }
+        }
+      }
+    }
+    
+    void remove(Node node){
+      synchronized(this) {
+        Node prev = node.prev;
+        Node next = node.next;
+        if (prev != null) {
+          prev.next = next; 
+        }
+        if (next != null) {
+          next.prev = prev;
+        }
+        if (node == head) {
+          head = next;
+        }
+        if (node == tail) {
+          tail = prev;
+        }
+      }
+    }
+    
+    void setHead(Node node) {
+      synchronized(this) {
+        node.next = head;
+        node.prev = null;
+        if (head != null) {
+          head.prev = node;
+        }
+        head = node;
+        if (tail == null) {
+          tail = node; 
+        }
+      }
+    }
+    
+    public void printCache() {
+      Node cur = head;
+      while (cur != null) {
+        System.out.print("key:" + cur.key);
+        cur = cur.next;
+      }
+      System.out.println("");
+    }
+  }
+  
+  static class Node {
+    BufferedImage image;
+    int key;
+    Node prev;
+    Node next;
+    
+    public Node(int key, BufferedImage image) {
+      this.key = key;
+      this.image = image;
+    }
+    
+  }
+  
