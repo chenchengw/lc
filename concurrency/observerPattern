@@ -1,0 +1,149 @@
+import java.io.*;
+import java.util.*;
+import java.util.concurrent.locks.ReentrantReadWriteLock; 
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+
+class Solution {
+  
+  public static void main(String[] args) {
+    Signal signal = new Signal();
+    Callable1 cb1 = new Callable1();
+    Callable2 cb2 = new Callable2();
+    Callable3 cb3 = new Callable3();
+    
+    
+    Thread thread1 = new Thread() {
+      public void run() {
+        signal.register(1, cb1); 
+      }
+    };
+   
+    Thread thread2 = new Thread() {
+      public void run() {
+        signal.register(1, cb2); 
+      }
+    };
+    
+    Thread thread3 = new Thread() {
+      public void run() {
+        signal.register(1, cb3); 
+      }
+    };
+    
+    thread1.start();
+    thread2.start();
+    thread3.start();
+    // signal.signal(1);
+    // signal.signal(2); 
+    
+//     signal.unregister(1, cb1);
+//     signal.unregister(2, cb2);
+    
+    signal.signal(1);
+    // signal.signal(2); 
+    
+  }
+  
+  static public interface Callable {
+    public void call();
+    public String getName();
+  }
+  
+  
+  static public class Callable1 implements Callable{
+    public void call(){
+      System.out.println("Callable1 gets called" );
+    }
+    
+    public String getName() {
+      return "Callable1";
+    }
+  }
+  
+  static public class Callable2 implements Callable{
+    public void call(){
+      System.out.println("Callable2 gets called" );
+    }
+    
+    public String getName() {
+      return "Callable2";
+    }
+  }
+  
+  
+  static public class Callable3 implements Callable{
+    public void call(){
+      System.out.println("Callable3 gets called" );
+    }
+    
+    public String getName() {
+      return "Callable3";
+    }
+  }
+  
+  static public class Signal{
+    
+    private Map<Integer, Set<Callable>> hm;
+    private ReentrantReadWriteLock lock;
+    
+    public Signal() {
+      hm = new HashMap<>();
+      lock = new ReentrantReadWriteLock();
+    }
+    
+    public void register(int signal, Callable cb) {
+      lock.writeLock().lock();
+      try {
+        if (hm.containsKey(signal)) {
+          hm.get(signal).add(cb);
+        } else {
+          Set<Callable> set = new HashSet<>();
+          set.add(cb);
+          hm.put(signal, set);
+        }
+      } finally {
+        lock.writeLock().unlock(); 
+      }
+    }
+    
+    public void unregister(int signal, Callable cb) {
+       lock.writeLock().lock();
+      try {
+       if (hm.containsKey(signal)) {
+          Set<Callable> set = hm.get(signal);
+          if (!set.remove(cb)) {
+            System.out.println(cb.getName() + "is not registered with signal:" + signal);
+          }
+       } 
+      } finally {
+        lock.writeLock().unlock();
+      }
+    }
+    
+    public void signal(int signal) {
+      lock.readLock().lock();
+      try {
+        if (!hm.containsKey(signal)) {
+          System.out.println("No callables registered with signal:" + signal);
+          return;
+        }
+        for (Callable cb: hm.get(signal)) {          
+          cb.call();
+        }
+      } finally {
+        lock.readLock().unlock(); 
+      }
+    }
+  
+  }
+  
+  
+}
+
+https://www.techyourchance.com/thread-safe-observer-design-pattern-in-java/
+http://javarevisited.blogspot.com/2013/03/reentrantlock-example-in-java-synchronized-difference-vs-lock.html
