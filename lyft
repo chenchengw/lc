@@ -16,6 +16,54 @@ Data组的头头，白人，长得好艺术家（很胖，头发和胡子很长�
 比如根据上边两个例子： hell: hell 4 hello 6 world: worldwide 7 world 10 
 其实就是trie，外加需要记录rank信息，以及在打印的时候，需要把prefix打印出来。 根本不到LC那道题目的难度，也就是implement trie的扩展而已。
 
+
+背景：两年安卓开发经验 面试流程：1轮白板+上机算法，1轮安卓设计，2轮安卓上机，1轮午餐，1轮Team lead 咖啡面试 
+第一轮：白板+上机：在一个迷宫里面找到出口，followup是一些对解法的improvement 
+第二轮：设计利福特一个feature，基本是客户端的架构，followup是一些edge cases应该点处理 
+第三轮：吃饭聊天（然后安卓头头突然乱入说请我喝咖啡，然后深挖我做了啥，然后回来以后还有时间说说安卓的一个MVP怎么工作，妈的跪了） 
+第四轮：安卓上机关于Timestamp转换，妈的，老子不知道直接stackoverflow跪了 
+第五轮：安卓上机关于typeahead search，followup recyclerview优化 
+
+
+1. 第一轮是1个小时的上机coding，可以自己带laptop，也可以用他们的 题目是LRU的增强版，给定一个输入文件，输入文件第一行是cache size，
+第二行是一个数N，接下来N行每一行有一个URL，每一个URL是一张图片的链接，URL可以有重复，
+例如： 100000 3 要求实现一个in memory LRU cache，然后输出一个文件，每一行对应于输入文件的每一行URL，
+包含： （1）输入文件的URL地址 （2）这个URL是否在cache里，如果在cache里，输出IN CACHE，如果不在cache里，
+下载这张图片放到cache里，然后输出DOWNLOADED （3）如果不在cache里，输出以byte表示的图片大小 
+例如： DOWNLOADED 50000 DOWNLOADED 40000 IN CACHE DOWNLOADED 30000 DOWNLOADED 40000
+程序写完之后会有两个人来评判，其中有一个人不看题只看代码，所以需要写注释。他们会给个U盘，里面好像有测试数据，但是我当时没听清楚所以做完了以后没测，
+自己测下来程序感觉并没有什么问题。。
+
+2. Lowest common ancestor in binary tree，问了几个follow up 
+（1）如果输入的node不在树里面怎么办 
+（2）如果两个node是相同的怎么办 
+（3）如果有两个Thread同时访问这棵树会不会有问题？可不可以有办法不用synchronized？ 
+
+3. 这一轮比较惨，出的题不太常规，我本来以为要出system design的。。 
+有一个Callable interface，比如 public interface Callable { public void call(); } 
+实现一个Class，这个class有三个Function void register(int signal, Callable cb); 
+void unregister(int signal, Callable cb); void signal(int signal); 
+register()就是把这个callable注册在一个signal之下，一个Signal可以对应多个Callable，unregister()就是移除这个callable，
+signal()就是让所有注册在这个signal之下的callable全部去执行call() 
+题目本身不难，用HashMap就行，关键是follow-up，面试官说你写的程序如果作为一个API library，
+有好几个fundamental issues，让我找找看，我提了一个thread safe，比如一个thread在signal的时候另一个thread在unregister，
+他说对，但是我当时没想出别的问题，我以为他要问我hashmap里面会不会有问题囧。。
+https://www.techyourchance.com/thread-safe-observer-design-pattern-in-java/
+
+
+链接: https://instant.1point3acres.com/thread/186453
+来源: 一亩三分地
+
+链接: https://instant.1point3acres.com/thread/186453
+来源: 一亩三分地
+
+链接: https://instant.1point3acres.com/thread/186453
+来源: 一亩三分地
+
+
+链接: https://instant.1point3acres.com/thread/283659
+来源: 一亩三分地
+
 链接: https://instant.1point3acres.com/thread/283643
 来源: 一亩三分地
 
