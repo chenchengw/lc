@@ -22,13 +22,10 @@ class Solution {
           return e1.point - e2.point;
         }
       });
-      int maxCount = 0, count = 0, maxPoint = 0;
+      int maxCount = 0, count = 0;
       for (Element elem: list) {
         count += elem.count;
-        if (count > maxCount) {
-          maxCount = count;
-          maxPoint = elem.point;
-        }
+        maxCount = Math.max(maxCount, count);
       }
       
       System.out.println("max count is " + maxCount);
