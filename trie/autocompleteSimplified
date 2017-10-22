@@ -1,0 +1,72 @@
+输入是两个文件，第一个文件 每一行代表 word rank 比如 hello 6 world 10 wide 3 hell 4 worldwide 7 lyft 20 
+第二个文件 代表要搜索的prefix 比如 hell world 输出是，根据第二个文件的每一个prefix，打印出来word rank，按照rank排序。
+比如根据上边两个例子： hell: hell 4 hello 6 world: worldwide 7 world 10 
+其实就是trie，外加需要记录rank信息，以及在打印的时候，需要把prefix打印出来。 根本不到LC那道题目的难度，也就是implement trie的扩展而已。
+
+
+class Solution {
+  static TrieNode root = new TrieNode();
+  
+  public static void main(String[] args) {
+    String[] words = new String[]{"hello", "world", "wide", "hell", "worldwide", "lyft"};
+    int[] times = new int[]{6, 10, 3, 4, 7, 20};
+    init(words, times);
+    suggest("hell");
+    suggest("f");
+  }
+  
+  
+  static void init(String[] words, int[] times) {
+      TrieNode tn = root;
+      for (int i = 0; i < words.length; i++) {
+        tn = root;
+        for (char c: words[i].toCharArray()) {
+          if (tn.children.get(c) == null) {
+            tn.children.put(c, new TrieNode());
+          }
+          tn = tn.children.get(c);
+          tn.ranks.offer(new Pair(words[i], times[i]));
+        }
+      }
+  }
+  
+  static void suggest(String prefix) {
+      TrieNode tn = root;
+      for (char c: prefix.toCharArray()) {
+        if(tn.children.get(c) == null) {
+          break;
+        }
+        tn = tn.children.get(c);
+      }
+      System.out.print(prefix+":");
+      if (tn.ranks != null) {
+        PriorityQueue<Pair> pq = tn.ranks;
+        while (!pq.isEmpty()) {
+          Pair suggestion = pq.poll();
+          System.out.print(suggestion.word + " " + suggestion.count + " ");
+        }
+        System.out.println(" ");
+      }
+  }
+  
+  
+  static class TrieNode {
+      Map<Character, TrieNode> children;
+      PriorityQueue<Pair> ranks;
+      
+      public TrieNode() {
+        children = new HashMap<>();
+        ranks = new PriorityQueue<>((a,b)-> (a.count - b.count));
+      }
+  }
+   
+  static class Pair {
+    String word;
+    int count;
+    
+    public Pair(String word, int count){
+      this.word = word;
+      this.count = count;
+    }
+  }
+}
