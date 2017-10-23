@@ -1,5 +1,20 @@
-  public static void main(String[] args) {
-     LRUCache cache = new LRUCache(2);
+import java.io.*;
+import java.util.*;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.net.URL;
+
+/*
+ * To execute Java, please define "static void main" on a class
+ * named Solution.
+ *
+ * If you need more classes, simply define them inline.
+ */
+
+class Solution {
+  
+ public static void main(String[] args) {
+     LRUCache cache = LRUCache.getInstance(2);
      cache.put(1, "https://media-exp2.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAKTAAAAJGMwMDQwMTRkLTZkNWYtNDY0MC05OTUwLTRjMTUwODBkMGJhYg.jpg");
     cache.printCache();
     cache.put(2, "https://media-exp2.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAKTAAAAJGMwMDQwMTRkLTZkNWYtNDY0MC05OTUwLTRjMTUwODBkMGJhYg.jpg");
@@ -21,11 +36,24 @@
     private Node head;
     private Node tail;
     private int capacity;
+    private static LRUCache instance;
     
-    public LRUCache(int capacity) {
+    private LRUCache(int capacity) {
       this.capacity = capacity;
     }
     
+    public static LRUCache getInstance(int capacity) {
+      if (instance == null) {
+        synchronized(LRUCache.class) {
+          if (instance == null) {
+            instance = new LRUCache(capacity);
+          }
+        }
+      }
+      return instance;
+    }
+        
+
     public void get(int key) {
       if (hm.containsKey(key)) {
         System.out.println("IN CACHE");
@@ -117,4 +145,4 @@
     }
     
   }
-  
+}
