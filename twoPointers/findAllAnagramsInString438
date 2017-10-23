@@ -1,0 +1,21 @@
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> result = new ArrayList<>();
+        if (p.length() == 0) return result;
+        int[] cnt = new int[256];
+        for (char c: p.toCharArray()) {
+            cnt[c]++;
+        }   
+        int left = 0, right = 0, count = p.length();
+        while (right < s.length()) {
+            //move the pointer f
+            if (cnt[s.charAt(right++)]-- > 0) {
+                count--;
+            }       
+            if (count == 0) result.add(left);
+            //if cnt[s.charAt(left) >=0, this character appeared in p
+            if (right - left == p.length() && cnt[s.charAt(left++)]++ >= 0) {
+                count++;
+            }
+        }
+        return result;
+    }
