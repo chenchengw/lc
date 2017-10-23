@@ -1,0 +1,45 @@
+class Solution {
+  
+  public static void main(String[] args) {
+    Node root = new Node(2);
+    root.left = new Node(1);
+    root.right = new Node(3);
+    BST bst = new BST();
+    bst.convertBSTToDLL(root);
+    Node curr = bst.head;
+    while (curr != null) {
+      System.out.println(curr.val + "->"); 
+      curr = curr.right;
+    }
+  }
+  
+  static class BST {
+    Node head, prev;
+
+    public BST() {
+    }
+    
+    void convertBSTToDLL(Node root) {
+        if (root == null) return;
+        convertBSTToDLL(root.left);
+        if (prev == null) {
+          head = root;
+        } else {
+          root.left = prev;
+          prev.right = root;
+        }
+        prev = root;
+        convertBSTToDLL(root.right);
+    }
+  }
+ 
+  static class Node {
+      Node left;
+      Node right;
+      int val;
+
+      public Node(int val) {
+        this.val = val;
+      }
+    }
+}
