@@ -12,3 +12,16 @@
         
         return notHold[n];
     }
+
+//simplified
+    public int maxProfit(int[] prices, int fee) {
+        int n = prices.length;
+        int hold = -prices[0];//max profit of holding stock until day i;
+        int unhold = 0; //max profit of holding stock until day i;
+        for (int i = 1; i <= n; i++) {
+            int tmp = hold;
+            hold = Math.max(hold, unhold - prices[i-1]);
+            unhold = Math.max(unhold, tmp + prices[i-1] - fee);
+        }
+        return unhold;
+    }
