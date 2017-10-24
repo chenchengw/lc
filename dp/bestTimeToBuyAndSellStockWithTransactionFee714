@@ -1,0 +1,14 @@
+    public int maxProfit(int[] prices, int fee) {
+        int n = prices.length;
+        int[] hold = new int[n + 1]; //max profit of holding stock until day i;
+        int[] notHold = new int[n + 1]; //max profit of holding stock until day i;
+        hold[0] = -prices[0];
+        
+        for (int i = 1; i <= n; i++) {
+            //we only need to pay fees for once, either at buy time or sell time
+            hold[i] = Math.max(hold[i - 1], notHold[i - 1] - prices[i - 1]);
+            notHold[i] = Math.max(notHold[i - 1], hold[i - 1] + prices[i - 1] - fee);
+        }
+        
+        return notHold[n];
+    }
