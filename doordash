@@ -1,0 +1,57 @@
+最长连续序列。 (exactly one larger than the one that came before it) ex: 1, 2, 5, 6 -> 1, 2 ex: 3, 5, 6, 7, 12 -> 5, 6, 7 
+follow up 变形：(exactly one larger than some number that came before it) ex: 1, 6, 2, 7, 3 -> 1, 2, 3 ex: 3, 5, 6, 7, 12 -> 5, 6, 7 
+
+sqrt() 变形 返回int， 但是跟leetcode 不同的是要返回平方后大于等于输入值的结果 比如输入15的话要返回4, 而不是3
+
+/** * @param matrix, a 2-d array (list of lists) of integers  
+the size of the largest contiguous block (horizontally/vertically connected) of numbers with the same value 
+int expected1 = 2; 
+int matrix1 = new int {{1,2,3}, {4,1,6}, {4,5,1}}; int expected2 = 4; 
+int matrix2 = new int {{1,1,1,2,4}, {5,1,5,3,1}, {3,4,2,1,1}}; int expected3 = 11; 
+int matrix3 = new int {{3,3,3,3,3,1}, {3,4,4,4,3,4}, {2,4,3,3,3,4}, {2,4,4,4,4,4}}; 
+int expected4 = 24; int matrix4 = new int{ {0,0,0,0,0}, {0,0,0,0,0}, {0,0,1,0,0}, {0,0,0,0,0}, {0,0,0,0,0}}; 
+
+**/ 2. 第二轮 1. 类似于find target in rotated array不过是找的rotated的index在哪儿 2. unique path I && II 
+
+第一题找map中连续相同数字最多是多少，我用boolean【】【】判断是否visited，follow up就是看如何缩小这个space，第二题是unique path，
+follow up也是缩小space complexity
+
+给一个BST的root，和两个node，求两个node的path 
+第一轮lc原题： spiral matrix i & ii 
+第二轮题大概是这样： // You’re given two sets of intervals, one for DoorDash and one for a restaurant, 
+and you want to find when they are both open. These are hours in 24-hour times, but can be any arbitrary 
+floating point numbers. // example: // D = // R = // =>
+
+implement sqrt ＋ 一些些小的变化。
+
+一轮电面很简单，就是permutation，不过不是数字 是character， abc这样的，输出abc， acb，bac，bca，cab，cba。
+还有一个也是原题，add binary。一个小时结束了，过了8天左右，才收到HR邮件，说下一轮就是两个video。
+前天第一轮video，两轮两小时，美国小哥和美国小姐姐，题目也很简单，小姐姐的是spiral matrix，小哥的是找interval 的公共区间，和下面这个帖子说的一样。
+
+第一轮： 系统设计， 设计airbnb database. 就是设计schema， tables，有哪些column，，，感觉面试官有点严厉。。。（原来以为会让设计 doordash api）
+第二轮: white board coding, 类似leetcode 的word break， 不同之处是返回max length, 比如 dict , input: fireman, 有两种可能 以及 返回3 
+第三轮： 午饭 
+第四轮： sublime coding, spiral matrix
+
+第一面问了Word break变形 输出有效break的可能里最多的break次数 比如词是“abbc”，字典是"a", "b", "bc", "ab", 
+有两种可能 一种是a, b, bc, 一种ab, bc，要输出3 
+
+然后转天就来2面了 第二面聊了很多简历上的事 感觉之前实习做的事还挺冷门的但是面试官表示他以前也有这方面的经验所以很感兴趣…问的超细致 
+最后时间不多了他说就写个sqrt吧，也是返回int但是跟lc不同的是要返回平方后大于等于输入值的结果 比如输入15的话要返回4，
+lc我记得是返回3 用二分写 写的倒是挺快的但是就在check mid >= n / mid时忘记了那个除是向下round的…于是有时就off by 1...
+然后改了改最后对了但是感觉有点不好……希望有rp 
+
+sqrt(x, precision)，返回正数x正平方根的浮点数结果，结果范围需要在±precision以内。
+
+1. spiral matrix 只是開始的方向不太一樣
+2. first missing positive in unsorted array
+
+
+1.给定数组，求longest consecutive subarray 例如：输入｛1，4，5，6，8，10，11｝，输出｛4，5，6｝，这个用dp可解 
+2.follow up 例子：输入｛1，4，2，5，3，9，10｝，输出｛1，2，3｝ 要求o(nlogn)解法，leetcode上有原题 
+第二轮： 1.给定长m,宽n，的格子，每次只能向下或向右走，问从最左上角走到最右下角，有多少种方法？dp可解 
+2.实现sqrt，不同的是给定精度和target，返回一个精度范围内的值即可 
+
+
+
+
