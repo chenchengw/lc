@@ -1,0 +1,22 @@
+    public String addBinary(String a, String b) {
+        if (a == null || b == null) return "";
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        StringBuilder sb = new StringBuilder();
+        int carry = 0;
+        while (i >= 0 || j >=0 || carry > 0) {
+            int val = 0;
+            if (i >= 0) {
+                val += a.charAt(i--) - '0';
+            }
+            if (j >= 0) {
+                val += b.charAt(j--) - '0';
+            }
+            if (carry > 0) {
+                val += carry;
+            }
+            sb.insert(0, val%2);
+            carry = val/2;
+        }
+        return sb.toString();
+    }
