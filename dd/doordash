@@ -6,6 +6,12 @@ https://leetcode.com/problems/longest-increasing-subsequence/description/
 sqrt() 变形 返回int， 但是跟leetcode 不同的是要返回平方后大于等于输入值的结果 比如输入15的话要返回4, 而不是3
 https://leetcode.com/problems/sqrtx/description/
 
+
+
+**/ 2. 第二轮 1. 类似于find target in rotated array不过是找的rotated的index在哪儿 
+2. unique path I && II 
+
+第一题找map中连续相同数字最多是多少，我用boolean【】【】判断是否visited，follow up就是看如何缩小这个space，
 /** * @param matrix, a 2-d array (list of lists) of integers  
 the size of the largest contiguous block (horizontally/vertically connected) of numbers with the same value 
 int expected1 = 2; int matrix1 = new int {{1,2,3}, {4,1,6}, {4,5,1}}; 
@@ -14,15 +20,14 @@ int expected3 = 11;  int matrix3 = new int {{3,3,3,3,3,1}, {3,4,4,4,3,4}, {2,4,3
 int expected4 = 24; int matrix4 = new int{ {0,0,0,0,0}, {0,0,0,0,0}, {0,0,1,0,0}, {0,0,0,0,0}, {0,0,0,0,0}}; 
 
 #dfs
+123
+416
+451
 
 11124
 51531
 34211
 
-**/ 2. 第二轮 1. 类似于find target in rotated array不过是找的rotated的index在哪儿 
-2. unique path I && II 
-
-第一题找map中连续相同数字最多是多少，我用boolean【】【】判断是否visited，follow up就是看如何缩小这个space，
 第二题是unique path，
 follow up也是缩小space complexity
 
