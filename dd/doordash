@@ -69,6 +69,85 @@ https://leetcode.com/problems/longest-increasing-subsequence/discuss/
 第二轮： 1.给定长m,宽n，的格子，每次只能向下或向右走，问从最左上角走到最右下角，有多少种方法？dp可解 
 2.实现sqrt，不同的是给定精度和target，返回一个精度范围内的值即可 
 
+Given two strings of binary numbers (e.g. ‘101’ and ‘111’), return the sum of those two binary strings as another binary string
+
+
+Summarize the gaps in a sorted array that should ideally contain consecutive numbers from 1 to K. For example when K=100, the array [3, 4, 5, 7, 75, 76] should give "1-2, 6, 8-74, 77-100" as output. 
+
+
+You’re given two sets of intervals, one for LinkedIn and one for a Facebook, and you want to find when they are both open. These are hours in 24-hour times, but can be any arbitrary floating point numbers.
+D = [(9, 12), (14, 17), (21, 23)]
+R = [(8, 10), (11, 22)]
+=> [(9, 10), (11, 12), (14, 17), (21, 22)]
+You can assume the intervals within a list do not overlap. If they ask, you can assume the lists are sorted. You can assume that the tuple there is really an Interval struct/object with start and end for clarity; no need to write that out.
+
+
+I want to learn all the store names which are on the Facebook website so people think I'm smart.
+I opened up our alphabetical store directory to a random page, looking for stores I didn't know. I put each name I didn't know at increasing indices in a huge array I created in memory. When I reached the end of the directory, I started from the beginning and did the same thing until I reached the page I started at.
+Now I have an array of store names that are mostly alphabetical, except they start somewhere in the middle of the alphabet, reach the end, and then start from the beginning of the alphabet. In other words, this is an alphabetically ordered array that has been "rotated." For example:
+ names = [
+    'MacLaren’s Pub',
+    'Monk’s Cafe',
+    'Paddy’s Pub',
+    'Taco Town',
+    'Xylophone Cafe',
+    'Abdul’s Orange Chicken Emporium', # <-- rotates here!
+    'Bob’s Burgers',
+    'Central Perk',
+    ‘Da Situation',
+    'Krusty Krab',
+    'Los Pollos Hermanos',
+]
+
+
+Write a function for finding the index of the "rotation point," which is where I started working from the beginning of the directory. This array is huge (there are lots of stores I don't know) so we want to be efficient here.
+
+Given a grid of size m x n, count the number of paths from top-left cell to bottom-right cell if we can either move down or right from each cell in the grid.
+
+Start |  R |    | 
+  D   |    |    | 
+      |    |    |  Goal
+      
+      
+      
+      
+Facebook operates in N neighborhoods within San Francisco. You are given an array where arr[i] represents the number of deliveries made in neighborhood i. You need to return an array where result[i] is the number of deliveries made in all neighborhoods except neighborhood i and you cannot use subtraction.
+
+Example:
+13
+78
+95
+203
+89
+
+Returns
+78+95+203+89
+13+95+203+89
+13+78+203+89
+13+78+95+89
+13+78+95+203
+      
+Input   Output
+13        78+95+203+89
+78        13+95+203+89
+
+
+
+Given any number n, how many ways can we express the number as the sum of 1, 3, and 4?
+
+Example: Given n = 5, the answer is 6
+5 = 1 + 1 + 1 + 1 + 1
+5 = 1 + 1 + 3
+5 = 1 + 3 + 1
+5 = 3 + 1 + 1
+5 = 1 + 4
+5 = 4 + 1
+
+Implement a fixed size in-memory cache. If the cache is full, evict elements based on the time that they were added to the cache, aka evict the most stale (oldest untouched) element when storage is full. 
+(Include implementations for GET, SET, and UPDATE)
+
+
+
 
 
 
