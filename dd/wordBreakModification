@@ -1,0 +1,24 @@
+  public static void main(String[] args) {
+      List<String> wordDict = new ArrayList<>();
+    wordDict.add("fi");
+    wordDict.add("re");
+    wordDict.add("ire");
+    wordDict.add("man");
+    wordDict.add("fire");
+    
+    System.out.println(wordBreak("fireman", wordDict));
+      
+  }
+  
+  static int wordBreak(String s, List<String> wordDict) {
+        int[] dp = new int[s.length()+1];
+        dp[0] = 0;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j <= i; j++) {
+                if (wordDict.contains(s.substring(j, i))) {
+                    dp[i] = Math.max(dp[i], dp[j]+1);
+                } 
+            }
+        }
+        return dp[s.length()];
+    }
