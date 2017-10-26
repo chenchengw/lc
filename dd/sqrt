@@ -1,0 +1,33 @@
+  static public int mySqrt(int x) {
+        int start = 0, end = x/2 + 1;
+        while (start < end) {
+            int mid = start + (end - start)/2;
+            int sq = mid*mid;
+            if (sq == x) {
+                return mid;
+            } else if (sq < x) {
+                start = mid + 1;
+            } else {
+                end = mid;
+            }
+        }
+        return end;
+    }
+    
+   //original one, we use long because there could be over flow
+   
+   long start = 0, end = x/2 + 1;
+        while (start <= end) {
+            long mid = start + (end - start)/2;
+            long sq = mid*mid;
+            if (sq == (long)x) {
+                return (int)mid;
+            } else if (sq < (long)x) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+        return (int)end;
+        
+        
