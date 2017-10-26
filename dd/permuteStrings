@@ -1,0 +1,20 @@
+  public static void main(String[] args) {
+      StringBuilder sb = new StringBuilder();
+      Set<Character> set = new HashSet<>();
+      permute("abc", sb, set);
+  }
+  
+  static void permute(String s, StringBuilder sb, Set<Character> set)   {
+      if (sb.length() == s.length()) {
+        System.out.println(sb.toString());
+        return;
+      }
+      for (int i = 0; i < s.length(); i++) {
+        if(set.contains(s.charAt(i))) continue; 
+        sb.append(s.charAt(i));
+        set.add(s.charAt(i));
+        permute(s, sb, set);
+        set.remove(s.charAt(i));
+        sb.deleteCharAt(sb.length()-1);
+      }
+  }
