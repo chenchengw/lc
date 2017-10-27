@@ -1,0 +1,36 @@
+class Solution {
+  public static void main(String[] args) {
+    int[] numbers = new int[] {3, 4, 5, 7, 75, 76};
+    printIntervals(numbers);
+  }
+  
+  static void printIntervals(int[] nums) {
+    
+    int j = 0, left = 1;
+    for (int i = 1; i <= 100; i++) {
+      while (i == nums[j]) {
+          if (left != i) {
+            System.out.print(left);
+            if (left != i-1) {
+              System.out.print("-");
+              System.out.println(i-1);
+            } else {
+              System.out.println("");
+            }
+          }
+          left = i+1;  
+          j++; 
+          if (j == nums.length) {
+            System.out.print(left);
+            if (left != 100) {
+              System.out.print("-");
+              System.out.println(100);
+            } else {
+              System.out.println("");
+            }
+            return;
+          }
+      } 
+    }
+    
+  }
