@@ -1,0 +1,44 @@
+  public static void main(String[] args) {
+    int[] deliveries = new int[] {13, 78, 95, 203, 89};
+    deliveriesExceptForSelf(deliveries);
+  }
+  
+  static void deliveriesExceptForSelf(int[] deliveries) {
+    if(deliveries.length == 0) return;
+    int n = deliveries.length;
+    int[] lefts = new int[n];
+    for (int i = 1; i < n; i++) {
+      lefts[i] = lefts[i-1] + deliveries[i-1];
+    }
+  
+    int[] rights = new int[n];
+    for (int i = n-2; i>=0; i--) {
+      rights[i] = rights[i+1] + deliveries[i+1];
+    }
+    
+    int[] result = new int[n];
+    for (int i = 0; i < n; i++) {
+      result[i] = lefts[i] + rights[i]; 
+      System.out.println("result is " + result[i]);
+    }
+    
+  }
+  
+  //save space
+    static void deliveriesExceptForSelf(int[] deliveries) {
+    if(deliveries.length == 0) return;
+    int n = deliveries.length;
+  
+    int[] result = new int[n];
+    for (int i = n-2; i>=0; i--) {
+      result[i] = result[i+1] + deliveries[i+1];
+    }
+    
+    int left = 0;
+    for (int i = 0; i < n; i++) {
+      result[i] = result[i] + left; 
+      System.out.println("result is " + result[i]);
+      left = left + deliveries[i];
+    }
+    
+  }
