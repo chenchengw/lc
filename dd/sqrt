@@ -31,3 +31,15 @@
         return (int)end;
         
         
+        float start = 0, end = number/2 + 1;
+      while (start + precision <= end) {
+          float mid = start + (end - start)/2;
+          if (mid*mid == number) {
+             return mid; 
+          } else if (mid*mid < number) {
+             start = mid + precision;
+          } else {
+             end = mid - precision; 
+          }
+      }
+      return start;
