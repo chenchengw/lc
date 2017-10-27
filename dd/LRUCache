@@ -1,0 +1,121 @@
+class Solution {
+  public static void main(String[] args) {
+    LRUCache cache = new LRUCache(2);
+    cache.set(1, 2);
+    cache.printNode();
+    
+    cache.set(2, 4);
+    cache.printNode();
+    
+    cache.set(1, 6);
+    cache.printNode();
+    
+    cache.get(2);
+    cache.printNode();
+    
+    cache.get(1);
+    cache.printNode();
+  }
+  
+
+  static class LRUCache {
+      int capacity;
+      Map<Integer, Node> hm;
+      Node head;
+      Node tail;
+    
+      public LRUCache(int capacity) {
+        this.capacity =  capacity;
+        this.hm = new HashMap<>();
+      }
+    
+      public Integer get(int key) {
+        if (hm.containsKey(key)) {
+          Node node = hm.get(key);
+          remove(node);
+          setHead(node);
+          return node.val;
+        } else {
+          return null; 
+        }
+      }
+    
+      
+      public void update(int key, int val) {
+        if (hm.containsKey(key)) {
+          Node node = hm.get(key);
+          node.val = val;
+          remove(node);
+          setHead(node);
+        } else {
+          throw new IllegalArgumentException("cache does not contain key " + key); 
+        }
+      }
+    
+      public void set(int key, int val) {
+        if (hm.containsKey(key)) {
+          update(key, val);
+        } else {
+          if (hm.size() == capacity) {
+            hm.remove(tail.key);
+            remove(tail);
+          }
+          Node node = new Node(key, val);
+          hm.put(key, node);
+          setHead(node);
+        }
+      }
+      
+    
+      private void remove(Node node) {
+        Node prev = node.prev;
+        Node next = node.next;
+        if (prev != null) {
+          prev.next = next; 
+        }
+        if (next != null) {
+          next.prev = prev; 
+        }
+        if (head == node) {
+          head = next; 
+        }
+        if (tail == node) {
+          tail = prev; 
+        }
+      }
+    
+      private void setHead(Node node) {
+        node.next = head;
+        node.prev = null;
+        if (head != null) {
+          head.prev = node; 
+        }
+        head = node;
+        if (tail == null) {
+          tail = node;
+        }
+      }
+    
+      private void printNode() {
+        Node curr = head;
+        while (curr != null) {
+          System.out.print("(" + curr.key + "," + curr.val + ") ->"); 
+          curr = curr.next;
+        }
+        System.out.println();
+      }
+  }
+  
+  static class Node {
+    int key;
+    int val;
+    Node prev;
+    Node next;
+    
+    public Node(int key, int val) {
+      this.key = key;
+      this.val = val;
+    }
+  }
+  
+}
