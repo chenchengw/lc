@@ -15,3 +15,37 @@
         }
         return hm.get(head);
     }
+    
+    //no extra space
+        public RandomListNode copyRandomList(RandomListNode head) {
+        RandomListNode curr = head;
+        while (curr != null) {
+            RandomListNode node = new RandomListNode(curr.label);
+            RandomListNode next = curr.next;
+            curr.next = node;
+            node.next = next;
+            curr = node.next;
+        }
+        
+        //copy random
+        curr = head;
+        while (curr != null) {
+           if (curr.random != null) {
+               //random.next is the copy of random node
+               curr.next.random = curr.random.next;
+           }
+           curr = curr.next.next;
+        }
+
+        //split the lists
+        curr = head;
+        RandomListNode dummy = new RandomListNode(0);
+        RandomListNode node = dummy;
+        while (curr != null && curr.next != null) {
+            node.next = curr.next;
+            curr.next = curr.next.next;
+            curr = curr.next;
+            node = node.next;
+        }
+        return dummy.next;
+    }
