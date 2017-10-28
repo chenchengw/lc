@@ -1,0 +1,34 @@
+  public static void main(String[] args) {
+    balanceParentheses("(a)(()()");
+    balanceParentheses("(a)())()");
+  }
+  
+  static void balanceParentheses(String s){
+    int count = 0;
+    char[] cs = s.toCharArray();
+    StringBuilder sb = new StringBuilder();
+    //remove extra )
+    for (int i = 0; i < cs.length; i++) {
+      sb.append(cs[i]);
+      if (cs[i] == '(') {
+        count++;
+      } else if (cs[i] == ')') {
+        if (count == 0) {
+           sb.deleteCharAt(sb.length() - 1);
+        } else {
+          count--;
+        }
+      }
+    }
+    
+    //remove extra (
+    for (int j = sb.length() - 1; j >=0; j--) {
+      if (count == 0) break;
+      if (cs[j] ==  '(') {
+        sb.deleteCharAt(j);
+        count--;
+      }
+    }
+    
+    System.out.println(sb.toString());
+  }
