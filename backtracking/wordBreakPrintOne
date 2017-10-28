@@ -1,0 +1,29 @@
+  public static void main(String[] args) {
+    List<String> dict = new ArrayList<>();
+    dict.add("cat");
+    dict.add("cats");
+    dict.add("and");
+    dict.add("sand");
+    dict.add("dog");
+     
+    System.out.println(wordBreak(dict, "catsanddog"));
+  }
+  
+  static String wordBreak(List<String> dict, String s) { 
+    if (s.length() == 0) {
+       return "";
+     }
+    StringBuilder sb = new StringBuilder();
+     for (String word: dict) {
+      if (s.startsWith(word)) {    
+        String str = wordBreak(dict, s.substring(word.length())); 
+          if (str.isEmpty()) {
+            sb.append(word);
+          } else {
+            sb.append(word + " " + str);
+          }
+        break;
+        }
+      } 
+    return sb.toString();
+  }
