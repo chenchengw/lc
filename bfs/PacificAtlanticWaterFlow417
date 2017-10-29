@@ -1,0 +1,49 @@
+    public List<int[]> pacificAtlantic(int[][] matrix) {
+        List<int[]> result = new ArrayList<>();
+        int m = matrix.length;
+        if (m == 0) return result;
+        int n = matrix[0].length;
+        Queue<Integer> pq = new LinkedList<>();
+        Queue<Integer> aq = new LinkedList<>();
+        boolean[][] pacific = new boolean[m][n];
+        boolean[][] atlantic = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            pq.offer(i*n);
+            aq.offer(i*n+n-1);
+            pacific[i][0] = true;
+            atlantic[i][n-1] = true;
+        }
+        for (int j = 0; j < n; j++) {
+            pq.offer(j);
+            aq.offer((m-1)*n + j);
+            pacific[0][j] = true;
+            atlantic[m-1][j] = true;
+        }
+        bfs(matrix, pq, pacific);
+        bfs(matrix, aq, atlantic);
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (pacific[i][j] && atlantic[i][j]) {
+                    result.add(new int[]{i, j});
+                }
+            }
+        }
+        return result;
+    }
+    
+    void bfs(int[][] matrix, Queue<Integer> q, boolean[][] ocean) {
+        while(!q.isEmpty()) {
+            int val = q.poll();
+            int i = val/matrix[0].length;
+            int j = val%matrix[0].length;
+            int[][] dirs = new int[][]{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+            for (int[] dir: dirs) {
+                int x = i + dir[0];
+                int y = j + dir[1];
+                if (x < 0 || x == matrix.length || y < 0 || y == matrix[0].length || matrix[x][y] < matrix[i][j] || ocean[x][y]) continue;
+                ocean[x][y] = true;
+                q.offer(x*matrix[0].length + y);
+            }
+        }
+    }
