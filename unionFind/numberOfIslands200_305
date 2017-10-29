@@ -1,54 +1,40 @@
 https://leetcode.com/problems/number-of-islands-ii/discuss/
      //time: O(Klg(MN)), space: (MN), K = positions.length, reference:http://www.cnblogs.com/EdwardLiu/p/5087633.html
+    int[] ids;
+    
     public List<Integer> numIslands2(int m, int n, int[][] positions) {
         List<Integer> result = new ArrayList<Integer>();
-        UnionFind uf = new UnionFind(m*n);
+        ids = new int[m*n];
+        Arrays.fill(ids, -1);
+        
         int[][] dirs = new int[][]{{-1,0},{1,0},{0,1},{0,-1}};
+        int count = 0;
         
         for(int[] pos: positions) {
             int cur = pos[0]*n + pos[1];
-            uf.ids[cur] = cur;
-            uf.count++;
+            ids[cur] = cur;
+            count++;
             for (int[] dir: dirs) {
                 int x = dir[0] + pos[0];
                 int y = dir[1] + pos[1];
                 int nb = x*n + y;
-                if (x < 0 || x == m || y < 0 || y == n || uf.ids[nb] == -1) continue;
-                if (!uf.isConnected(nb,cur)) {
-                    uf.union(nb, cur);
-                    uf.count--;
+                if (x < 0 || x == m || y < 0 || y == n || ids[nb] == -1) continue;
+                int r1 = find(nb);
+                int r2 = find(cur);
+                if (r1 != r2) {
+                    ids[r1] = r2;
+                    count--;
                 }
             }
-            result.add(uf.count);
+            result.add(count);
         }
         return result;
     }
     
-    //quick union: union time: O(1), find time: O(lgMN), space: O(MN)
-     class UnionFind { 
-             int[] ids;
-             int count;
-             public UnionFind(int num) {
-                 this.ids = new int[num];
-                 Arrays.fill(ids, -1);
-                 this.count = 0;
-             }
-           
-             public int find(int i) { 
-                 while (i != ids[i])  {
-                     ids[i] = ids[ids[i]];
-                     i = ids[i];
-                 }
-                 return i;
-             }
-         
-             public boolean isConnected(int i, int j) {
-                 return find(i) == find(j);
-             }
-             
-             public void union(int i, int j) {
-                 int iRoot = find(i);
-                 int jRoot = find(j);
-                 ids[iRoot] = jRoot;
-             }
-         }
+    int find(int i) {
+        while (i != ids[i]) {
+            ids[i] = ids[ids[i]];
+            i = ids[i];
+        }
+        return i;
+    }
