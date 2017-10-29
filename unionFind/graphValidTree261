@@ -2,7 +2,7 @@ https://leetcode.com/problems/graph-valid-tree/description/
 //definition of a tree: no circle and all nodes are connected
 //union find: time: O(NlgN) space: N, N = edges.length + eddges[0].length
 
-    int[] roots;
+  int[] roots;
     public boolean validTree(int n, int[][] edges) {
         //not all the nodes are connected
         if (edges.length != n-1) return false;
@@ -10,8 +10,10 @@ https://leetcode.com/problems/graph-valid-tree/description/
         roots = new int[n];
         for (int i = 0; i < n; i++) roots[i] = i;
         for (int i = 0; i < edges.length; i++) {
-            if (find(edges[i][0]) == find(edges[i][1])) return false;
-            union(edges[i][0], edges[i][1]);
+            int rx = find(edges[i][0]);
+            int ry = find(edges[i][1]);
+            if (rx == ry) return false;
+            roots[rx] = ry;
         }
         return true;
     }
@@ -22,10 +24,4 @@ https://leetcode.com/problems/graph-valid-tree/description/
             i = roots[i];
         }
         return i;
-    }
-    
-    private void union(int x, int y) {
-        int rx = find(x);
-        int ry = find(y);
-        if (rx != ry) roots[rx] = ry;
     }
