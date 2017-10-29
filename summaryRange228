@@ -1,0 +1,22 @@
+    public List<String> summaryRanges(int[] nums) {
+        List<String> result = new ArrayList<>();
+        if (nums.length == 0) return result;
+        int start = 0, end = 0;
+        while(end < nums.length) {
+            if (end > 0 && nums[end] > nums[end-1] + 1) {
+                if (start == end - 1) {
+                    result.add(String.valueOf(nums[start]));
+                } else {
+                    result.add(nums[start] + "->" + nums[end-1]);
+                }
+                start = end;    
+            } 
+            end++;          
+        }
+        if (start == end - 1) {
+           result.add(String.valueOf(nums[start])); 
+        } else {
+            result.add(nums[start] + "->" + nums[end-1]);
+        }
+        return result;
+    }
