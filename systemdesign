@@ -2,6 +2,7 @@ reference:https://www.evernote.com/shard/s576/sh/7e58b450-1abe-43a8-bf82-fbf07f1
 http://www.cnblogs.com/LBSer/p/3310455.html
 
 good one: http://systemdesigns.blogspot.com/2015/12/ood-blackjack.html
+inverted index: http://blog.csdn.net/hguisu/article/details/7969757
 
 http://www.1point3acres.com/bbs/thread-210083-1-1.html
 
@@ -104,6 +105,9 @@ Scale:
 POST 
 longUrl.hashCode%62 (consistent hashing) -> machine B -> store longUrl -> id convert to 3b7eZ 
 
+Implementation of consistent hashing: http://www.tom-e-white.com//2007/11/consistent-hashing.html
+(key word: treeMap, tailTree, round to first key)
+
 return B3b7eZ
 
 GET
@@ -129,7 +133,9 @@ Requirements:
 2. do we need to account for spelling mistakes? yes -> edit distance
 3. personalization needed or just globally?
 
-QPS: 2-4 billion like Google 
+QPS:
+
+Total: 2-4 billion like Google 
 5 words each query, each word 5 characters -> 25*4 = 200 billion words upper bound perday
 storage needs: 500m(new searches)*25bytes = 12.5GB per day -> 12TB in 3 years
 
@@ -260,12 +266,39 @@ heartbeat every 3-5 seconds , if we haven't received the heartbeat from a user, 
 对于设计登录系统，首先我们先要设计基本的login系统，首先支持Register/login，就需要一个基本的用户表，如果要支持更复杂一点的登录系统，包括verification，ban，inactive，removed，就需要一个status来记录每个user的状态。
 如果还要支持用户可以从多个设备登录，不同的设备会有不同的sessionid，但是却有相同的user——id，如果不想要同一个用户可以在多个设备上播放同样的资源，我们就要记录每个用户每个session正在play的资源，然后保证每个session不能play相同的song_ID或者video_id。如果要根据网络速度调整清晰度，我们就需要先测量网络的情况，让client端ping一下服务器，根据收到的ping再向服务器请求不同清晰度的资源。资源本身不应该存在服务器上，可以存在离客户端很近的CDN上。
 然后要看播放器的类型，如果是app的话，这个app会需要向DNSserver请求我们服务器的地址，然后我们服务器向clientload网页（如果是从浏览器的话，如果是app的话，就不需要load网页，直接去请求源地址就可以了）。然后网页再加载播放器（flash或者HTML5的），最后再请求源地址，源地址应该是放在附近的CDN上面的，所以很快。
-接下来是推荐系统，假设问怎么样设计一个推荐系统，推荐给用户Top10most frequentplayed。最简单的用MinHeap，把所有的play过的video或者audio都记录一个frequency，这个记录可以放在内存里（可以是cluster的这种比如redis）这样便于快速的更新和存取。我们希望这个工作放在worker里做，这样可以不影响整个系统的throughput。当worker完成了工作以后，就可以Update所有的client，这个工作也可以由一个worker来做，这里我们可以用push也可以用pull，也可以两者相结合，push的话只需要push给在线用户，pull的话对于刚上线的用户来更新最新结果。
+接下来是推荐系统，假设问怎么样设计一个推荐系统，推荐给用户Top10most frequentplayed。最简单的用MinHeap，把所有的play过的video或者audio都记录一个frequency，这个记录可以放在内存里（可以是cluster的这种比如redis）这样便于快速的更新和存取。我们希望这个工作放在worker里做，这样可以不影响整个系统的throughput。
+当worker完成了工作以后，就可以Update所有的client，这个工作也可以由一个worker来做，这里我们可以用push也可以用pull，也可以两者相结合，push的话只需要push给在线用户，pull的话对于刚上线的用户来更新最新结果。
 外排序就是假设内存不够用，那么我们就将所有的数据分成小块，然后每个小块都可以放进内存里排序，排好了序的这些小块再进行mergesort。就得到了所有数据的排序结果。
 还有一个followup就是因为有很多用户在同时播放视频文件，有可能同时有很多人在看同一个视频，那么这个视频的freq就会有很多+1，怎么样保证所有的+1都记录下来呢？我们可以用一个aggregator，专门记录这种update，等update到了一定的数量或者一定时间做一次batch的update。
 
+5. Design Uber
+ 前两个问题不是重点，主要是在建立编程模型的适合需要更多的抽象和信息来对business logic提供支持。system design的重点是第三个问题，选择合适的partition。
+ Uber用了Google S2 lib对地图进行做划分. s2可以把地球上的细微到平方厘米的面积进行唯一的编号. S2的最高划分level是30。但是uber用不到这么小的划分，所以选择了level 12的划分。
+ 这个划分的scale是3-6 平方公里。因为越细小的划分会导致request area被大量的cells 覆盖，导致产生大量的empty response，会给服务器增加负担。
+ 每一个cell有一个ID，所以就用这些ID产生了一个geospatial index。图2中的紫色圆圈就是一个rider的所在区域，然后要找到所有覆盖这个区域的cells。
+ 现在rider发出一个请求，然后会在所有覆盖的cells里面找available的driver。dispatch server 有了rider的位置和附近的driver就能通过历史交通信息估算出driver pick up rider的时间了，然后根据ETA进行排序，选择哪一个driver去接rider。
 
-5. web crawler system
+Ringpop所基于的SWIN本身只是一个Gossip协议。其中核心Distributed Hashing部分使用的可能是CHORD（Wiki https://en.wikipedia.org/wiki/Chord_(peer-to-peer)有比较详细的解释），
+一种Distributed Hash Table (DHT)经典算法（参考论文https://www.cs.cornell.edu/~asdas/research/dsn02-swim.pdf）。
+目标是在保证Consistent Hashing性质的同时，在log(N)时间内找到某一个Key（即cell）所在的server，N是server的总数。
+有趣的是CHORD的数据结构恰好是一个ring（可能是ringpop名字的由来）。
+
+每一个集群节点，在一个周期中（不断重复此周期），随机选择另一个集群节点作为探测节点。
+Ø  PING该探测节点，如果回复（收到ACK），该周期活动结束，否则
+Ø  随机选择K个集群节点，让这些节点分别PING探测节点，如果K个中有任意一个回复能PING通探测节点，该周期活动结束，否则
+Ø  标记改随机节点死亡
+b，改节点向集群其他节点“广播”探测节点死亡。
+～～～通俗讲法：
+有一群人在一起聚会，A随机选择到一个人B，并想知道他是否已经离开。他高声喊B的名字，恰好B去上洗手间了，没有听到；
+于是他又随机的找了10个人，让他们帮忙找B是否还在。悲剧的是这10个人都太投入于聚会，随便找了一下没找到B，就告诉A说，B已经离开了。
+最后A确认B已经离开，并且大声告诉所有人这一情况。（这其中错误的把没有离开的B检测为离开了，因此算法结果存在false negative；
+不过假设B真的走了，他的离开一定会被检测到）
+
+在CHORD中，所有的集群节点和所有的Query（通过hash）都被影射到同一个（环形）空间中。每个Query的存储和请求都由“环中”顺时针方向离它最近的集群节点负责。
+每一个集群节点都存储一个叫做FingerTable的Hash Table（每一条记录的Key是环上的一个点，Value是Hash值大于这个点的机器中的第一个），
+任何节点在收到一个不由它负责的Query后都将Query转发到FingerTable中离Query最近的节点。（CHORD保证在O(log(N))时间内把Query转发给负责它的节点）。
+
+6. web crawler system
 https://www.zhihu.com/question/20899988
 bloom filter: https://llimllib.github.io/bloomfilter-tutorial/ to avoid loop
 
