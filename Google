@@ -334,4 +334,197 @@ arr的每个数代表从这个点开始跳几部，返回T的情况：从这个a
                 return jump.size() == arr.length;
               }
               
+ 11. 求问下各位大神，怎么判断一个按照Preorder traversal serialized的binary tree的序列是否正确呢？不能deserialize成树比如
+2 A） 9 3 4 # # 1 # # 2 # 6 # #是对的，因为表示
+3            9
+4          /   \
+5        3      2
+6       /  \      \
+7     4    1      6    
+8 B ) 9 3 4 # # 1 # #就是错的，因为无法反构造回一棵树
  
+ import java.util.*;
+
+public class Solution {
+    public boolean check(String str) {
+        String[] strs = str.split(" ");
+        Stack<String> stack = new Stack<String>();
+        for (int i=0; i<strs.length; i++) {
+            if (stack.size()>=2 && strs[i].equals("#") && stack.peek().equals("#")) {
+                stack.pop();
+                stack.pop();
+                i--;
+            }
+            else stack.push(strs[i]);
+        }
+        if (stack.size()==1 && stack.peek().equals("#")) return true;
+        else return false;
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        Solution sol = new Solution();
+        boolean res = sol.check("9 3 4 # # 1 # # 2 # 6 # # #");
+        if (res) System.out.println("true");
+        else System.out.println("false");
+    }
+
+}
+
+12. 给定一个字符串，找出最多有多少个chunked palindrome,
+
+正常的palindrome是abccba, chunked palindrome的定义是：比如volvo, 可以把vo划分在一起，(vo) (l) (vo)，那么它是个palindrome。求实现返回最大的chunk 数量。
+
+比如aaaaaa可以是(aaa)(aaa), 但是最大chunk数量应该是(a)(a)(a)(a)(a)(a)为6
+
+    public int countChunk(String str) {
+        if (str==null || str.length()==0) return 0;
+        int sum = 0;
+        int l=0, r=str.length()-1;
+        int preL = l, preR = r;
+        while (l < r) {
+            String left = str.substring(preL, l+1);
+            String right = str.substring(r, preR+1);
+            if (left.equals(right)) {
+                preL = l+1;
+                preR = r-1;
+                sum += 2;
+            }
+            l++;
+            r--;
+        }
+        if (preL <= preR) sum+=1;
+        return sum;
+    }
+    
+13. 给你一部分钱和一些不同价钱的商品，如何在最多买K件商品的情况下尽可能多的花掉手里的钱。
+举例：口袋里的钱数： 10;   K=2     产品价格: [3, 6, 8, 7, 9]   输出 3, 7
+
+   static int minRemain = 0;
+
+    public ArrayList<Integer> optimize(int money, int[] prices, int k) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        ArrayList<Integer> path = new ArrayList<Integer>();
+        minRemain = money;
+        helper(result, path, money, prices, 0, k);
+        return result;
+    }
+    
+    public void helper(ArrayList<Integer> result, ArrayList<Integer> path, int remain, int[] prices, int pos, int times) {
+        if (remain < 0 || times<0) return;
+        if (remain < minRemain) {
+            minRemain = remain;
+            result.clear();
+            result.addAll(path);
+        }
+        for (int i=pos; i<prices.length; i++) {
+            path.add(prices[i]);
+            helper(result, path, remain-prices[i], prices, i+1, times-1);
+            path.remove(path.size()-1);
+        }
+        
+    }
+
+14. Define “X-Straight” as X cards with consecutive numbers (X >= 3). Determine if the deck can be fully divided into sets of “X-Straight”.
+Example: 1, 2, 3, 4, 4, 5, 6 -> True
+package Straight;
+import java.util.*;
+
+public class Solution2 {
+    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+    public boolean determine(int[] arr) {
+        for (int elem : arr) {
+            if (!map.containsKey(elem)) {
+                map.put(elem, 1);
+            }
+            else map.put(elem, map.get(elem)+1);
+        }
+        return helper(arr, 0);
+    }
+    
+    public boolean helper(int[] arr, int pos) {
+        if (pos == arr.length) return true;
+        int cur = arr[pos];
+        for (int k=3; k<map.keySet().size(); k++) {
+            HashMap<Integer, Integer> copy = new HashMap<Integer, Integer>(map);
+            for (int i=cur; i<cur+k; i++) {
+                if (!map.containsKey(i)) return false;
+                if (map.get(i) == 0) return false;
+                map.put(i, map.get(i)-1);
+            }
+            while (pos<arr.length && map.get(arr[pos]) == 0) pos++;
+            if (helper(arr, pos))
+                return true;
+            map = copy;
+        }
+        return false;
+        
+    }
+    
+    15. 
+
+想想如果你用linkedin或者facebook， 给你一个人和他的朋友关系网，你会怎么给一个人推荐朋友
+
+一个例子就是A-B, A-C, B - D, B - E, C - D，这个时候问我应该推荐谁给A，我说D,因为他是BC的共同好友，而E只是B的好友,到这我才明白干啥，就是给一个图和里面的一个节点A,用bfs从A出发，找出第二层中indegree度数最大节点
+
+用HashMap<Character, HashSet<Character>>来建图
+
+用HashMap<Character, Integer> SndIndegree来表示第二层indegree数目
+
+用maxIndegree记录第二层Indegree最大值
+
+用res记录第二层Indegree最大者
+
+
+        public char recommend(char tar, char[][] arr) {
+        HashMap<Character, HashSet<Character>> graph = new HashMap<Character, HashSet<Character>>();
+        HashMap<Character, Integer> SndIndegree = new HashMap<Character, Integer>();
+        
+        
+        //build graph
+        for (char[] edge : arr) {
+            if (!graph.containsKey(edge[0])) graph.put(edge[0], new HashSet<Character>());
+            if (!graph.containsKey(edge[1])) graph.put(edge[1], new HashSet<Character>());
+            graph.get(edge[0]).add(edge[1]);
+            if (!SndIndegree.containsKey(edge[0])) SndIndegree.put(edge[0], 0);
+            if (!SndIndegree.containsKey(edge[1])) SndIndegree.put(edge[1], 0);
+        }
+        
+        Queue<Character> queue = new LinkedList<Character>();
+        HashSet<Character> visited = new HashSet<Character>();
+        int level = 0;
+        queue.offer(tar);
+        visited.add(tar);
+        int PNum = 1;
+        int CNum = 0;
+        int maxIndegree = 0;
+        char res = '\0';
+        while (!queue.isEmpty()) {
+            char cur = queue.poll();
+            PNum--;
+            for (Character neigh : graph.get(cur)) {
+                if (level+1 == 2) {
+                    if (neigh == tar) continue;
+                    int curIndegree = SndIndegree.get(neigh)+1;
+                    if (curIndegree > maxIndegree) res = neigh.charValue();
+                    SndIndegree.put(neigh, curIndegree);
+                }
+                else { //not second level
+                    if (!visited.contains(neigh)) {
+                        queue.offer(neigh);
+                        CNum++;
+                        visited.add(neigh);
+                    }
+                }
+            }
+            if (PNum == 0) {
+                PNum = CNum;
+                CNum = 0;
+                level++;
+            }
+        }
+        return res;
+    }
