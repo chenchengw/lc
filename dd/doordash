@@ -146,6 +146,505 @@ Example: Given n = 5, the answer is 6
 Implement a fixed size in-memory cache. If the cache is full, evict elements based on the time that they were added to the cache, aka evict the most stale (oldest untouched) element when storage is full. 
 (Include implementations for GET, SET, and UPDATE)
 
+Connect 4
+The purpose of this interview is to test the candidate’s ability to read code, understand it, and alter/refactor it to achieve a goal.
+
+We are looking for detail orientation, the ability to code fluently, and software design skills (abstractions, elegance, etc.).  
+
+To adjust for both time and nerves, the rubric allows points to be scored if the candidate can clearly describe the approach to the design portion of the interview (approach to robot players).
+
+Generally speaking, try to move to the Robot players section of the interview if possible, when you have a good gauge on the candidate’s basic coding abilities, so we can gauge the candidate’s software design abilities.
+
+Choose either one of the interview progressions.
+
+Preparation
+Candidates should be instructed to bring their own computers, but have a recruiting computer prepared just in case.  Make sure a basic editor is installed on the recruiting computer Atom is recommended (https://atom.io/).
+
+Copy the README and appropriate starting code into a Coderpad or email the candidate the materials as a zip file.
+
+Alternately, cut/paste the code into CoderPad -- this may actually be the best way to conduct the interview and is generally more interactive.
+Interview Progression #1:
+Implement win detection; and implement or describe how to do robot players.
+
+https://github.com/doordash/doordash-interview/tree/master/connect4
+
+Interview Progression #2:
+Implement column-only input; and implement or describe how to do robot players.  Win detection already implemented.
+
+https://github.com/doordash/doordash-interview/tree/master/connect4-refactor
+
+Candidate Doesn’t Know Python or Java:
+Give the option of whiteboard coding interview or proceeding with the existing harnesses in a pair programming manner.  
+
+Interview Progression #1 is probably more suitable for whiteboard interviews.
+
+For whiteboard coding, use the main base loop as a guide when getting to whiteboard coding.
+
+Interview Progression #1 (more time consuming):
+Get the basic game working:  implement win detection.
+Robot player extension:  depending on time and how well the candidate has performed, have them code it or whiteboard it.  “Looking at the main game loop, how would you change the code to implement robot players?”
+Extra Credit extensions:  at interviewer’s discretion, can go over some of the Extra Credit items earlier to earn the candidate some more points (also gives us more data points) if candidate seems high potential and is just having some trouble coding up a working solution.
+
+Alternate Interview Progression #2 (recommended):
+Starting with a harness that has win detection already implemented.
+
+Alter code so that the user only needs to input column.
+Robot player extension:  depending on time and how well the candidate has performed, have them code it or whiteboard it.  “Looking at the main game loop, how would you change the code to implement robot players?”
+Extra Credit extensions:  at interviewer’s discretion, can go over some of the Extra Credit items earlier to earn the candidate some more points (also gives us more data points) if candidate seems high potential and is just having some trouble coding up a working solution.
+
+Hinting for Interview Progressions:
+Candidates can get tripped up with 0-index (how arrays are index) and 1-index (how the board displays row and column when running the program), so remind them of this if it seems like they are missing out on this.
+For win detection, candidates sometimes may overthink the problem:  point out that they have the latest game state and last move made; and that they can assume that no win has previously been detected since this function is called after each move.
+When discussing Robot players, sometimes candidates may do something really simple like assume that there is exactly 1 player and exactly 1 robot.  Hint them towards something more modular (Player interface with get_player_index() and get_next_move() functions, etc.).
+
+Good Follow Up Questions (if time permits):
+These are optimizations and just to get more data points if time permits.
+
+Some candidates will suggest scanning the whole board or will scan entire rows, columns, or diagonals for win detection:  ask, what if the game board is huge?  Remind them that the win detection function is called after each turn and that a win has not been previously detected; and that they also have the details of the last move made.  Ideal solution would limit search for wins to constant time.
+For column-only input, a reasonable approach might be to populate a valid row by checking the board from the bottom up.  Again, we can ask, what if the game board is huge?  (Good solution here would be to memo-ize the last populated row in a given column so you don’t have to search a column for the next valid spot.)
+
+Rubric for Interview Progression #1 
+Baseline (10 points total:  3 or less is Def. No; 4-5 is No; 6-7 is Yes; 8+ is Strong Yes)
+1 pt.  Candidate is able to come to a good understanding of the problem. 
+1 pt.  Candidate can solve win detection for Connect 4.
+1 pt.  Candidate has good insights on win detection for Connect 4.
+1 pt.  Candidate’s win detection code is clean.
+1 pt.  Candidate can identify how to change the code to accommodate robot players. 
+1 pt.  Candidate’s solution for robot players is modular.
+2 pt.  Candidate can implement a working robot player. 
+1 pt.  Candidate can identify how to change the code to accommodate robot vs robot.
+1 pt.  Candidate can implement robot vs. robot.
+
+Bonus (Can cover these items at interviewer’s discretion)
+1 pt.  If user can do any extra credit items, at interviewer’s discretion; or candidate has good insights/observations/qualities not covered by rubric -- please detail in interview notes.
+
+
+Rubric for Interview Progression #2 
+Baseline (10 points total:  3 or less is Def. No; 4-5 is No; 6-7 is Yes; 8+ is Strong Yes)
+1 pt.  Candidate is able to come to a good understanding of the problem. 
+1 pt.  Candidate can refactor code to only require column input.
+1 pt.  Candidate has good insights on column input solution.
+1 pt.  Candidate’s column input code is clean.
+1 pt.  Candidate can identify how to change the code to accommodate robot players. 
+1 pt.  Candidate’s solution for robot players is modular.
+2 pt.  Candidate can implement a working robot player. 
+1 pt.  Candidate can identify how to change the code to accommodate robot vs robot.
+1 pt.  Candidate can implement robot vs. robot.
+
+Bonus (Can cover these items at interviewer’s discretion)
+1 pt.  If user can do any extra credit items, at interviewer’s discretion; or candidate has good insights/observations/qualities not covered by rubric -- please detail in interview notes.
+
+
+Package Dependency Manager
+Problem
+In the real world, we build software that is organized into packages that may depend on other packages. Systems like Apache Maven help us manage these dependencies. When we submit a package for compilation, all of the packages dependencies need to be compiled before the package itself can be compiled. How can a system like Maven figure out the right order to compile packages.
+Expectations
+ho
+Packages should not be compiled more than once
+Identify edge case of circular dependency and identify algorithm to detect it
+Hints
+Solutions
+DFS with memoization: Use DFS and store calculated nodes in a set/hash. Cycle is present if we encounter a vertex already in the current DFS path.
+
+Not a preferred solution:
+
+Edge Removal:
+[This is not preferred since we need to do #1 anyways to determine the sub-graph of relevant vertices, since there could be packages that our top-level package doesn’t depend on at all]
+Store vertices in a min heap sorted by number of outgoing edges. When a vertex has no outgoing edges remove all incoming edges. Cycle is present if heap is not empty and all vertices have outgoing edges. 
+Evaluation
+Dealing with ambiguity
+There is little bit of ambiguity in the question about how to represent packages and dependencies and the fact that there may be circular dependencies. It will be good to see candidates clarify these. The graph should be modeled where the directed edges represent a “depends on” relationship. For example, A → B means B needs to be compiled before A.
+Problem Solving
+Candidates should be able to functionally decompose the problem, identify base case in the recursion and modify their solution to detect cycles. 
+Candidates should be able to identify interesting cases (don’t recompile packages if a package appears twice in the transitive dependency) 
+Algorithms
+DFS, BFS. DFS makes more sense here since we are not looking for shortest path.
+Code
+DFS with memoization:
+
+
+Test cases:
+A
+Output: [A]
+
+A -> A
+Output: Exception
+
+A -> B; B -> A
+Output: Exception
+
+A -> B; B -> C; A->C 
+Output: [C, B, A]
+
+Outcome
+Definite fail if candidate does not get Expectation #1 and #2.
+Definite pass if candidate does get Expectation #1, #2 and #3.
+Use judgement if candidate does not get Expectation #3. 
+Plus points for coming up with algorithm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Package Dependency Manager
+Problem
+In the real world, we build software that is organized into packages that may depend on other packages. Systems like Apache Maven help us manage these dependencies. When we submit a package for compilation, all of the packages dependencies need to be compiled before the package itself can be compiled. How can a system like Maven figure out the right order to compile packages.
+Expectations
+ho
+Packages should not be compiled more than once
+Identify edge case of circular dependency and identify algorithm to detect it
+Hints
+Solutions
+DFS with memoization: Use DFS and store calculated nodes in a set/hash. Cycle is present if we encounter a vertex already in the current DFS path.
+
+Not a preferred solution:
+
+Edge Removal:
+[This is not preferred since we need to do #1 anyways to determine the sub-graph of relevant vertices, since there could be packages that our top-level package doesn’t depend on at all]
+Store vertices in a min heap sorted by number of outgoing edges. When a vertex has no outgoing edges remove all incoming edges. Cycle is present if heap is not empty and all vertices have outgoing edges. 
+Evaluation
+Dealing with ambiguity
+There is little bit of ambiguity in the question about how to represent packages and dependencies and the fact that there may be circular dependencies. It will be good to see candidates clarify these. The graph should be modeled where the directed edges represent a “depends on” relationship. For example, A → B means B needs to be compiled before A.
+Problem Solving
+Candidates should be able to functionally decompose the problem, identify base case in the recursion and modify their solution to detect cycles. 
+Candidates should be able to identify interesting cases (don’t recompile packages if a package appears twice in the transitive dependency) 
+Algorithms
+DFS, BFS. DFS makes more sense here since we are not looking for shortest path.
+Code
+DFS with memoization:
+
+
+Test cases:
+A
+Output: [A]
+
+A -> A
+Output: Exception
+
+A -> B; B -> A
+Output: Exception
+
+A -> B; B -> C; A->C 
+Output: [C, B, A]
+
+Outcome
+Definite fail if candidate does not get Expectation #1 and #2.
+Definite pass if candidate does get Expectation #1, #2 and #3.
+Use judgement if candidate does not get Expectation #3. 
+Plus points for coming up with algorithm
+
+
+Connect 4
+
+Description
+
+Complete the given terminal-based Connect 4 game:
+
+Connect 4 is played on a 6 high x 7 wide grid.
+There are two players.
+Each player has different colored pieces.
+During each round, each player has an opportunity to place a piece.
+The board is filled from the bottom up: pieces are dropped into a column and stacked.
+The first player to place 4 pieces in a line wins.
+Winning lines can be vertical, horizontal, or diagonal.
+A quick video on Connect 4: https://www.youtube.com/watch?v=yDWPi1pZ0Po
+
+Complete and Enhance the Game
+
+Get as far as you can, but the main goal is to get the basic game working. The initial code is provided only as a basic guide -- feel free to change it as necessary. Good luck!
+
+Detect When Game Ends
+
+Complete the game so it stops when a player win is detected.
+Better User Interface
+
+Streamline the input so that only a column input is required.
+Enable Robot Players
+
+Enhance the game so that players can be robots or humans: implement a “random move” robot.
+Enhance the game to accommodate both human vs. robot and robot vs. robot.
+Extra Credit (describe how or implement as time allows)
+
+The board size is configurable.
+There can be more than 2 players.
+How to determine player order of turn?
+How would you test the code?
+Running
+
+Python 3
+
+$ brew install python3
+$ python3 ./connect4.py --rows=6 --cols=7 --robots=0 --humans=2
+
+>>>>> Board = 6 rows x 7 cols; Human Players = 2; Robot Players = 0
+
+      1   2   3   4   5   6   7
+  1   .   .   .   .   .   .   .
+  2   .   .   .   .   .   .   .
+  3   .   .   .   .   .   .   .
+  4   .   .   .   .   .   .   .
+  5   .   .   .   .   .   .   .
+  6   .   .   .   .   .   .   .
+
+Player #1 Move [ row, col ]:  ^C
+
+Exiting...
+Java
+
+$ javac Connect4.java
+$ java -Drows=6 -Dcols=7 -Dhumans=2 -Drobots=0 Connect4
+
+$ java Connect4
+
+>>>>> Board = 6 rows x 7 cols; Human Players = 2; Robot Players = 0
+
+     1  2  3  4  5  6  7
+  1  .  .  .  .  .  .  .
+  2  .  .  .  .  .  .  .
+  3  .  .  .  .  .  .  .
+  4  .  .  .  .  .  .  .
+  5  .  .  .  .  .  .  .
+  6  .  .  .  .  .  .  .
+
+
+Player #1 Move [ row, col ]:  6,1
+
+     1  2  3  4  5  6  7
+  1  .  .  .  .  .  .  .
+  2  .  .  .  .  .  .  .
+  3  .  .  .  .  .  .  .
+  4  .  .  .  .  .  .  .
+  5  .  .  .  .  .  .  .
+  6  X  .  .  .  .  .  .
+
+
+Player #2 Move [ row, col ]:  
+
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Connect4 {
+
+    static final String[] PLAYER_SYMBOLS = new String[]{"X", "O", "A", "B", "C", "D", "E", "Y", "Z", "H"};
+
+    public final int numRows;
+    public final int numCols;
+    private final int[][] board;
+    private final int humans;
+    private final int robots;
+    private final int players;
+
+    class Move {
+        public final int playerIndex;
+        public final int row;
+        public final int col;
+
+        public Move(int playerIndex, int row, int col) {
+            this.playerIndex = playerIndex;
+            this.row = row;
+            this.col = col;
+        }
+    }
+
+    public Connect4(int rows, int cols, int humans, int robots) {
+        this.board = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            Arrays.fill(board[i], -1);
+        }
+        this.numRows = rows;
+        this.numCols = cols;
+        this.humans = humans;
+        this.robots = robots;
+        this.players = humans + robots;
+    }
+
+    /**
+     * TODO:  IMPLEMENT!
+     *
+     * This method is called after each move.
+     *
+     * @param board = 2 dimensional index of player indexes which are 0 or greater
+     * @param lastMove = Move object representing the last move made
+     * @return index of winning player; -1 if no winner detected
+     */
+    public int winningPlayerIndex(int[][] board, Move lastMove) {
+
+        return -1;
+    }
+
+
+
+    public String getUserInput(String prompt) {
+        // create a scanner so we can read the command-line input
+        Scanner scanner = new Scanner(System.in);
+
+        //  prompt for the user's name
+        System.out.print(prompt);
+
+        // get their input as a String
+        String userInput = scanner.next();
+
+        return userInput;
+    }
+
+    public void printBoard(int[][] board, String[] playerSymbols) {
+        System.out.println("\n" + boardTerminalString(board, PLAYER_SYMBOLS) + "\n");
+    }
+
+    public String boardTerminalString(int[][] board, String[] playerSymbols) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("   ");
+        for (int col = 0; col < numCols; col++) {
+            sb.append(String.format("%1$" + 3 + "s", col + 1 + ""));
+        }
+        sb.append("\n");
+        for (int row = 0; row < numRows; row++) {
+            sb.append(String.format("%1$" + 3 + "s", row + 1 + ""));
+            for (int col = 0; col < numCols; col++) {
+                int playerIndex = board[row][col];
+                String playerSymbol = playerIndex > -1 ? PLAYER_SYMBOLS[playerIndex] : ".";
+                playerSymbol = String.format("%1$" + 3 + "s", playerSymbol);
+                sb.append(playerSymbol);
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    public boolean isValidMove(Move move) {
+        if (move == null || move.row < 0 || move.col < 0) {
+            return false;
+        }
+
+        if (move.row >= numRows || move.col >= numCols) {
+            return false;
+        }
+
+        // can't place over existing piece
+        if (board[move.row][move.col] > -1) {
+            return false;
+        }
+
+        // check that we are stacking if not on bottom row
+        if (move.row < numRows - 1 && board[move.row + 1][move.col] < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void updateBoard(int[][] board, Move move) {
+        board[move.row][move.col] = move.playerIndex;
+    }
+
+    /**
+     * @param playerIndex
+     * @param moveString
+     * @return Move object or null if unable to parse
+     */
+    public Move parseMove(int playerIndex, String moveString) {
+        try {
+            String[] tokens = moveString.split(",");
+            if (tokens.length < 2) {
+                return null;
+            }
+            int row = Integer.parseInt(tokens[0].trim());
+            int col = Integer.parseInt(tokens[1].trim());
+            return new Move(playerIndex, row - 1, col - 1);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void start() {
+        while (true) {
+            int moveCount = 0;
+            for (int currentPlayerIndex = 0; currentPlayerIndex < players; currentPlayerIndex++) {
+                printBoard(board, PLAYER_SYMBOLS);
+                Move move = null;
+                while (true) {
+                    String moveString = getUserInput("Player #" + (currentPlayerIndex + 1) + " Move [ row, col ]:  ");
+                    move = parseMove(currentPlayerIndex, moveString);
+                    if (isValidMove(move)) {
+                        updateBoard(board, move);
+                        moveCount++;
+                        break;
+                    } else {
+                        System.out.println("INVALID MOVE");
+                    }
+                }// while
+                if (currentPlayerIndex == winningPlayerIndex(board, move)) {
+                    printBoard(board, PLAYER_SYMBOLS);
+                    System.out.println("\n\nPlayer #" + (currentPlayerIndex + 1) + " wins!\n\n");
+                    System.exit(0);
+                }
+                if (moveCount == numRows * numCols) {
+                    printBoard(board, PLAYER_SYMBOLS);
+                    System.out.println("\n\nIt's a draw!");
+                    System.exit(0);
+                }
+            }// for
+        }// while
+    }
+
+    public static void main(String[] args) throws Throwable {
+        int rows = int32OrDefault(System.getProperty("rows"), 6);
+        int cols = int32OrDefault(System.getProperty("cols"), 7);
+        int humans = int32OrDefault(System.getProperty("humans"), 2);
+        int robots = int32OrDefault(System.getProperty("robots"), 0);
+
+        System.out.println("\n>>>>> Board = " + rows + " rows x " + cols + " cols; Human Players = " + humans + "; Robot Players = " + robots + "\n\n");
+
+        Connect4 game = new Connect4(rows, cols, humans, robots);
+        game.start();
+    }
+
+    public static int int32OrDefault(String in, int defaultValue) {
+        if (in == null || in.trim().length() == 0) {
+            return defaultValue;
+        }
+        return Integer.parseInt(in);
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
