@@ -1,0 +1,75 @@
+Package Dependency Manager
+Problem
+In the real world, we build software that is organized into packages that may depend on other packages. Systems like Apache Maven help us manage these dependencies. When we submit a package for compilation, all of the packages dependencies need to be compiled before the package itself can be compiled. How can a system like Maven figure out the right order to compile packages.
+Expectations
+ho
+Packages should not be compiled more than once
+Identify edge case of circular dependency and identify algorithm to detect it
+Hints
+Solutions
+DFS with memoization: Use DFS and store calculated nodes in a set/hash. Cycle is present if we encounter a vertex already in the current DFS path.
+
+Not a preferred solution:
+
+Edge Removal:
+[This is not preferred since we need to do #1 anyways to determine the sub-graph of relevant vertices, since there could be packages that our top-level package doesn’t depend on at all]
+Store vertices in a min heap sorted by number of outgoing edges. When a vertex has no outgoing edges remove all incoming edges. Cycle is present if heap is not empty and all vertices have outgoing edges. 
+Evaluation
+Dealing with ambiguity
+There is little bit of ambiguity in the question about how to represent packages and dependencies and the fact that there may be circular dependencies. It will be good to see candidates clarify these. The graph should be modeled where the directed edges represent a “depends on” relationship. For example, A → B means B needs to be compiled before A.
+Problem Solving
+Candidates should be able to functionally decompose the problem, identify base case in the recursion and modify their solution to detect cycles. 
+Candidates should be able to identify interesting cases (don’t recompile packages if a package appears twice in the transitive dependency) 
+Algorithms
+DFS, BFS. DFS makes more sense here since we are not looking for shortest path.
+Code
+DFS with memoization:
+
+
+Test cases:
+A
+Output: [A]
+
+A -> A
+Output: Exception
+
+A -> B; B -> A
+Output: Exception
+
+A -> B; B -> C; A->C 
+Output: [C, B, A]
+
+Outcome
+Definite fail if candidate does not get Expectation #1 and #2.
+Definite pass if candidate does get Expectation #1, #2 and #3.
+Use judgement if candidate does not get Expectation #3. 
+Plus points for coming up with algorithm
+
+
+
+
+Senior-level Insights
+Recognition of and solutions for failure modes
+Understanding of performance and scalability
+Asks questions that demonstrate deeper experience
+Ability to apply previous experience to new problems
+Demonstrates knowledge of “advanced” design patterns
+Communication
+Able to clearly articulate why they made certain decisions
+Red Flags
+Any pressing concerns or open questions
+
+
+
+Senior-level Insights
+Depth of experience and/or research for past projects
+Awareness of strengths/weaknesses of past work
+Understanding of adjacent areas to their chosen domain (understanding of upstream and downstream systems, etc.)
+Awareness of general problem space (why a particular set of solutions/systems was chosen over others, etc.)
+Communication
+Able to articulate clearly what they did and teach others
+Red Flags
+Any pressing concerns or open questions
+
+
+
