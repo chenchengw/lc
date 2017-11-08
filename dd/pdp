@@ -44,6 +44,8 @@ Definite fail if candidate does not get Expectation #1 and #2.
 Definite pass if candidate does get Expectation #1, #2 and #3.
 Use judgement if candidate does not get Expectation #3. 
 Plus points for coming up with algorithm
+
+
 import java.io.*;
 import java.util.*;
 
@@ -62,10 +64,10 @@ class Solution {
     dependencies.put("A", l1);
     
     List<String> l2 = new ArrayList<>();
-    l2.add("C");
+    l2.add("D");
     dependencies.put("B", l2);   
     
-    Stack<String> orders = new Stack<>();
+    List<String> orders = new ArrayList<>();
     dependencyOrder("A", new HashSet<>(), new HashSet<>(), orders);
     
     for (String str: orders) {
@@ -75,7 +77,7 @@ class Solution {
   
   static Map<String, List<String>> dependencies = new HashMap<>();
   
-  public static void dependencyOrder(String target, Set<String> path, Set<String> visited, Stack<String> dependencyOrder) {
+  public static void dependencyOrder(String target, Set<String> path, Set<String> visited, List<String> dependencyOrder) {
     if (null == target) return;
     if (path.contains(target)) {
       throw new RuntimeException("Cycle Detected");
