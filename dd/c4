@@ -953,6 +953,7 @@ class Connect4 {
     public final int numRows;
     public final int numCols;
     private final int[][] board;
+    private final int[] positions;
     private final int humans;
     private final int robots;
     private final int players;
@@ -972,6 +973,8 @@ class Connect4 {
 
     public Connect4(int rows, int cols, int humans, int robots) {
         this.board = new int[rows][cols];
+        this.positions = new int[cols];
+        Arrays.fill(positions, rows-1);
         for (int i = 0; i < rows; i++) {
             Arrays.fill(board[i], -1);
         }
@@ -1108,7 +1111,7 @@ class Connect4 {
      * @param moveString
      * @return Move object or null if unable to parse
      */
-    public Move parseMove(int[][] board, int playerIndex, String moveString) {
+    public Move parseMove(int playerIndex, String moveString) {
         try {
             // String[] tokens = moveString.split(",");
             // if (tokens.length < 2) {
@@ -1116,12 +1119,13 @@ class Connect4 {
             // }
             // int row = Integer.parseInt(tokens[0].trim());
             int col = Integer.parseInt(moveString.trim());
-            int row = board.length - 1;
-            while (board[row][col-1] != -1) {
-              row--; 
-            }
-            
-            return new Move(playerIndex, row, col - 1);
+            // int row = board.length - 1;
+            // while (board[row][col-1] != -1) {
+            //   row--; 
+            // }
+            col--;
+            int row = positions[col];
+            return new Move(playerIndex, row, col);
         } catch (Exception e) {
             return null;
         }
@@ -1131,6 +1135,7 @@ class Connect4 {
         while (true) {
             int moveCount = 0;
             Boolean robot = false;
+            
             for (int currentPlayerIndex = 0; currentPlayerIndex < players; currentPlayerIndex++) {
                 printBoard(board, PLAYER_SYMBOLS);
                 Move move = null;
@@ -1138,9 +1143,13 @@ class Connect4 {
                 if (robot == false) {
                   while (true) {
                         String moveString = getUserInput("Player #" + (currentPlayerIndex + 1) + " Move [ row, col ]:  ");
-                        move = parseMove(board, currentPlayerIndex, moveString);
-
+                        move = parseMove(currentPlayerIndex, moveString);
+                        
+                        for(int pos: positions) {
+                          System.out.print(pos + " "); 
+                        }
                         if (isValidMove(move)) {
+                            positions[move.col] = move.row - 1;
                             updateBoard(board, move);
                             moveCount++;
                             robot = true;
@@ -1157,6 +1166,7 @@ class Connect4 {
                     } while (!isValidMove(move));
                   
                     System.out.println("Robot #" + (currentPlayerIndex + 1) + " Move [row, col]: " + move.row + " "+ move.col);
+                    positions[move.col] = move.row - 1;
                     updateBoard(board, move);
                     moveCount++;
                     robot = false;  
